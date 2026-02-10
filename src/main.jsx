@@ -138,38 +138,125 @@ function ExplodedRebuildSection() {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    const animateProgress = () => {
-      const sectionTop = section.offsetTop;
-      const viewportTop = window.scrollY;
-      const stickyHeight = track.offsetHeight;
-      const scrubDistance = Math.max(1, section.offsetHeight - stickyHeight);
+    const navOffset = 86;
+    const touchState = { y: null };
 
-      const raw = (viewportTop - sectionTop) / scrubDistance;
-      const target = Math.min(1, Math.max(0, raw));
-      const current = visualProgressRef.current;
-      const next = current + ((target - current) * 0.15);
-      const settled = Math.abs(target - next) < 0.0005;
-      const finalValue = settled ? target : next;
-
-      visualProgressRef.current = finalValue;
-      setProgress(finalValue);
-
-      frameRef.current = !settled ? requestAnimationFrame(animateProgress) : null;
-    };
-
-    const onScroll = () => {
+    const syncVisual = () => {
       if (frameRef.current !== null) return;
-      frameRef.current = requestAnimationFrame(animateProgress);
+
+      const tick = () => {
+        const target = visualProgressRef.current;
+        setProgress((current) => {
+          const next = current + ((target - current) * 0.22);
+          const settled = Math.abs(target - next) < 0.0006;
+          const finalValue = settled ? target : next;
+
+          frameRef.current = settled ? null : requestAnimationFrame(tick);
+          return finalValue;
+        });
+      };
+
+      frameRef.current = requestAnimationFrame(tick);
     };
 
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    const keepTrackPinned = () => {
+      const sectionTop = section.offsetTop;
+      window.scrollTo({ top: sectionTop - navOffset, behavior: 'auto' });
+    };
+
+    const isSectionFullyVisible = () => {
+      const rect = section.getBoundingClientRect();
+      const stickyRect = track.getBoundingClientRect();
+      const topVisible = rect.top <= navOffset + 1 && stickyRect.top <= navOffset + 1;
+      const bottomVisible = rect.bottom >= window.innerHeight - 1;
+      return topVisible && bottomVisible;
+    };
+
+    const shouldLock = (delta) => {
+      if (!isSectionFullyVisible()) return false;
+
+      if (delta > 0) {
+        return visualProgressRef.current < 0.999;
+      }
+
+      if (delta < 0) {
+        return visualProgressRef.current > 0.001;
+      }
+
+      return false;
+    };
+
+    const scrubProgress = (delta) => {
+      const intensity = Math.min(260, Math.abs(delta));
+      const direction = delta > 0 ? 1 : -1;
+      const step = ((intensity / 260) * 0.075) * direction;
+      const next = Math.min(1, Math.max(0, visualProgressRef.current + step));
+      visualProgressRef.current = next;
+      syncVisual();
+    };
+
+    const onWheel = (event) => {
+      const delta = event.deltaY;
+      if (!shouldLock(delta)) return;
+
+      event.preventDefault();
+      keepTrackPinned();
+      scrubProgress(delta);
+    };
+
+    const onKeyDown = (event) => {
+      const keys = {
+        ArrowDown: 130,
+        PageDown: 240,
+        ' ': 180,
+        ArrowUp: -130,
+        PageUp: -240
+      };
+
+      if (!(event.key in keys)) return;
+      const delta = keys[event.key];
+      if (!shouldLock(delta)) return;
+
+      event.preventDefault();
+      keepTrackPinned();
+      scrubProgress(delta);
+    };
+
+    const onTouchStart = (event) => {
+      touchState.y = event.touches[0]?.clientY ?? null;
+    };
+
+    const onTouchMove = (event) => {
+      if (touchState.y === null) return;
+
+      const y = event.touches[0]?.clientY ?? touchState.y;
+      const delta = (touchState.y - y) * 1.55;
+      touchState.y = y;
+
+      if (!shouldLock(delta)) return;
+
+      event.preventDefault();
+      keepTrackPinned();
+      scrubProgress(delta);
+    };
+
+    const onTouchEnd = () => {
+      touchState.y = null;
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKeyDown, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
 
     return () => {
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
     };
   }, []);
 
