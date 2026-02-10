@@ -797,15 +797,49 @@ h1 span { color: #f43f5e; }
 }
 
 .pricing {
-  background: radial-gradient(circle at 50% -12%, rgba(251, 113, 133, 0.17), transparent 45%), #f8fafc;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(251, 113, 133, 0.12), transparent 48%),
+    linear-gradient(180deg, #edf2f7 0%, #f8fafc 22%);
   padding: 6rem 1.2rem;
-  border-top-left-radius: 5rem;
-  border-top-right-radius: 5rem;
   display: block;
 }
 
 .pricing .title {
   margin-bottom: 2.2rem;
+}
+
+.pricing .eyebrow {
+  color: rgba(251, 113, 133, 0.9);
+  text-shadow: none;
+  width: fit-content;
+  margin: 0 auto 0.75rem;
+}
+
+.pricing-info {
+  margin: 1.5rem auto 0;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #334155;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.pricing-info:hover {
+  border-color: rgba(244, 63, 94, 0.3);
+  color: #0f172a;
+}
+
+.pricing-info span {
+  color: #f43f5e;
+  font-size: 0.95rem;
 }
 
 .price-card {

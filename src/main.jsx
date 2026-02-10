@@ -298,8 +298,8 @@ function App() {
         </section>
 
         <section id="pricing" className="pricing">
-          <p className="eyebrow reveal" data-reveal>TRANSPARENT SECURITY</p>
-          <h2 className="title reveal" data-reveal>Choose Your Protection Level</h2>
+          <p className="eyebrow badge-font reveal" data-reveal>Pricing</p>
+          <h2 className="title reveal" data-reveal>Choose A Plan</h2>
 
           {plans.map((plan) => (
             <article key={plan.name} className={`price-card reveal ${plan.featured ? 'featured' : ''}`} data-reveal>
@@ -309,6 +309,11 @@ function App() {
               <div className="price-cta"><strong>{plan.price}</strong><small>{plan.unit}</small><button className={`btn ${plan.featured ? 'btn-rose' : ''}`}>{plan.cta}</button></div>
             </article>
           ))}
+
+          <button className="pricing-info" type="button" aria-label="Why does this cost money?">
+            <span aria-hidden="true">ⓘ</span>
+            Why does this cost money?
+          </button>
         </section>
 
         <footer className="site-footer">
