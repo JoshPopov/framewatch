@@ -139,19 +139,17 @@ function ExplodedRebuildSection() {
     let currentProgress = 0;
     let animationFrame;
 
-    // Animation Loop: Smoothly interpolates values for that "Apple" feel
+    // Smooth "Lerp" function
     const tick = () => {
-      // Move current value 10% closer to target every frame
+      // Interpolate for smoothness
       currentProgress += (targetProgress - currentProgress) * 0.08;
       
-      // Optimization: Stop updating if we are close enough
       if (Math.abs(targetProgress - currentProgress) < 0.0001) {
         currentProgress = targetProgress;
       } else {
         animationFrame = requestAnimationFrame(tick);
       }
-
-      // Direct DOM update for performance (bypasses React render cycle)
+      
       stage.style.setProperty('--progress', currentProgress);
     };
 
@@ -159,24 +157,21 @@ function ExplodedRebuildSection() {
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       
-      // Sticky starts at 4.9rem (approx 80px). We normalize this offset.
-      const stickyOffset = 80; 
+      // We only start calculating progress once the section hits the top (rect.top <= 0)
+      // The total scrollable distance where the element is "sticky" is (height - viewportHeight)
+      const scrollableDistance = rect.height - viewportHeight;
       
-      // Calculate how far we've scrolled into the section
-      // rect.top is positive when approaching, 0 when at top, negative when scrolling past
-      const start = stickyOffset;
-      const end = -(rect.height - viewportHeight - stickyOffset);
-      
-      // Map scroll position to 0-1 range
-      const scrollDist = stickyOffset - rect.top;
-      const totalDist = rect.height - viewportHeight;
-      
-      const raw = scrollDist / totalDist;
-      
-      // Clamp between 0 and 1
-      targetProgress = Math.max(0, Math.min(1, raw));
-      
-      // Start animation loop if not running
+      if (rect.top > 0) {
+        // Approaching the section
+        targetProgress = 0;
+      } else {
+        // We are inside the "stick" zone
+        // distanceScrolled is how far past "top: 0" we are (which is just -rect.top)
+        const distanceScrolled = -rect.top;
+        const raw = distanceScrolled / scrollableDistance;
+        targetProgress = Math.max(0, Math.min(1, raw));
+      }
+
       if (!animationFrame) {
         animationFrame = requestAnimationFrame(tick);
       }
@@ -184,8 +179,6 @@ function ExplodedRebuildSection() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
-    
-    // Initial calculation
     handleScroll();
 
     return () => {
@@ -203,7 +196,6 @@ function ExplodedRebuildSection() {
           <h2 className="title">From One Mockup to Full Platform Control</h2>
         </div>
 
-        {/* Added ref={stageRef} here */}
         <div ref={stageRef} className="mockup-stage">
           <article className="mock-piece piece-frame"></article>
           <article className="mock-piece piece-cover"><span>COVER</span><i></i></article>
