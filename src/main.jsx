@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
@@ -9,13 +9,7 @@ const MATRIX_SNIPPETS = [
   'await takedown.send("PLATFORM_A")', 'X: 124.5 Y: 88.2', 'biometric.verify(face_sample)',
   'DELETE FROM nodes WHERE id=?', 'const takedown = new LegalNotice(id);'
 ];
-
 const MATRIX_COLORS = ['#fb7185', '#0d9488', '#f59e0b', '#0284c7', '#7c3aed'];
-
-const NAV_LINKS = [
-  { id: 'about', label: 'About' },
-  { id: 'pricing', label: 'Pricing' }
-];
 
 const stats = [
   { icon: '⚠', ghost: '90%', headline: '90%+', title: 'Non-Consensual Material', copy: 'Research indicates over 90% of deepfake content appearing on public forums is created without explicit permission.' },
@@ -47,55 +41,13 @@ function useReveal() {
   }, []);
 }
 
-function useSmoothNavBlob(links) {
-  const navRef = useRef(null);
-  const [blobStyle, setBlobStyle] = useState({ left: 0, width: 0, opacity: 0 });
-
-  const moveBlobToId = (id, visible = true) => {
-    const navEl = navRef.current;
-    if (!navEl) return;
-    const anchor = navEl.querySelector(`a[href="#${id}"]`);
-    if (!anchor) return;
-    const navRect = navEl.getBoundingClientRect();
-    const rect = anchor.getBoundingClientRect();
-    setBlobStyle({
-      left: rect.left - navRect.left - 6,
-      width: rect.width + 12,
-      opacity: visible ? 1 : 0
-    });
-  };
-
-  useEffect(() => {
-    if (!links.length) return;
-    const firstId = links[0].id;
-    const update = () => moveBlobToId(firstId, true);
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [links]);
-
-  const handleNavClick = (event, id) => {
-    event.preventDefault();
-    const target = document.getElementById(id);
-    if (!target) return;
-    const top = target.getBoundingClientRect().top + window.scrollY - 110;
-    window.scrollTo({ top, behavior: 'smooth' });
-    moveBlobToId(id, true);
-  };
-
-  return { navRef, blobStyle, handleNavClick, moveBlobToId };
-}
-
 function MatrixGrid() {
   const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => ({
     id: i,
     text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
     color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-    duration: `${22 + Math.random() * 24}s`,
-    swayDuration: `${16 + Math.random() * 18}s`,
-    xMove: `${10 + Math.random() * 28}px`,
-    yMove: `${14 + Math.random() * 32}px`,
-    opacity: 0.14 + Math.random() * 0.22
+    duration: `${20 + Math.random() * 20}s`,
+    opacity: 0.12 + Math.random() * 0.24
   })), []);
 
   const [cells, setCells] = useState(initialCells);
@@ -104,19 +56,17 @@ function MatrixGrid() {
     const timer = setInterval(() => {
       setCells((prev) => {
         const next = [...prev];
-        for (let i = 0; i < 10; i += 1) {
+        for (let i = 0; i < 8; i += 1) {
           const idx = Math.floor(Math.random() * next.length);
-          const current = next[idx];
           next[idx] = {
-            ...current,
-            opacity: Math.min(0.42, current.opacity + (Math.random() - 0.38) * 0.12),
-            text: Math.random() > 0.76 ? MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)] : current.text
+            ...next[idx],
+            opacity: 0.08 + Math.random() * 0.34,
+            text: Math.random() > 0.62 ? MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)] : next[idx].text
           };
         }
         return next;
       });
-    }, 1200);
-
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -124,20 +74,7 @@ function MatrixGrid() {
     <div className="matrix-mask" aria-hidden="true">
       <div className="matrix-grid">
         {cells.map((cell) => (
-          <span
-            key={cell.id}
-            className="snippet"
-            style={{
-              color: cell.color,
-              opacity: Math.max(0.08, cell.opacity),
-              '--dur': cell.duration,
-              '--sway-dur': cell.swayDuration,
-              '--x-move': cell.xMove,
-              '--y-move': cell.yMove
-            }}
-          >
-            {cell.text}
-          </span>
+          <span key={cell.id} className="snippet" style={{ color: cell.color, opacity: cell.opacity, '--dur': cell.duration }}>{cell.text}</span>
         ))}
       </div>
     </div>
@@ -146,25 +83,14 @@ function MatrixGrid() {
 
 function App() {
   useReveal();
-  const { navRef, blobStyle, handleNavClick, moveBlobToId } = useSmoothNavBlob(NAV_LINKS);
 
   return (
     <>
-      <header className="glass-nav nav-float-in" data-reveal>
+      <header className="glass-nav reveal" data-reveal>
         <div className="brand"><span>⛨</span> FRAMEWATCH</div>
-        <nav ref={navRef} className="liquid-nav">
-          <span className="nav-blob" style={{ left: blobStyle.left, width: blobStyle.width, opacity: blobStyle.opacity }}></span>
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.id}
-              href={`#${link.id}`}
-              onMouseEnter={() => moveBlobToId(link.id, true)}
-              onFocus={() => moveBlobToId(link.id, true)}
-              onClick={(event) => handleNavClick(event, link.id)}
-            >
-              {link.label}
-            </a>
-          ))}
+        <nav>
+          <a href="#about">About</a>
+          <a href="#pricing">Pricing</a>
         </nav>
         <button className="btn btn-login">Login</button>
       </header>
