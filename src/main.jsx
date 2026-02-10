@@ -84,11 +84,32 @@ function MatrixGrid() {
 function App() {
   useReveal();
 
+  useEffect(() => {
+    const links = document.querySelectorAll('.glass-nav nav a');
+
+    const handleClick = (event) => {
+      const href = event.currentTarget.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+
+      const target = document.querySelector(href);
+      if (!target) return;
+
+      event.preventDefault();
+      const navOffset = 104;
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+    };
+
+    links.forEach((link) => link.addEventListener('click', handleClick));
+    return () => links.forEach((link) => link.removeEventListener('click', handleClick));
+  }, []);
+
   return (
     <>
-      <header className="glass-nav reveal" data-reveal>
+      <header className="glass-nav">
         <div className="brand"><span>⛨</span> FRAMEWATCH</div>
         <nav>
+          <span className="nav-blob" aria-hidden="true"></span>
           <a href="#about">About</a>
           <a href="#pricing">Pricing</a>
         </nav>
