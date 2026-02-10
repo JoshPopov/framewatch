@@ -59,7 +59,7 @@ function MatrixGrid() {
     color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
     duration: `${9 + Math.random() * 14}s`,
     delay: `${-Math.random() * 12}s`,
-    top: `${Math.random() < 0.24 ? 8 + Math.random() * 22 : 46 + Math.random() * 54}%`,
+    top: `${Math.random() < 0.38 ? 7 + Math.random() * 29 : 45 + Math.random() * 55}%`,
     left: `${Math.random() * 100}%`,
     xDrift: `${-32 + Math.random() * 64}px`,
     yDrift: `${-42 + Math.random() * 84}px`,
@@ -213,7 +213,6 @@ function App() {
             <h1>Your Face.<br /><span>Your Control.</span></h1>
             <p className="lead">If someone is using your face or voice without consent.<br />We help you find it, and take it down.</p>
           </div>
-          <div className="chevron" aria-hidden="true">⌄</div>
         </section>
 
         <section id="about" className="timeline">
