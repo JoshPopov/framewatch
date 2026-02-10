@@ -128,103 +128,111 @@ function MatrixGrid() {
 
 function ExplodedRebuildSection() {
   const sectionRef = React.useRef(null);
+  const trackRef = React.useRef(null);
   const [progress, setProgress] = useState(0);
   const visualProgressRef = React.useRef(0);
-  const targetProgressRef = React.useRef(0);
-  const rafRef = React.useRef(null);
+  const frameRef = React.useRef(null);
+  const pageLockActiveRef = React.useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    const track = trackRef.current;
+    if (!section || !track) return;
 
     const navOffset = 86;
     const touchState = { y: null };
 
-    const getCenterDelta = () => {
+    const lockPageScroll = () => {
+      if (pageLockActiveRef.current) return;
+
+      document.documentElement.classList.add('scroll-locked');
+      document.body.classList.add('scroll-locked');
+      pageLockActiveRef.current = true;
+    };
+
+    const unlockPageScroll = () => {
+      if (!pageLockActiveRef.current) return;
+
+      document.documentElement.classList.remove('scroll-locked');
+      document.body.classList.remove('scroll-locked');
+      pageLockActiveRef.current = false;
+    };
+
+    const syncVisual = () => {
+      if (frameRef.current !== null) return;
+
+      const tick = () => {
+        const target = visualProgressRef.current;
+        setProgress((current) => {
+          const next = current + ((target - current) * 0.22);
+          const settled = Math.abs(target - next) < 0.0006;
+          const finalValue = settled ? target : next;
+
+          frameRef.current = settled ? null : requestAnimationFrame(tick);
+          return finalValue;
+        });
+      };
+
+      frameRef.current = requestAnimationFrame(tick);
+    };
+
+    const isSectionFullyVisible = () => {
       const rect = section.getBoundingClientRect();
-      return (rect.top + (rect.height / 2)) - (window.innerHeight / 2);
+      const stickyRect = track.getBoundingClientRect();
+      const topVisible = rect.top <= navOffset + 1 && stickyRect.top <= navOffset + 1;
+      const bottomVisible = rect.bottom >= window.innerHeight - 1;
+      return topVisible && bottomVisible;
     };
 
-    const centerLockThreshold = 72;
+    const shouldLock = (delta) => {
+      const fullyVisible = isSectionFullyVisible();
 
-    const isWithinStage = () => {
-      const rect = section.getBoundingClientRect();
-      return rect.top <= navOffset + 12 && rect.bottom >= window.innerHeight - 12;
-    };
+      const canScrub = fullyVisible && (
+        (delta > 0 && visualProgressRef.current < 0.999)
+        || (delta < 0 && visualProgressRef.current > 0.001)
+      );
 
-    const keepSectionCentered = () => {
-      const centerTarget = window.scrollY + getCenterDelta();
-      window.scrollTo({ top: centerTarget, behavior: 'auto' });
-    };
-
-    const animateProgress = () => {
-      const current = visualProgressRef.current;
-      const target = targetProgressRef.current;
-      const next = current + ((target - current) * 0.18);
-      const settled = Math.abs(target - next) < 0.0005;
-      const finalValue = settled ? target : next;
-
-      visualProgressRef.current = finalValue;
-      setProgress(finalValue);
-
-      if (!settled) {
-        rafRef.current = requestAnimationFrame(animateProgress);
-      } else {
-        rafRef.current = null;
-      }
-    };
-
-    const queueProgressAnimation = () => {
-      if (rafRef.current !== null) return;
-      rafRef.current = requestAnimationFrame(animateProgress);
-    };
-
-    const advanceProgress = (delta) => {
-      const nextTarget = Math.min(1, Math.max(0, targetProgressRef.current + (delta * 0.00085)));
-      targetProgressRef.current = nextTarget;
-      queueProgressAnimation();
-    };
-
-    const shouldIntercept = (delta) => {
-      if (!isWithinStage()) return false;
-
-      const centerDelta = getCenterDelta();
-      if (Math.abs(centerDelta) > centerLockThreshold) {
-        if ((delta > 0 && targetProgressRef.current < 0.999) || (delta < 0 && targetProgressRef.current > 0.001)) {
-          keepSectionCentered();
-          return true;
-        }
-        return false;
+      if (canScrub) {
+        lockPageScroll();
+        return true;
       }
 
-      return (delta > 0 && targetProgressRef.current < 0.999) || (delta < 0 && targetProgressRef.current > 0.001);
+      unlockPageScroll();
+      return false;
+    };
+
+    const scrubProgress = (delta) => {
+      const intensity = Math.min(260, Math.abs(delta));
+      const direction = delta > 0 ? 1 : -1;
+      const step = ((intensity / 260) * 0.075) * direction;
+      const next = Math.min(1, Math.max(0, visualProgressRef.current + step));
+      visualProgressRef.current = next;
+      syncVisual();
     };
 
     const onWheel = (event) => {
       const delta = event.deltaY;
-      if (!shouldIntercept(delta)) return;
+      if (!shouldLock(delta)) return;
 
       event.preventDefault();
-      advanceProgress(delta);
-      keepSectionCentered();
+      scrubProgress(delta);
     };
 
     const onKeyDown = (event) => {
-      const map = {
-        ArrowDown: 110,
-        PageDown: 220,
-        ' ': 170,
-        ArrowUp: -110,
-        PageUp: -220
+      const keys = {
+        ArrowDown: 130,
+        PageDown: 240,
+        ' ': 180,
+        ArrowUp: -130,
+        PageUp: -240
       };
 
-      if (!(event.key in map)) return;
-      const delta = map[event.key];
-      if (!shouldIntercept(delta)) return;
+      if (!(event.key in keys)) return;
+      const delta = keys[event.key];
+      if (!shouldLock(delta)) return;
 
       event.preventDefault();
-      advanceProgress(delta);
-      keepSectionCentered();
+      scrubProgress(delta);
     };
 
     const onTouchStart = (event) => {
@@ -235,18 +243,18 @@ function ExplodedRebuildSection() {
       if (touchState.y === null) return;
 
       const y = event.touches[0]?.clientY ?? touchState.y;
-      const delta = (touchState.y - y) * 1.4;
+      const delta = (touchState.y - y) * 1.55;
       touchState.y = y;
 
-      if (!shouldIntercept(delta)) return;
+      if (!shouldLock(delta)) return;
 
       event.preventDefault();
-      advanceProgress(delta);
-      keepSectionCentered();
+      scrubProgress(delta);
     };
 
     const onTouchEnd = () => {
       touchState.y = null;
+      if (!isSectionFullyVisible()) unlockPageScroll();
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
@@ -256,7 +264,8 @@ function ExplodedRebuildSection() {
     window.addEventListener('touchend', onTouchEnd, { passive: true });
 
     return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      unlockPageScroll();
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('touchstart', onTouchStart);
@@ -267,7 +276,7 @@ function ExplodedRebuildSection() {
 
   return (
     <div ref={sectionRef} className="exploded-section">
-      <div className="exploded-sticky">
+      <div ref={trackRef} className="exploded-sticky">
         <div className="exploded-heading">
           <p className="eyebrow">SOCIAL THREAT BREAKDOWN</p>
           <h2 className="title">From One Mockup to Full Platform Control</h2>
@@ -278,7 +287,7 @@ function ExplodedRebuildSection() {
           <article className="mock-piece piece-cover"><span>COVER</span><i></i></article>
           <article className="mock-piece piece-meta">
             <span>POST INFO</span>
-            <h3>@luna.orchestra</h3>
+            <h3>@misa.amane</h3>
             <p>Midnight Echoes • Reel</p>
             <b></b>
           </article>

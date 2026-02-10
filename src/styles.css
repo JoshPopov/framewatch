@@ -22,6 +22,12 @@ body {
   scroll-behavior: smooth;
 }
 
+
+html.scroll-locked,
+body.scroll-locked {
+  overflow: hidden;
+}
+
 .glass-nav {
   position: fixed;
   top: 1.55rem;
@@ -442,7 +448,7 @@ h1 span { color: #f43f5e; }
 }
 
 .exploded-section {
-  min-height: 195vh;
+  min-height: calc(100vh + 4.9rem);
   position: relative;
 }
 
@@ -912,7 +918,7 @@ h1 span { color: #f43f5e; }
 
 
   .exploded-section {
-    min-height: 210vh;
+    min-height: calc(100vh + 4.4rem);
   }
 
   .exploded-sticky {
