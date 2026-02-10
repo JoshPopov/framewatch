@@ -139,18 +139,13 @@ function ExplodedRebuildSection() {
     let currentProgress = 0;
     let animationFrame = null;
 
-    // Animation Loop
     const tick = () => {
-      // Ease the current progress towards the target (Linear Interpolation)
       currentProgress += (targetProgress - currentProgress) * 0.08;
-      
-      // Update DOM
       stage.style.setProperty('--progress', currentProgress);
 
-      // Check if we are "close enough" to stop the loop
       if (Math.abs(targetProgress - currentProgress) < 0.0001) {
         currentProgress = targetProgress;
-        animationFrame = null; // <--- VITAL FIX: Reset flag so loop can restart later
+        animationFrame = null;
       } else {
         animationFrame = requestAnimationFrame(tick);
       }
@@ -162,19 +157,15 @@ function ExplodedRebuildSection() {
       const scrollableDistance = rect.height - viewportHeight;
       
       if (rect.top > 0) {
-        // Above the section
         targetProgress = 0;
       } else if (rect.top < -scrollableDistance) {
-        // Below the section
         targetProgress = 1;
       } else {
-        // Inside the "sticky" zone
         const distanceScrolled = -rect.top;
         const raw = distanceScrolled / scrollableDistance;
         targetProgress = Math.max(0, Math.min(1, raw));
       }
 
-      // Only start the loop if it's not already running
       if (animationFrame === null) {
         animationFrame = requestAnimationFrame(tick);
       }
@@ -182,8 +173,6 @@ function ExplodedRebuildSection() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
-    
-    // Initial sync
     handleScroll();
 
     return () => {
@@ -197,26 +186,44 @@ function ExplodedRebuildSection() {
     <div ref={sectionRef} className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-heading">
-          <p className="eyebrow">SOCIAL THREAT BREAKDOWN</p>
+          <p className="eyebrow">HOW IT WORKS</p>
           <h2 className="title">From One Mockup to Full Platform Control</h2>
         </div>
 
         <div ref={stageRef} className="mockup-stage">
           <article className="mock-piece piece-frame"></article>
-          <article className="mock-piece piece-cover"><span>COVER</span><i></i></article>
+          
+          <article className="mock-piece piece-cover">
+            <span>COVER</span><i></i>
+          </article>
+
           <article className="mock-piece piece-meta">
-            <span>POST INFO</span>
+            <span>MEDIA INFO</span>
             <h3>@misa.amane</h3>
             <p>Midnight Echoes • Reel</p>
             <b></b>
           </article>
-          <article className="mock-piece piece-video"></article>
-          <article className="mock-piece piece-actions"><span>♡</span><span>💬</span><span>↗</span><span>♪</span></article>
-          <article className="mock-piece piece-wave">
-            <div>{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
+
+          <article className="mock-piece piece-video">
+            <h4 className="piece-title">Hidden Metadata</h4>
           </article>
+
+          <article className="mock-piece piece-actions"><span>♡</span><span>💬</span><span>↗</span><span>♪</span></article>
+
+          <article className="mock-piece piece-wave">
+            <div className="wave-header">
+              <span className="music-icon">♫</span>
+              <h4 className="piece-title">Extracted Audio</h4>
+            </div>
+            <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
+          </article>
+
           <article className="mock-piece piece-controls"><span>⏮</span><b>▶</b><span>⏭</span></article>
-          <article className="mock-piece piece-pill">IG + TT UI</article>
+          
+          <div className="final-message">
+            <h3>Complete Analysis</h3>
+            <p>We break content down so you can fully understand what’s happening.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -233,20 +240,16 @@ function App() {
 
   useEffect(() => {
     const links = document.querySelectorAll('.glass-nav nav a');
-
     const handleClick = (event) => {
       const href = event.currentTarget.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
-
       const target = document.querySelector(href);
       if (!target) return;
-
       event.preventDefault();
       const navOffset = 104;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
     };
-
     links.forEach((link) => link.addEventListener('click', handleClick));
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
