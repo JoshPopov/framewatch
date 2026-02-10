@@ -805,7 +805,10 @@ h1 span { color: #f43f5e; }
 }
 
 .pricing .title {
-  margin-bottom: 2.2rem;
+  color: #020617;
+  margin: 0.8rem 0 2.2rem;
+  font-size: clamp(1.8rem, 4.2vw, 3.25rem);
+  text-align: center;
 }
 
 .pricing .eyebrow {
@@ -816,30 +819,110 @@ h1 span { color: #f43f5e; }
 }
 
 .pricing-info {
-  margin: 1.5rem auto 0;
+  margin: 1.1rem auto 0;
   display: flex;
   width: fit-content;
   align-items: center;
-  gap: 0.45rem;
-  border: 1px solid rgba(15, 23, 42, 0.15);
+  gap: 0.38rem;
+  border: 1px solid rgba(148, 163, 184, 0.42);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
-  color: #334155;
-  padding: 0.5rem 0.9rem;
-  font-size: 0.88rem;
+  background: rgba(255, 255, 255, 0.82);
+  color: #475569;
+  padding: 0.34rem 0.68rem;
+  font-size: 0.77rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 7px 15px rgba(15, 23, 42, 0.05);
+  transition: all 0.35s var(--ease);
 }
 
 .pricing-info:hover {
-  border-color: rgba(244, 63, 94, 0.3);
+  border-color: rgba(244, 63, 94, 0.32);
+  background: rgba(255, 255, 255, 0.96);
   color: #0f172a;
+  transform: translateY(-1px);
 }
 
-.pricing-info span {
-  color: #f43f5e;
-  font-size: 0.95rem;
+.info-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fb7185, #f43f5e);
+  color: #fff;
+  font-size: 11px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.info-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 23, 0.22);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), backdrop-filter 0.35s var(--ease), -webkit-backdrop-filter 0.35s var(--ease);
+}
+
+.info-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.info-modal {
+  width: min(560px, calc(100% - 2rem));
+  border-radius: 1.2rem;
+  padding: 1.15rem 1.2rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.92));
+  box-shadow: 0 30px 75px rgba(2, 6, 23, 0.3);
+  transform: translateY(20px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.35s var(--ease), opacity 0.35s var(--ease);
+  position: relative;
+}
+
+.info-modal-backdrop.open .info-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.info-modal h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+}
+
+.info-modal p {
+  margin: 0.75rem 0 0;
+  color: #334155;
+  font-size: 0.97rem;
+  line-height: 1.55;
+}
+
+.info-modal-close {
+  position: absolute;
+  top: 0.42rem;
+  right: 0.5rem;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 1.65rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+}
+
+.info-modal-close:hover {
+  color: #0f172a;
 }
 
 .price-card {

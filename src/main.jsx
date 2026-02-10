@@ -238,6 +238,8 @@ function App() {
     return /win/i.test(platform);
   }, []);
 
+  const [isPricingInfoOpen, setIsPricingInfoOpen] = useState(false);
+
   useEffect(() => {
     const links = document.querySelectorAll('.glass-nav nav a');
     const handleClick = (event) => {
@@ -253,6 +255,34 @@ function App() {
     links.forEach((link) => link.addEventListener('click', handleClick));
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    if (isPricingInfoOpen) {
+      root.classList.add('scroll-locked');
+      body.classList.add('scroll-locked');
+    } else {
+      root.classList.remove('scroll-locked');
+      body.classList.remove('scroll-locked');
+    }
+
+    return () => {
+      root.classList.remove('scroll-locked');
+      body.classList.remove('scroll-locked');
+    };
+  }, [isPricingInfoOpen]);
+
+  useEffect(() => {
+    if (!isPricingInfoOpen) return;
+
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') setIsPricingInfoOpen(false);
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isPricingInfoOpen]);
 
   return (
     <>
@@ -310,8 +340,8 @@ function App() {
             </article>
           ))}
 
-          <button className="pricing-info" type="button" aria-label="Why does this cost money?">
-            <span aria-hidden="true">ⓘ</span>
+          <button className="pricing-info" type="button" aria-label="Why does this cost money?" onClick={() => setIsPricingInfoOpen(true)}>
+            <span className="info-icon" aria-hidden="true">?</span>
             Why does this cost money?
           </button>
         </section>
@@ -324,6 +354,28 @@ function App() {
           </div>
         </footer>
       </main>
+
+      <div
+        className={`info-modal-backdrop ${isPricingInfoOpen ? 'open' : ''}`}
+        onClick={() => setIsPricingInfoOpen(false)}
+        aria-hidden={!isPricingInfoOpen}
+      >
+        <div
+          className="info-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pricing-info-title"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <button className="info-modal-close" type="button" aria-label="Close" onClick={() => setIsPricingInfoOpen(false)}>×</button>
+          <h3 id="pricing-info-title">Why does this cost money?</h3>
+          <p>
+            Placeholder text: Pricing covers continuous monitoring infrastructure, legal takedown workflows,
+            and the human support needed to respond quickly when identity abuse is detected.
+          </p>
+        </div>
+      </div>
+
     </>
   );
 }
