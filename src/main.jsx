@@ -175,14 +175,11 @@ function ExplodedRebuildSection() {
           </article>
 
           <article className="mock-piece piece-video">
-            <h4 className="piece-title">Hidden Metadata</h4>
+            <span>Hidden Metadata</span>
           </article>
 
           <article className="mock-piece piece-wave">
-            <div className="wave-header">
-              <span className="music-icon">♫</span>
-              <h4 className="piece-title">Extracted Audio</h4>
-            </div>
+            <span>Extracted Audio</span>
             <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
           </article>
 
