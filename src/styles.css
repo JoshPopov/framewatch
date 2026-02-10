@@ -577,7 +577,7 @@ h1 span { color: #f43f5e; }
 .piece-meta {
   width: min(304px, 44vw);
   padding: 1rem 1.1rem;
-  z-index: 8;
+  z-index: 50; /* UPDATED: Raised z-index to stay on top */
   background: rgba(15, 23, 42, 0.86);
   transform:
     translate(-50%, -50%)
@@ -662,8 +662,8 @@ h1 span { color: #f43f5e; }
     translate(
       /* Start at 0px (centered under playback) -> Explode out */
       calc(0px + var(--explode) * -72px + var(--rebuild) * 0px),
-      /* Start much lower (inside playback area) -> Explode up/out */
-      calc(200px + var(--explode) * 110px + var(--rebuild) * 24px)
+      /* UPDATED: Start at 270px (Merged with controls) -> Explode Up (-120px) */
+      calc(270px + var(--explode) * -120px + var(--rebuild) * 24px)
     )
     rotate(calc(var(--explode) * -12deg + var(--rebuild) * 0deg));
 }
