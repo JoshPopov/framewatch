@@ -450,7 +450,7 @@ h1 span { color: #f43f5e; }
 
 .exploded-section {
   /* Increased height to 500vh to ensure a solid "lock" feel */
-  height: 500vh;
+  height: 200vh;
   position: relative;
   z-index: 10;
 }
