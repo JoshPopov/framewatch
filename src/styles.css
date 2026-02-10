@@ -29,24 +29,23 @@ body.scroll-locked {
   overflow: hidden;
 }
 
-/* UPDATED: More compact, Apple-like nav */
 .glass-nav {
   position: fixed;
   top: 1rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: min(640px, calc(100% - 1.5rem)); /* Slightly narrower */
+  width: min(640px, calc(100% - 1.5rem));
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.65); /* More subtle background */
-  backdrop-filter: blur(20px) saturate(180%); /* Stronger blur */
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); /* Subtler shadow */
-  padding: 0.35rem 0.45rem 0.35rem 0.7rem; /* Reduced padding */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  padding: 0.35rem 0.45rem 0.35rem 0.7rem;
   animation: navFloatIn 1.15s var(--ease) both;
 }
 
@@ -71,7 +70,7 @@ body.scroll-locked {
 }
 
 .brand-mark {
-  width: 24px; /* Smaller icon */
+  width: 24px;
   height: 24px;
   border-radius: 999px;
   background: #e5e7eb;
@@ -88,7 +87,7 @@ body.scroll-locked {
 }
 
 .brand-word {
-  font-size: 1.15rem; /* Slightly smaller text */
+  font-size: 1.15rem;
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -113,15 +112,17 @@ nav {
   padding: 0.14rem;
   border-radius: 999px;
   flex: 1;
-  max-width: 300px; /* Slightly narrower nav area */
+  max-width: 300px;
 }
 
+/* UPDATED: Specific font for Nav to feel more "Apple" */
 nav a {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   text-decoration: none;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-weight: 800;
+  font-weight: 700; /* Adjusted weight for system font */
   color: #64748b;
   position: relative;
   padding: 0.45rem 0.6rem;
@@ -181,23 +182,28 @@ nav:has(a:nth-of-type(3):focus-visible) .nav-blob {
 
 .btn:hover { background: #0b1227; color: white; }
 
-.btn-login,
+/* NEW STYLE for Profile Icon */
+.btn-icon-profile {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 999px;
+  transition: color 0.3s ease, background 0.3s ease;
+  display: grid;
+  place-items: center;
+}
+.btn-icon-profile:hover {
+  color: #0f172a;
+  background: rgba(0,0,0,0.04);
+}
+
 .btn-rose {
   background: var(--rose-600);
   color: white;
   border-color: transparent;
   box-shadow: 0 10px 20px rgba(251, 113, 133, 0.26);
-}
-
-/* UPDATED: Remove glow for Login button specifically */
-.btn-login {
-  background: #0f172a; /* Make login button dark slate instead of rose */
-  box-shadow: none;
-  padding: 0.55rem 1.1rem; /* Smaller padding */
-}
-.btn-login:hover {
-  background: #334155;
-  box-shadow: none;
 }
 
 .btn-rose:hover { background: #e11d48; color: white; }
@@ -827,29 +833,32 @@ h1 span { color: #f43f5e; }
   margin: 0 auto 0.75rem;
 }
 
+/* UPDATED: Prettier "Why does this cost money?" button */
 .pricing-info {
-  margin: 1.1rem auto 0;
+  margin: 2rem auto 0;
   display: flex;
   width: fit-content;
   align-items: center;
-  gap: 0.38rem;
-  border: 1px solid rgba(148, 163, 184, 0.42);
+  gap: 0.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.15); /* Much more subtle border */
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #475569;
-  padding: 0.34rem 0.68rem;
-  font-size: 0.77rem;
-  font-weight: 700;
+  background: rgba(255, 255, 255, 0.5); /* Semi-transparent */
+  backdrop-filter: blur(8px);
+  color: #64748b;
+  padding: 0.5rem 1.1rem; /* More generous padding */
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 7px 15px rgba(15, 23, 42, 0.05);
-  transition: all 0.35s var(--ease);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); /* Softer shadow */
+  transition: all 0.4s var(--ease);
 }
 
 .pricing-info:hover {
-  border-color: rgba(244, 63, 94, 0.32);
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.9);
   color: #0f172a;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  border-color: rgba(244, 63, 94, 0.2);
 }
 
 .info-icon {
