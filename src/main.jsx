@@ -133,7 +133,6 @@ function ExplodedRebuildSection() {
   const visualProgressRef = React.useRef(0);
   const frameRef = React.useRef(null);
   const pageLockActiveRef = React.useRef(false);
-  const pageLockScrollYRef = React.useRef(0);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -146,18 +145,16 @@ function ExplodedRebuildSection() {
     const lockPageScroll = () => {
       if (pageLockActiveRef.current) return;
 
-      pageLockScrollYRef.current = window.scrollY;
+      document.documentElement.classList.add('scroll-locked');
       document.body.classList.add('scroll-locked');
-      document.body.style.top = `-${pageLockScrollYRef.current}px`;
       pageLockActiveRef.current = true;
     };
 
     const unlockPageScroll = () => {
       if (!pageLockActiveRef.current) return;
 
+      document.documentElement.classList.remove('scroll-locked');
       document.body.classList.remove('scroll-locked');
-      document.body.style.top = '';
-      window.scrollTo({ top: pageLockScrollYRef.current, behavior: 'auto' });
       pageLockActiveRef.current = false;
     };
 

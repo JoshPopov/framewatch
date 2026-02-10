@@ -23,11 +23,8 @@ body {
 }
 
 
+html.scroll-locked,
 body.scroll-locked {
-  position: fixed;
-  left: 0;
-  right: 0;
-  width: 100%;
   overflow: hidden;
 }
 
@@ -451,7 +448,7 @@ h1 span { color: #f43f5e; }
 }
 
 .exploded-section {
-  min-height: 320vh;
+  min-height: calc(100vh + 4.9rem);
   position: relative;
 }
 
@@ -921,7 +918,7 @@ h1 span { color: #f43f5e; }
 
 
   .exploded-section {
-    min-height: 300vh;
+    min-height: calc(100vh + 4.4rem);
   }
 
   .exploded-sticky {
