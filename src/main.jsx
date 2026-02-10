@@ -38,18 +38,40 @@ function useReveal() {
 }
 
 function MatrixGrid() {
-  const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => ({
-    id: i,
-    text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
-    color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-    duration: `${9 + Math.random() * 14}s`,
-    delay: `${-Math.random() * 12}s`,
-    top: `${Math.random() < 0.38 ? 7 + Math.random() * 29 : 45 + Math.random() * 55}%`,
-    left: `${Math.random() * 100}%`,
-    xDrift: `${-32 + Math.random() * 64}px`,
-    yDrift: `${-42 + Math.random() * 84}px`,
-    opacity: 0.15 + Math.random() * 0.3
-  })), []);
+  // UPDATED: Logic to spawn snippets around the center text (Safe Zone)
+  const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => {
+    // We pick one of 4 zones to ensure the center is empty
+    // Center Safe Zone approx: Top 35%-65%, Left 20%-80%
+    const zone = Math.floor(Math.random() * 4);
+    let top, left;
+
+    if (zone === 0) { // Top Band
+      top = Math.random() * 32; // 0% to 32%
+      left = Math.random() * 100;
+    } else if (zone === 1) { // Bottom Band
+      top = 68 + Math.random() * 32; // 68% to 100%
+      left = Math.random() * 100;
+    } else if (zone === 2) { // Left Band
+      top = Math.random() * 100;
+      left = Math.random() * 18; // 0% to 18%
+    } else { // Right Band
+      top = Math.random() * 100;
+      left = 82 + Math.random() * 18; // 82% to 100%
+    }
+
+    return {
+      id: i,
+      text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
+      color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
+      duration: `${9 + Math.random() * 14}s`,
+      delay: `${-Math.random() * 12}s`,
+      top: `${top}%`,
+      left: `${left}%`,
+      xDrift: `${-32 + Math.random() * 64}px`,
+      yDrift: `${-42 + Math.random() * 84}px`,
+      opacity: 0.15 + Math.random() * 0.3
+    };
+  }), []);
 
   const [cells, setCells] = useState(initialCells);
 
@@ -140,8 +162,6 @@ function ExplodedRebuildSection() {
       const totalDist = rect.height - viewportHeight;
       const scrolled = -rect.top;
 
-      /* UPDATED LOGIC: DELAY ANIMATION START */
-      // Users must scroll 25% of the viewport height into the section before animation starts.
       const startBuffer = viewportHeight * 0.25;
       const effectiveDist = totalDist - startBuffer;
 
@@ -279,7 +299,12 @@ function App() {
           <a href="#about">About</a>
           <a href="#pricing">Pricing</a>
         </nav>
-        <button className="btn btn-login">Login</button>
+        <button className="btn-icon-profile" aria-label="User Profile">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+             <circle cx="12" cy="7" r="4" />
+           </svg>
+        </button>
       </header>
 
       <main>
