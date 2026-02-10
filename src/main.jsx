@@ -13,7 +13,8 @@ const MATRIX_COLORS = ['#fb7185', '#0d9488', '#f59e0b', '#0284c7', '#7c3aed'];
 
 const stats = [
   { icon: '⚠', ghost: '90%', headline: '90%+', title: 'Non-Consensual Material', copy: 'Research indicates over 90% of deepfake content appearing on public forums is created without explicit permission.' },
-  { icon: '↗', ghost: '10×', headline: '10× Volume', title: 'Explosive Growth', copy: 'AI tooling has accelerated abuse creation and distribution, increasing malicious volume by over 1,000%.' }
+  { icon: '↗', ghost: '10×', headline: '10× Volume', title: 'Explosive Growth', copy: 'AI tooling has accelerated abuse creation and distribution, increasing malicious volume by over 1,000%.' },
+  { icon: '◎', ghost: '24/7', headline: '24/7', title: 'Placeholder Coverage Metric', copy: 'Placeholder: Continuous monitoring coverage placeholder text for additional trust indicator and future reporting data.' }
 ];
 
 const featurePoints = [
@@ -58,7 +59,7 @@ function MatrixGrid() {
     color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
     duration: `${9 + Math.random() * 14}s`,
     delay: `${-Math.random() * 12}s`,
-    top: `${46 + Math.random() * 54}%`,
+    top: `${Math.random() < 0.24 ? 8 + Math.random() * 22 : 46 + Math.random() * 54}%`,
     left: `${Math.random() * 100}%`,
     xDrift: `${-32 + Math.random() * 64}px`,
     yDrift: `${-42 + Math.random() * 84}px`,
@@ -276,32 +277,11 @@ function App() {
         </section>
 
         <footer className="site-footer">
-          <div className="footer-grid">
-            <div className="footer-brand">
-              <div className="brand"><span>⛨</span> FRAMEWATCH</div>
-              <p>Proactive identity defense for creators, professionals, and teams.</p>
-            </div>
-            <div>
-              <h4>Product</h4>
-              <a href="#about">Monitoring</a>
-              <a href="#pricing">Pricing</a>
-              <a href="#">API Access</a>
-            </div>
-            <div>
-              <h4>Company</h4>
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-              <a href="#">Contact</a>
-            </div>
-            <div>
-              <h4>Status</h4>
-              <p>24/7 Threat Scanning</p>
-              <p>Real-Time Takedown Queue</p>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <small>© {new Date().getFullYear()} Framewatch. All rights reserved.</small>
+          <div className="footer-glass-row">
+            <div className="brand"><span>⛨</span> FRAMEWATCH</div>
+            <small>© 2026 FrameWatch. All rights reserved.</small>
             <small>Built for modern identity protection.</small>
+            <small>Built in Canada 🇨🇦</small>
           </div>
         </footer>
       </main>
