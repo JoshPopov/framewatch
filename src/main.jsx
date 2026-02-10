@@ -137,48 +137,53 @@ function ExplodedRebuildSection() {
 
     let targetProgress = 0;
     let currentProgress = 0;
-    let animationFrame;
+    let animationFrame = null;
 
-    // Smooth "Lerp" function
+    // Animation Loop
     const tick = () => {
-      // Interpolate for smoothness
+      // Ease the current progress towards the target (Linear Interpolation)
       currentProgress += (targetProgress - currentProgress) * 0.08;
       
+      // Update DOM
+      stage.style.setProperty('--progress', currentProgress);
+
+      // Check if we are "close enough" to stop the loop
       if (Math.abs(targetProgress - currentProgress) < 0.0001) {
         currentProgress = targetProgress;
+        animationFrame = null; // <--- VITAL FIX: Reset flag so loop can restart later
       } else {
         animationFrame = requestAnimationFrame(tick);
       }
-      
-      stage.style.setProperty('--progress', currentProgress);
     };
 
     const handleScroll = () => {
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      
-      // We only start calculating progress once the section hits the top (rect.top <= 0)
-      // The total scrollable distance where the element is "sticky" is (height - viewportHeight)
       const scrollableDistance = rect.height - viewportHeight;
       
       if (rect.top > 0) {
-        // Approaching the section
+        // Above the section
         targetProgress = 0;
+      } else if (rect.top < -scrollableDistance) {
+        // Below the section
+        targetProgress = 1;
       } else {
-        // We are inside the "stick" zone
-        // distanceScrolled is how far past "top: 0" we are (which is just -rect.top)
+        // Inside the "sticky" zone
         const distanceScrolled = -rect.top;
         const raw = distanceScrolled / scrollableDistance;
         targetProgress = Math.max(0, Math.min(1, raw));
       }
 
-      if (!animationFrame) {
+      // Only start the loop if it's not already running
+      if (animationFrame === null) {
         animationFrame = requestAnimationFrame(tick);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
+    
+    // Initial sync
     handleScroll();
 
     return () => {
