@@ -127,31 +127,97 @@ function MatrixGrid() {
 }
 
 function ExplodedRebuildSection() {
+  const sectionRef = React.useRef(null);
   const [progress, setProgress] = useState(0);
+  const progressRef = React.useRef(0);
 
   useEffect(() => {
-    const section = document.querySelector('.exploded-section');
+    const section = sectionRef.current;
     if (!section) return;
 
-    const handleScroll = () => {
+    const navOffset = 86;
+    const touchState = { y: null };
+
+    const isLockedRange = () => {
       const rect = section.getBoundingClientRect();
-      const viewport = window.innerHeight;
-      const total = rect.height - viewport;
-      const current = Math.min(Math.max(-rect.top, 0), total);
-      setProgress(total > 0 ? current / total : 0);
+      return rect.top <= navOffset + 8 && rect.bottom >= window.innerHeight - 8;
     };
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+    const advanceProgress = (delta) => {
+      const next = Math.min(1, Math.max(0, progressRef.current + (delta * 0.0011)));
+      progressRef.current = next;
+      setProgress(next);
+    };
+
+    const onWheel = (event) => {
+      const delta = event.deltaY;
+      if (!isLockedRange()) return;
+
+      const scrollingDown = delta > 0;
+      const shouldLock = (scrollingDown && progressRef.current < 0.999) || (!scrollingDown && progressRef.current > 0.001);
+      if (!shouldLock) return;
+
+      event.preventDefault();
+      advanceProgress(delta);
+    };
+
+    const onKeyDown = (event) => {
+      const map = {
+        ArrowDown: 110,
+        PageDown: 220,
+        ' ': 170,
+        ArrowUp: -110,
+        PageUp: -220
+      };
+
+      if (!(event.key in map) || !isLockedRange()) return;
+      const delta = map[event.key];
+      const shouldLock = (delta > 0 && progressRef.current < 0.999) || (delta < 0 && progressRef.current > 0.001);
+      if (!shouldLock) return;
+
+      event.preventDefault();
+      advanceProgress(delta);
+    };
+
+    const onTouchStart = (event) => {
+      touchState.y = event.touches[0]?.clientY ?? null;
+    };
+
+    const onTouchMove = (event) => {
+      if (!isLockedRange() || touchState.y === null) return;
+
+      const y = event.touches[0]?.clientY ?? touchState.y;
+      const delta = (touchState.y - y) * 1.4;
+      touchState.y = y;
+
+      const shouldLock = (delta > 0 && progressRef.current < 0.999) || (delta < 0 && progressRef.current > 0.001);
+      if (!shouldLock) return;
+
+      event.preventDefault();
+      advanceProgress(delta);
+    };
+
+    const onTouchEnd = () => {
+      touchState.y = null;
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKeyDown, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
     };
   }, []);
 
   return (
-    <div className="exploded-section">
+    <div ref={sectionRef} className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-heading">
           <p className="eyebrow">SOCIAL THREAT BREAKDOWN</p>
@@ -159,7 +225,7 @@ function ExplodedRebuildSection() {
         </div>
 
         <div className="mockup-stage" style={{ '--progress': progress }}>
-          <article className="mock-piece piece-frame"><span>FRAME</span></article>
+          <article className="mock-piece piece-frame"></article>
           <article className="mock-piece piece-cover"><span>COVER</span><i></i></article>
           <article className="mock-piece piece-meta">
             <span>POST INFO</span>
