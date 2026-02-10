@@ -759,7 +759,7 @@ h1 span { color: #f43f5e; }
   background: rgba(255, 255, 255, 0.52);
   backdrop-filter: blur(12px);
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(3, auto);
   justify-content: center;
   gap: 0.7rem 0.95rem;
   align-items: center;
@@ -769,6 +769,13 @@ h1 span { color: #f43f5e; }
   color: #475569;
   font-size: 0.86rem;
   letter-spacing: 0.02em;
+}
+
+.ca-flag {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", sans-serif;
+  font-size: 0.95rem;
+  margin-left: 0.2rem;
+  vertical-align: -0.06em;
 }
 
 .footer-sep {

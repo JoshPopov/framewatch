@@ -261,9 +261,7 @@ function App() {
           <div className="footer-glass-row">
             <small>© 2026 FrameWatch. All rights reserved.</small>
             <span className="footer-sep" aria-hidden="true"></span>
-            <small>Built for modern identity protection.</small>
-            <span className="footer-sep" aria-hidden="true"></span>
-            <small>Made in Canada 🇨🇦</small>
+            <small>Made in Canada <span className="ca-flag" aria-hidden="true">🇨🇦</span></small>
           </div>
         </footer>
       </main>
