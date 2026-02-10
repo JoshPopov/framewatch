@@ -167,6 +167,11 @@ function TakedownStreams() {
 function App() {
   useReveal();
 
+  const isWindows = useMemo(() => {
+    const platform = navigator.userAgentData?.platform || navigator.platform || "";
+    return /win/i.test(platform);
+  }, []);
+
   useEffect(() => {
     const links = document.querySelectorAll('.glass-nav nav a');
 
@@ -193,6 +198,7 @@ function App() {
         <div className="brand"><span>⛨</span> FRAMEWATCH</div>
         <nav>
           <span className="nav-blob" aria-hidden="true"></span>
+          <a href="#home">Home</a>
           <a href="#about">About</a>
           <a href="#pricing">Pricing</a>
         </nav>
@@ -200,7 +206,7 @@ function App() {
       </header>
 
       <main>
-        <section className="hero">
+        <section id="home" className="hero">
           <MatrixGrid />
           <div className="hero-content hero-intro">
             <p className="hero-badge"><span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE v2.0</p>
@@ -261,7 +267,7 @@ function App() {
           <div className="footer-glass-row">
             <small>© 2026 FrameWatch. All rights reserved.</small>
             <span className="footer-sep" aria-hidden="true"></span>
-            <small>Made in Canada <span className="ca-flag" aria-hidden="true">🇨🇦</span></small>
+            <small>Made in Canada <span className="ca-flag" aria-hidden="true">{isWindows ? "🍁" : "🇨🇦"}</span></small>
           </div>
         </footer>
       </main>
