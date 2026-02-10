@@ -755,7 +755,9 @@ h1 span { color: #f43f5e; }
   padding: 0.24rem 0.54rem;
 }
 
-.piece-meta > span {
+.piece-meta > span,
+.piece-controls > span,
+.piece-cover > span {
   left: 50%;
   top: -9px;
   bottom: auto;
@@ -1107,7 +1109,7 @@ h1 span { color: #f43f5e; }
   }
 
   .exploded-section {
-    height: 250vh;
+    height: 250vh; /* Also updated for mobile consistency */
   }
 
   .exploded-sticky {
