@@ -616,7 +616,8 @@ h1 span { color: #f43f5e; }
 }
 
 .piece-video {
-  width: min(374px, 56vw);
+  /* REDUCED WIDTH */
+  width: min(260px, 40vw);
   aspect-ratio: 9 / 16;
   z-index: 1;
   display: grid;
@@ -689,7 +690,7 @@ h1 span { color: #f43f5e; }
 
 .piece-controls {
   width: min(304px, 45vw);
-  padding: 0.72rem 1rem;
+  padding: 1.8rem 1rem 0.72rem; /* INCREASED TOP PADDING */
   z-index: 10;
   border-radius: 18px;
   display: flex;
@@ -757,7 +758,9 @@ h1 span { color: #f43f5e; }
 
 .piece-meta > span,
 .piece-controls > span,
-.piece-cover > span {
+.piece-cover > span,
+.piece-video > span,
+.piece-wave > span {
   left: 50%;
   top: -9px;
   bottom: auto;
@@ -795,6 +798,8 @@ h1 span { color: #f43f5e; }
   z-index: 50;
   pointer-events: none;
   opacity: calc((var(--explode) - 0.85) * 10);
+  /* ADDED BLUR EFFECT */
+  filter: blur(calc((1 - var(--explode)) * 20px));
 }
 
 .final-message h3 {
