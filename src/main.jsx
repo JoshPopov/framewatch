@@ -128,161 +128,83 @@ function MatrixGrid() {
 
 function ExplodedRebuildSection() {
   const sectionRef = React.useRef(null);
-  const trackRef = React.useRef(null);
-  const [progress, setProgress] = useState(0);
-  const visualProgressRef = React.useRef(0);
-  const frameRef = React.useRef(null);
-  const pageLockActiveRef = React.useRef(false);
+  const stageRef = React.useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
+    const stage = stageRef.current;
+    if (!section || !stage) return;
 
-    const navOffset = 86;
-    const touchState = { y: null };
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let animationFrame;
 
-    const lockPageScroll = () => {
-      if (pageLockActiveRef.current) return;
-
-      document.documentElement.classList.add('scroll-locked');
-      document.body.classList.add('scroll-locked');
-      pageLockActiveRef.current = true;
-    };
-
-    const unlockPageScroll = () => {
-      if (!pageLockActiveRef.current) return;
-
-      document.documentElement.classList.remove('scroll-locked');
-      document.body.classList.remove('scroll-locked');
-      pageLockActiveRef.current = false;
-    };
-
-    const syncVisual = () => {
-      if (frameRef.current !== null) return;
-
-      const tick = () => {
-        const target = visualProgressRef.current;
-        setProgress((current) => {
-          const next = current + ((target - current) * 0.22);
-          const settled = Math.abs(target - next) < 0.0006;
-          const finalValue = settled ? target : next;
-
-          frameRef.current = settled ? null : requestAnimationFrame(tick);
-          return finalValue;
-        });
-      };
-
-      frameRef.current = requestAnimationFrame(tick);
-    };
-
-    const isSectionFullyVisible = () => {
-      const rect = section.getBoundingClientRect();
-      const stickyRect = track.getBoundingClientRect();
-      const topVisible = rect.top <= navOffset + 1 && stickyRect.top <= navOffset + 1;
-      const bottomVisible = rect.bottom >= window.innerHeight - 1;
-      return topVisible && bottomVisible;
-    };
-
-    const shouldLock = (delta) => {
-      const fullyVisible = isSectionFullyVisible();
-
-      const canScrub = fullyVisible && (
-        (delta > 0 && visualProgressRef.current < 0.999)
-        || (delta < 0 && visualProgressRef.current > 0.001)
-      );
-
-      if (canScrub) {
-        lockPageScroll();
-        return true;
+    // Animation Loop: Smoothly interpolates values for that "Apple" feel
+    const tick = () => {
+      // Move current value 10% closer to target every frame
+      currentProgress += (targetProgress - currentProgress) * 0.08;
+      
+      // Optimization: Stop updating if we are close enough
+      if (Math.abs(targetProgress - currentProgress) < 0.0001) {
+        currentProgress = targetProgress;
+      } else {
+        animationFrame = requestAnimationFrame(tick);
       }
 
-      unlockPageScroll();
-      return false;
+      // Direct DOM update for performance (bypasses React render cycle)
+      stage.style.setProperty('--progress', currentProgress);
     };
 
-    const scrubProgress = (delta) => {
-      const intensity = Math.min(260, Math.abs(delta));
-      const direction = delta > 0 ? 1 : -1;
-      const step = ((intensity / 260) * 0.075) * direction;
-      const next = Math.min(1, Math.max(0, visualProgressRef.current + step));
-      visualProgressRef.current = next;
-      syncVisual();
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Sticky starts at 4.9rem (approx 80px). We normalize this offset.
+      const stickyOffset = 80; 
+      
+      // Calculate how far we've scrolled into the section
+      // rect.top is positive when approaching, 0 when at top, negative when scrolling past
+      const start = stickyOffset;
+      const end = -(rect.height - viewportHeight - stickyOffset);
+      
+      // Map scroll position to 0-1 range
+      const scrollDist = stickyOffset - rect.top;
+      const totalDist = rect.height - viewportHeight;
+      
+      const raw = scrollDist / totalDist;
+      
+      // Clamp between 0 and 1
+      targetProgress = Math.max(0, Math.min(1, raw));
+      
+      // Start animation loop if not running
+      if (!animationFrame) {
+        animationFrame = requestAnimationFrame(tick);
+      }
     };
 
-    const onWheel = (event) => {
-      const delta = event.deltaY;
-      if (!shouldLock(delta)) return;
-
-      event.preventDefault();
-      scrubProgress(delta);
-    };
-
-    const onKeyDown = (event) => {
-      const keys = {
-        ArrowDown: 130,
-        PageDown: 240,
-        ' ': 180,
-        ArrowUp: -130,
-        PageUp: -240
-      };
-
-      if (!(event.key in keys)) return;
-      const delta = keys[event.key];
-      if (!shouldLock(delta)) return;
-
-      event.preventDefault();
-      scrubProgress(delta);
-    };
-
-    const onTouchStart = (event) => {
-      touchState.y = event.touches[0]?.clientY ?? null;
-    };
-
-    const onTouchMove = (event) => {
-      if (touchState.y === null) return;
-
-      const y = event.touches[0]?.clientY ?? touchState.y;
-      const delta = (touchState.y - y) * 1.55;
-      touchState.y = y;
-
-      if (!shouldLock(delta)) return;
-
-      event.preventDefault();
-      scrubProgress(delta);
-    };
-
-    const onTouchEnd = () => {
-      touchState.y = null;
-      if (!isSectionFullyVisible()) unlockPageScroll();
-    };
-
-    window.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('keydown', onKeyDown, { passive: false });
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: false });
-    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    
+    // Initial calculation
+    handleScroll();
 
     return () => {
-      unlockPageScroll();
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-      window.removeEventListener('wheel', onWheel);
-      window.removeEventListener('keydown', onKeyDown);
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (animationFrame) cancelAnimationFrame(animationFrame);
     };
   }, []);
 
   return (
     <div ref={sectionRef} className="exploded-section">
-      <div ref={trackRef} className="exploded-sticky">
+      <div className="exploded-sticky">
         <div className="exploded-heading">
           <p className="eyebrow">SOCIAL THREAT BREAKDOWN</p>
           <h2 className="title">From One Mockup to Full Platform Control</h2>
         </div>
 
-        <div className="mockup-stage" style={{ '--progress': progress }}>
+        {/* Added ref={stageRef} here */}
+        <div ref={stageRef} className="mockup-stage">
           <article className="mock-piece piece-frame"></article>
           <article className="mock-piece piece-cover"><span>COVER</span><i></i></article>
           <article className="mock-piece piece-meta">
