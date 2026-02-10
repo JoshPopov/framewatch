@@ -89,19 +89,20 @@ function MatrixGrid() {
           };
         }));
         timeouts.delete(timeoutId);
-      }, 640);
+      }, 600);
 
       timeouts.add(timeoutId);
-    }, 900);
+    }, 2800);
 
     return () => {
       clearInterval(timer);
-      timeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+      timeouts.forEach(clearTimeout);
     };
-  }, []);
+  }, [initialCells]);
 
   return (
-    <div className="matrix-mask" aria-hidden="true">
+    <>
+      <div className="matrix-mask"></div>
       <div className="matrix-grid">
         {cells.map((cell) => (
           <span
@@ -109,90 +110,59 @@ function MatrixGrid() {
             className="snippet"
             style={{
               color: cell.color,
-              opacity: cell.opacity,
               top: cell.top,
               left: cell.left,
+              opacity: cell.opacity,
               '--dur': cell.duration,
               '--delay': cell.delay,
               '--drift-x': cell.xDrift,
-              '--drift-y': cell.yDrift
+              '--drift-y': cell.yDrift,
             }}
           >
             {cell.text}
           </span>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 
 function ExplodedRebuildSection() {
-  const sectionRef = React.useRef(null);
-  const stageRef = React.useRef(null);
-
   useEffect(() => {
-    const section = sectionRef.current;
-    const stage = stageRef.current;
-    if (!section || !stage) return;
-
-    let targetProgress = 0;
-    let currentProgress = 0;
-    let animationFrame = null;
-
-    const tick = () => {
-      currentProgress += (targetProgress - currentProgress) * 0.08;
-      stage.style.setProperty('--progress', currentProgress);
-
-      if (Math.abs(targetProgress - currentProgress) < 0.0001) {
-        currentProgress = targetProgress;
-        animationFrame = null;
-      } else {
-        animationFrame = requestAnimationFrame(tick);
-      }
-    };
+    const container = document.querySelector('.exploded-section');
+    const sticky = document.querySelector('.exploded-sticky');
+    const stage = document.querySelector('.mockup-stage');
 
     const handleScroll = () => {
-      const rect = section.getBoundingClientRect();
+      if (!container || !sticky || !stage) return;
+      const rect = container.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const scrollableDistance = rect.height - viewportHeight;
-      
-      if (rect.top > 0) {
-        targetProgress = 0;
-      } else if (rect.top < -scrollableDistance) {
-        targetProgress = 1;
-      } else {
-        const distanceScrolled = -rect.top;
-        const raw = distanceScrolled / scrollableDistance;
-        targetProgress = Math.max(0, Math.min(1, raw));
-      }
+      const totalDist = rect.height - viewportHeight;
+      const scrolled = -rect.top;
 
-      if (animationFrame === null) {
-        animationFrame = requestAnimationFrame(tick);
+      let progress = 0;
+      if (scrolled > 0) {
+        progress = Math.min(1, scrolled / totalDist);
       }
+      stage.style.setProperty('--progress', progress.toFixed(4));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
     handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-      if (animationFrame) cancelAnimationFrame(animationFrame);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div ref={sectionRef} className="exploded-section">
+    <div className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-heading">
-          <p className="eyebrow badge-font">HOW IT WORKS</p>
-          <h2 className="title">See the full picture</h2>
+          <p className="eyebrow badge-font">How It Works</p>
+          <h2 className="title">Deconstructed Detection</h2>
         </div>
 
-        <div ref={stageRef} className="mockup-stage">
+        <div className="mockup-stage">
           <article className="mock-piece piece-frame"></article>
-          
+
           <article className="mock-piece piece-cover">
             <span>COVER</span><i></i>
           </article>
@@ -218,8 +188,15 @@ function ExplodedRebuildSection() {
             <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
           </article>
 
-          <article className="mock-piece piece-controls"><span>⏮</span><b>▶</b><span>⏭</span></article>
-          
+          <article className="mock-piece piece-controls">
+            <div className="playback-bar">
+              <div className="playback-progress"></div>
+            </div>
+            <div className="playback-buttons">
+              <span>⏮</span><b>▶</b><span>⏭</span>
+            </div>
+          </article>
+
           <div className="final-message">
             <h3>Complete Analysis</h3>
             <p>We break content down so you can fully understand what’s happening.</p>
@@ -245,13 +222,17 @@ function App() {
     const handleClick = (event) => {
       const href = event.currentTarget.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
+
       const target = document.querySelector(href);
       if (!target) return;
+
       event.preventDefault();
       const navOffset = 104;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
+
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
     };
+
     links.forEach((link) => link.addEventListener('click', handleClick));
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
@@ -259,6 +240,7 @@ function App() {
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
+
     if (isPricingInfoOpen) {
       root.classList.add('scroll-locked');
       body.classList.add('scroll-locked');
@@ -275,11 +257,9 @@ function App() {
 
   useEffect(() => {
     if (!isPricingInfoOpen) return;
-
     const handleEsc = (event) => {
       if (event.key === 'Escape') setIsPricingInfoOpen(false);
     };
-
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isPricingInfoOpen]);
@@ -306,20 +286,20 @@ function App() {
           <div className="hero-content hero-intro">
             <p className="hero-badge"><span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE v2.0</p>
             <h1>Your Face.<br /><span>Your Control.</span></h1>
-            <p className="lead">If someone is using your face or voice without consent.<br />We help you find it, and take it down.</p>
+            <p className="lead">If someone is using your face or voice without consent. We'll know about it, and we'll take it down. Instantly.</p>
           </div>
         </section>
 
         <section id="about" className="timeline">
           <div className="timeline-line"></div>
-          {stats.map((item) => (
-            <article key={item.title} className="timeline-item reveal" data-reveal>
+          {stats.map((item, idx) => (
+            <div className="timeline-item" data-reveal key={idx}>
               <div className="milestone">{item.icon}</div>
-              <div className="ghost">{item.ghost}</div>
+              <span className="ghost">{item.ghost}</span>
               <h2>{item.headline}</h2>
               <h3>{item.title}</h3>
               <p>{item.copy}</p>
-            </article>
+            </div>
           ))}
         </section>
 
@@ -328,14 +308,20 @@ function App() {
         </section>
 
         <section id="pricing" className="pricing">
-          <p className="eyebrow badge-font reveal" data-reveal>Pricing</p>
-          <h2 className="title reveal" data-reveal>Choose A Plan</h2>
+          <p className="eyebrow badge-font">Plans & Pricing</p>
+          <h2 className="title">Protection for Everyone</h2>
 
           {plans.map((plan) => (
-            <article key={plan.name} className={`price-card reveal ${plan.featured ? 'featured' : ''}`} data-reveal>
-              {plan.featured ? <span className="popular">MOST POPULAR</span> : null}
-              <div className="plan-id"><span className="plan-icon">{plan.icon}</span><div><h3>{plan.name}</h3><p>{plan.detail}</p></div></div>
-              <div className="tags">{plan.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+            <article key={plan.name} className={`price-card ${plan.featured ? 'featured' : ''}`}>
+              {plan.featured && <span className="popular">Most Popular</span>}
+              <div className="plan-id">
+                <div className="plan-icon">{plan.icon}</div>
+                <div>
+                  <h3>{plan.name}</h3>
+                  <p>{plan.detail}</p>
+                </div>
+              </div>
+              <div className="tags">{plan.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
               <div className="price-cta"><strong>{plan.price}</strong><small>{plan.unit}</small><button className={`btn ${plan.featured ? 'btn-rose' : ''}`}>{plan.cta}</button></div>
             </article>
           ))}
