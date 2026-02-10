@@ -519,7 +519,8 @@ h1 span { color: #f43f5e; }
   background: rgba(15, 23, 42, 0.76);
   box-shadow: 0 16px 34px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
-  transition: transform 120ms linear, opacity 160ms linear;
+  /* REMOVED TRANSFORM from transition for smoothness */
+  transition: opacity 160ms linear, box-shadow 0.3s ease;
 }
 
 
@@ -541,14 +542,15 @@ h1 span { color: #f43f5e; }
   z-index: 2;
   border-radius: 26px;
   background: linear-gradient(145deg, rgba(34, 51, 97, 0.95), rgba(76, 52, 124, 0.92));
+  /* TOP LEFT EXPLOSION */
   transform:
     translate(-50%, -50%)
     translate(
-      calc(0px + var(--explode) * -300px + var(--rebuild) * -102px),
-      calc(0px + var(--explode) * -162px + var(--rebuild) * 12px)
+      calc(0px + var(--explode) * -340px + var(--rebuild) * -102px),
+      calc(0px + var(--explode) * -220px + var(--rebuild) * 12px)
     )
-    rotate(calc(var(--explode) * -18deg + var(--rebuild) * 14deg))
-    scale(calc(1 - var(--explode) * 0.15)); /* SCALING ADDED */
+    rotate(calc(var(--explode) * -15deg + var(--rebuild) * 14deg))
+    scale(calc(1 - var(--explode) * 0.15));
 }
 
 .piece-cover i {
@@ -579,13 +581,14 @@ h1 span { color: #f43f5e; }
   padding: 1rem 1.1rem;
   z-index: 50;
   background: rgba(15, 23, 42, 0.86);
+  /* TOP RIGHT EXPLOSION */
   transform:
     translate(-50%, -50%)
     translate(
-      calc(0px + var(--explode) * 278px + var(--rebuild) * 95px),
-      calc(160px + var(--explode) * -135px + var(--rebuild) * -162px)
+      calc(0px + var(--explode) * 340px + var(--rebuild) * 95px),
+      calc(160px + var(--explode) * -240px + var(--rebuild) * -162px)
     )
-    rotate(calc(var(--explode) * 8deg + var(--rebuild) * 0deg));
+    rotate(calc(var(--explode) * 10deg + var(--rebuild) * 0deg));
 }
 
 .piece-meta h3 {
@@ -613,43 +616,24 @@ h1 span { color: #f43f5e; }
 }
 
 .piece-video {
-  /* UPDATED: Matches cover size, behind cover */
   width: min(374px, 56vw);
   aspect-ratio: 9 / 16;
-  z-index: 1; /* Behind cover (which is 2) */
+  z-index: 1;
   display: grid;
   place-items: center;
   background:
     radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.35), transparent 45%),
     repeating-radial-gradient(circle at 54% 52%, rgba(148, 163, 184, 0.72) 0 0.9px, rgba(51, 65, 85, 0.84) 1px 2px),
     rgba(100, 116, 139, 0.4);
+  /* BOTTOM LEFT EXPLOSION */
   transform:
     translate(-50%, -50%)
     translate(
-      /* Start at 0px/0px to hide behind cover, then drift out */
-      calc(0px + var(--explode) * -216px + var(--rebuild) * 96px),
-      calc(0px + var(--explode) * 180px + var(--rebuild) * 20px)
+      calc(0px + var(--explode) * -340px + var(--rebuild) * 96px),
+      calc(0px + var(--explode) * 240px + var(--rebuild) * 20px)
     )
     rotate(calc(var(--explode) * 15deg + var(--rebuild) * 0deg))
-    scale(calc(1 - var(--explode) * 0.15)); /* SCALING ADDED */
-}
-
-.piece-actions {
-  width: min(172px, 25vw);
-  padding: 0.62rem 0.9rem;
-  z-index: 7;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  color: #94a3b8;
-  font-size: 1rem;
-  transform:
-    translate(-50%, -50%)
-    translate(
-      calc(0px + var(--explode) * -102px + var(--rebuild) * 88px),
-      calc(250px + var(--explode) * -56px + var(--rebuild) * -90px)
-    )
-    rotate(calc(var(--explode) * -8deg + var(--rebuild) * 0deg));
+    scale(calc(1 - var(--explode) * 0.15));
 }
 
 .piece-wave {
@@ -659,15 +643,15 @@ h1 span { color: #f43f5e; }
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  /* UPDATED: Opacity control */
-  opacity: var(--explode); /* Hidden when merged, fades in on split */
+  opacity: var(--explode);
+  /* SPLITS FROM PLAYBACK TO TOP OF RIGHT QUADRANT */
   transform:
     translate(-50%, -50%)
     translate(
-      calc(0px + var(--explode) * -72px + var(--rebuild) * 0px),
-      calc(270px + var(--explode) * -120px + var(--rebuild) * 24px)
+      calc(0px + var(--explode) * 340px + var(--rebuild) * 0px),
+      calc(270px + var(--explode) * -160px + var(--rebuild) * 24px)
     )
-    rotate(calc(var(--explode) * -12deg + var(--rebuild) * 0deg));
+    rotate(calc(var(--explode) * -5deg + var(--rebuild) * 0deg));
 }
 
 .wave-header {
@@ -709,20 +693,20 @@ h1 span { color: #f43f5e; }
   z-index: 10;
   border-radius: 18px;
   display: flex;
-  flex-direction: column; /* CHANGED to Column */
+  flex-direction: column;
   justify-content: center;
-  gap: 0.8rem; /* Space between bar and buttons */
+  gap: 0.8rem;
   color: #cbd5e1;
+  /* BOTTOM RIGHT EXPLOSION */
   transform:
     translate(-50%, -50%)
     translate(
-      calc(0px + var(--explode) * 220px + var(--rebuild) * 0px),
-      calc(270px + var(--explode) * 220px + var(--rebuild) * 46px)
+      calc(0px + var(--explode) * 340px + var(--rebuild) * 0px),
+      calc(270px + var(--explode) * -30px + var(--rebuild) * 46px)
     )
-    rotate(calc(var(--explode) * 12deg + var(--rebuild) * 0deg));
+    rotate(calc(var(--explode) * -10deg + var(--rebuild) * 0deg));
 }
 
-/* NEW STYLES FOR PLAYBACK BAR */
 .playback-bar {
   width: 100%;
   height: 4px;
@@ -734,7 +718,7 @@ h1 span { color: #f43f5e; }
 .playback-progress {
   width: 35%;
   height: 100%;
-  background: #ffffff; /* White looking progress bar */
+  background: #ffffff;
   border-radius: 4px;
 }
 
@@ -778,18 +762,16 @@ h1 span { color: #f43f5e; }
   transform: translateX(-50%);
   background: rgba(2, 6, 23, 0.92);
   font-size: 0.62rem;
-  /* UPDATED: Opacity control */
-  opacity: calc((var(--explode) - 0.2) * 5); /* Invisible until split starts */
+  opacity: calc((var(--explode) - 0.2) * 5);
 }
 
-/* Titles that appear on pieces */
 .piece-title {
   margin: 0;
   color: #f8fafc;
   font-size: 0.9rem;
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  opacity: 0; /* Hidden initially */
+  opacity: 0;
   animation: fadeInTitle 0.5s ease forwards;
   animation-delay: 0.2s;
   animation-play-state: paused;
@@ -1125,7 +1107,7 @@ h1 span { color: #f43f5e; }
   }
 
   .exploded-section {
-    height: 250vh; /* Also updated for mobile consistency */
+    height: 250vh;
   }
 
   .exploded-sticky {
@@ -1155,10 +1137,6 @@ h1 span { color: #f43f5e; }
 
   .piece-video {
     width: min(148px, 35vw);
-  }
-
-  .piece-actions {
-    width: min(144px, 36vw);
   }
 
   .price-cta {
