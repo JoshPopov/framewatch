@@ -16,9 +16,19 @@ const stats = [
   { icon: '↗', ghost: '10×', headline: '10× Volume', title: 'Explosive Growth', copy: 'AI tooling has accelerated abuse creation and distribution, increasing malicious volume by over 1,000%.' }
 ];
 
-const features = [
-  { step: '01', title: 'Continuous Global Surveillance', body: 'Our proprietary engine monitors over 4,000 public platforms, indexed search surfaces, and known deepfake repositories 24/7.', bullets: ['Biometric Voice Mapping', 'Facial Recognition Scanning'], icon: '◉', iconClass: 'radar' },
-  { step: '02', title: 'Rapid Takedown Orchestration', body: 'Automated legal-notice generation and escalation workflows remove malicious media quickly and systematically.', bullets: ['Platform-Specific Notice Templates', 'Priority Escalation Network'], icon: '⬢', iconClass: 'shield' }
+const featurePoints = [
+  { step: '01', title: 'Continuous Global Surveillance', body: 'Our detection rails watch known mirror sites, search surfaces, and repost channels in real-time across thousands of endpoints.' },
+  { step: '02', title: 'Automated Strike Pipeline', body: 'Every confirmed match enters a notice stream with platform-specific templates and auto escalation timers.' },
+  { step: '03', title: 'Live Clearance Feedback', body: 'As assets are removed, your dashboard updates status and confidence so response teams can stay focused.' }
+];
+
+const streamRows = [
+  ['portrait-feed-983', 'ugc-sync-441', 'mirror-archive-72', 'faceclip-20', 'live-share-998', 'leakdump-511'],
+  ['voice-sample-077', 'seed-video-551', 'framepack-301', 'clonepool-014', 'repost-node-822', 'crawl-index-419'],
+  ['dumpboard-291', 'tagged-cut-114', 'fakecast-665', 'region-cache-742', 'hash-match-502', 'clipchain-039'],
+  ['source-hub-811', 'takedown-log-230', 'scrape-batch-095', 'alert-cache-474', 'queue-run-123', 'drift-copy-954'],
+  ['biometric-hold-604', 'threat-frame-410', 'voicefork-052', 'node-relay-283', 'counterfeed-735', 'audit-drop-168'],
+  ['mirror-feed-540', 'rapid-spread-914', 'multicast-221', 'media-loop-366', 'danger-index-841', 'tracker-run-014']
 ];
 
 const plans = [
@@ -130,6 +140,45 @@ function MatrixGrid() {
   );
 }
 
+function TakedownStreams() {
+  const [flagged, setFlagged] = useState([]);
+
+  useEffect(() => {
+    setFlagged(streamRows.map(() => Math.floor(Math.random() * 6)));
+
+    const timer = setInterval(() => {
+      setFlagged(streamRows.map(() => Math.floor(Math.random() * 6)));
+    }, 1650);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="stream-wall" aria-hidden="true">
+      {streamRows.map((row, rowIdx) => (
+        <div key={`row-${rowIdx}`} className={`stream-row ${rowIdx % 2 ? 'reverse' : ''}`}>
+          <div className="stream-track">
+            {[...row, ...row].map((label, itemIdx) => {
+              const cellIdx = itemIdx % row.length;
+              const isFlagged = flagged[rowIdx] === cellIdx;
+
+              return (
+                <article key={`${label}-${itemIdx}`} className={`stream-card ${isFlagged ? 'flagged' : ''}`}>
+                  <div className="stream-media">
+                    <span className="scan-line"></span>
+                  </div>
+                  <p>{label}</p>
+                  <span className="remove-mark">✕</span>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function App() {
   useReveal();
 
@@ -190,20 +239,23 @@ function App() {
         </section>
 
         <section className="features">
-          <p className="eyebrow reveal" data-reveal>OUR METHODOLOGY</p>
-          <h2 className="title reveal" data-reveal>We exist to change that.</h2>
-
-          {features.map((feature, idx) => (
-            <article key={feature.title} className={`feature-row reveal ${idx % 2 ? 'reverse' : ''}`} data-reveal>
-              <div className="feature-copy">
-                <div className="step">{feature.step}</div>
-                <h3>{feature.title}</h3>
-                <p>{feature.body}</p>
-                <ul>{feature.bullets.map((point) => <li key={point}>{point}</li>)}</ul>
-              </div>
-              <div className={`glass-card icon-card ${feature.iconClass}`}>{feature.icon}</div>
-            </article>
-          ))}
+          <TakedownStreams />
+          <div className="feature-overlay"></div>
+          <div className="feature-content">
+            <p className="eyebrow reveal" data-reveal>OUR METHODOLOGY</p>
+            <h2 className="title reveal" data-reveal>We exist to change that.</h2>
+            <div className="feature-list">
+              {featurePoints.map((feature) => (
+                <article key={feature.title} className="feature-step reveal" data-reveal>
+                  <span>{feature.step}</span>
+                  <div>
+                    <h3>{feature.title}</h3>
+                    <p>{feature.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section id="pricing" className="pricing">
