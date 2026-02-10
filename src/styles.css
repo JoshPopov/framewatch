@@ -29,23 +29,24 @@ body.scroll-locked {
   overflow: hidden;
 }
 
+/* UPDATED: More compact, Apple-like nav */
 .glass-nav {
   position: fixed;
-  top: 1.55rem;
+  top: 1rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: min(700px, calc(100% - 1rem));
+  width: min(640px, calc(100% - 1.5rem)); /* Slightly narrower */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.7rem;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.42));
-  backdrop-filter: blur(22px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.65); /* More subtle background */
+  backdrop-filter: blur(20px) saturate(180%); /* Stronger blur */
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
-  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.05), 0 18px 44px rgba(2, 6, 23, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9);
-  padding: 0.46rem 0.55rem 0.46rem 0.72rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); /* Subtler shadow */
+  padding: 0.35rem 0.45rem 0.35rem 0.7rem; /* Reduced padding */
   animation: navFloatIn 1.15s var(--ease) both;
 }
 
@@ -70,8 +71,8 @@ body.scroll-locked {
 }
 
 .brand-mark {
-  width: 28px;
-  height: 28px;
+  width: 24px; /* Smaller icon */
+  height: 24px;
   border-radius: 999px;
   background: #e5e7eb;
   display: grid;
@@ -80,14 +81,14 @@ body.scroll-locked {
 }
 
 .brand-mark i {
-  width: 11px;
-  height: 11px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
   background: #fb4a5d;
 }
 
 .brand-word {
-  font-size: 1.28rem;
+  font-size: 1.15rem; /* Slightly smaller text */
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -112,7 +113,7 @@ nav {
   padding: 0.14rem;
   border-radius: 999px;
   flex: 1;
-  max-width: 330px;
+  max-width: 300px; /* Slightly narrower nav area */
 }
 
 nav a {
@@ -123,7 +124,7 @@ nav a {
   font-weight: 800;
   color: #64748b;
   position: relative;
-  padding: 0.52rem 0.7rem;
+  padding: 0.45rem 0.6rem;
   border-radius: 999px;
   z-index: 2;
   text-align: center;
@@ -188,7 +189,17 @@ nav:has(a:nth-of-type(3):focus-visible) .nav-blob {
   box-shadow: 0 10px 20px rgba(251, 113, 133, 0.26);
 }
 
-.btn-login:hover,
+/* UPDATED: Remove glow for Login button specifically */
+.btn-login {
+  background: #0f172a; /* Make login button dark slate instead of rose */
+  box-shadow: none;
+  padding: 0.55rem 1.1rem; /* Smaller padding */
+}
+.btn-login:hover {
+  background: #334155;
+  box-shadow: none;
+}
+
 .btn-rose:hover { background: #e11d48; color: white; }
 
 .hero {
@@ -541,7 +552,8 @@ h1 span { color: #f43f5e; }
   aspect-ratio: 9 / 16;
   z-index: 2;
   border-radius: 26px;
-  background: linear-gradient(145deg, rgba(34, 51, 97, 0.95), rgba(76, 52, 124, 0.92));
+  /* UPDATED: FrameWatch colors (Slate to Rose gradient) */
+  background: linear-gradient(145deg, #0f172a, #f43f5e);
   /* TOP LEFT EXPLOSION */
   transform:
     translate(-50%, -50%)
@@ -553,28 +565,7 @@ h1 span { color: #f43f5e; }
     scale(calc(1 - var(--explode) * 0.15));
 }
 
-.piece-cover i {
-  position: absolute;
-  width: 68px;
-  height: 68px;
-  border-radius: 999px;
-  border: 2px solid rgba(148, 163, 184, 0.34);
-  left: 50%;
-  top: 38%;
-  transform: translate(-50%, -50%);
-}
-
-.piece-cover i::after {
-  content: '';
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
+/* REMOVED: .piece-cover i and .piece-cover i::after (the circle and dot) */
 
 .piece-meta {
   width: min(304px, 44vw);
