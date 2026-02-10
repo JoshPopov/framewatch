@@ -132,7 +132,8 @@ function ExplodedRebuildSection() {
   const [progress, setProgress] = useState(0);
   const visualProgressRef = React.useRef(0);
   const frameRef = React.useRef(null);
-  const lockedScrollYRef = React.useRef(null);
+  const pageLockActiveRef = React.useRef(false);
+  const pageLockScrollYRef = React.useRef(0);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -142,9 +143,22 @@ function ExplodedRebuildSection() {
     const navOffset = 86;
     const touchState = { y: null };
 
-    const getSectionLockY = () => {
-      const rect = section.getBoundingClientRect();
-      return Math.max(0, window.scrollY + rect.top - navOffset);
+    const lockPageScroll = () => {
+      if (pageLockActiveRef.current) return;
+
+      pageLockScrollYRef.current = window.scrollY;
+      document.body.classList.add('scroll-locked');
+      document.body.style.top = `-${pageLockScrollYRef.current}px`;
+      pageLockActiveRef.current = true;
+    };
+
+    const unlockPageScroll = () => {
+      if (!pageLockActiveRef.current) return;
+
+      document.body.classList.remove('scroll-locked');
+      document.body.style.top = '';
+      window.scrollTo({ top: pageLockScrollYRef.current, behavior: 'auto' });
+      pageLockActiveRef.current = false;
     };
 
     const syncVisual = () => {
@@ -165,12 +179,6 @@ function ExplodedRebuildSection() {
       frameRef.current = requestAnimationFrame(tick);
     };
 
-    const keepTrackPinned = () => {
-      const lockY = lockedScrollYRef.current ?? getSectionLockY();
-      lockedScrollYRef.current = lockY;
-      window.scrollTo({ top: lockY, behavior: 'auto' });
-    };
-
     const isSectionFullyVisible = () => {
       const rect = section.getBoundingClientRect();
       const stickyRect = track.getBoundingClientRect();
@@ -182,23 +190,17 @@ function ExplodedRebuildSection() {
     const shouldLock = (delta) => {
       const fullyVisible = isSectionFullyVisible();
 
-      if (fullyVisible && lockedScrollYRef.current === null) {
-        lockedScrollYRef.current = getSectionLockY();
+      const canScrub = fullyVisible && (
+        (delta > 0 && visualProgressRef.current < 0.999)
+        || (delta < 0 && visualProgressRef.current > 0.001)
+      );
+
+      if (canScrub) {
+        lockPageScroll();
+        return true;
       }
 
-      if (!fullyVisible) {
-        lockedScrollYRef.current = null;
-        return false;
-      }
-
-      if (delta > 0) {
-        return visualProgressRef.current < 0.999;
-      }
-
-      if (delta < 0) {
-        return visualProgressRef.current > 0.001;
-      }
-
+      unlockPageScroll();
       return false;
     };
 
@@ -216,7 +218,6 @@ function ExplodedRebuildSection() {
       if (!shouldLock(delta)) return;
 
       event.preventDefault();
-      keepTrackPinned();
       scrubProgress(delta);
     };
 
@@ -234,7 +235,6 @@ function ExplodedRebuildSection() {
       if (!shouldLock(delta)) return;
 
       event.preventDefault();
-      keepTrackPinned();
       scrubProgress(delta);
     };
 
@@ -252,12 +252,12 @@ function ExplodedRebuildSection() {
       if (!shouldLock(delta)) return;
 
       event.preventDefault();
-      keepTrackPinned();
       scrubProgress(delta);
     };
 
     const onTouchEnd = () => {
       touchState.y = null;
+      if (!isSectionFullyVisible()) unlockPageScroll();
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
@@ -267,6 +267,7 @@ function ExplodedRebuildSection() {
     window.addEventListener('touchend', onTouchEnd, { passive: true });
 
     return () => {
+      unlockPageScroll();
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKeyDown);
