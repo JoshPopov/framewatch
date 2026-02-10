@@ -442,7 +442,7 @@ h1 span { color: #f43f5e; }
 }
 
 .exploded-section {
-  min-height: 195vh;
+  min-height: 320vh;
   position: relative;
 }
 
@@ -912,7 +912,7 @@ h1 span { color: #f43f5e; }
 
 
   .exploded-section {
-    min-height: 210vh;
+    min-height: 300vh;
   }
 
   .exploded-sticky {
