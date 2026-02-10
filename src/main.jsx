@@ -178,8 +178,6 @@ function ExplodedRebuildSection() {
             <h4 className="piece-title">Hidden Metadata</h4>
           </article>
 
-          {/* Removed piece-actions to fix glitch/extra frame */}
-
           <article className="mock-piece piece-wave">
             <div className="wave-header">
               <span className="music-icon">♫</span>
@@ -349,7 +347,7 @@ function App() {
         <div
           className="info-modal"
           role="dialog"
-          aria-modal=\"true\"
+          aria-modal="true"
           aria-labelledby="pricing-info-title"
           onClick={(event) => event.stopPropagation()}
         >
