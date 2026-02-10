@@ -46,35 +46,84 @@ function MatrixGrid() {
     id: i,
     text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
     color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-    duration: `${20 + Math.random() * 20}s`,
-    opacity: 0.12 + Math.random() * 0.24
+    duration: `${9 + Math.random() * 14}s`,
+    delay: `${-Math.random() * 12}s`,
+    top: `${Math.random() * 100}%`,
+    left: `${Math.random() * 100}%`,
+    xDrift: `${-32 + Math.random() * 64}px`,
+    yDrift: `${-42 + Math.random() * 84}px`,
+    opacity: 0.15 + Math.random() * 0.3
   })), []);
 
   const [cells, setCells] = useState(initialCells);
 
   useEffect(() => {
+    const timeouts = new Set();
+
     const timer = setInterval(() => {
+      const fadingIds = new Set();
+
       setCells((prev) => {
         const next = [...prev];
-        for (let i = 0; i < 8; i += 1) {
+
+        for (let i = 0; i < 12; i += 1) {
           const idx = Math.floor(Math.random() * next.length);
+          fadingIds.add(next[idx].id);
           next[idx] = {
             ...next[idx],
-            opacity: 0.08 + Math.random() * 0.34,
-            text: Math.random() > 0.62 ? MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)] : next[idx].text
+            opacity: 0.02
           };
         }
+
         return next;
       });
-    }, 1000);
-    return () => clearInterval(timer);
+
+      const timeoutId = setTimeout(() => {
+        setCells((prev) => prev.map((cell) => {
+          if (!fadingIds.has(cell.id)) return cell;
+
+          return {
+            ...cell,
+            text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
+            color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
+            opacity: 0.14 + Math.random() * 0.32,
+            duration: `${8 + Math.random() * 15}s`,
+            xDrift: `${-38 + Math.random() * 76}px`,
+            yDrift: `${-50 + Math.random() * 100}px`
+          };
+        }));
+        timeouts.delete(timeoutId);
+      }, 640);
+
+      timeouts.add(timeoutId);
+    }, 900);
+
+    return () => {
+      clearInterval(timer);
+      timeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+    };
   }, []);
 
   return (
     <div className="matrix-mask" aria-hidden="true">
       <div className="matrix-grid">
         {cells.map((cell) => (
-          <span key={cell.id} className="snippet" style={{ color: cell.color, opacity: cell.opacity, '--dur': cell.duration }}>{cell.text}</span>
+          <span
+            key={cell.id}
+            className="snippet"
+            style={{
+              color: cell.color,
+              opacity: cell.opacity,
+              top: cell.top,
+              left: cell.left,
+              '--dur': cell.duration,
+              '--delay': cell.delay,
+              '--drift-x': cell.xDrift,
+              '--drift-y': cell.yDrift
+            }}
+          >
+            {cell.text}
+          </span>
         ))}
       </div>
     </div>
@@ -119,7 +168,7 @@ function App() {
       <main>
         <section className="hero">
           <MatrixGrid />
-          <div className="hero-content reveal" data-reveal>
+          <div className="hero-content hero-intro">
             <p className="hero-badge"><span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE v2.0</p>
             <h1>Your Face.<br /><span>Your Control.</span></h1>
             <p className="lead">If someone is using your face or voice without consent. We help you find it, and take it down.</p>
