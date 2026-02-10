@@ -129,7 +129,9 @@ function MatrixGrid() {
 function ExplodedRebuildSection() {
   const sectionRef = React.useRef(null);
   const [progress, setProgress] = useState(0);
-  const progressRef = React.useRef(0);
+  const visualProgressRef = React.useRef(0);
+  const targetProgressRef = React.useRef(0);
+  const rafRef = React.useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -138,27 +140,73 @@ function ExplodedRebuildSection() {
     const navOffset = 86;
     const touchState = { y: null };
 
-    const isLockedRange = () => {
+    const getCenterDelta = () => {
       const rect = section.getBoundingClientRect();
-      return rect.top <= navOffset + 8 && rect.bottom >= window.innerHeight - 8;
+      return (rect.top + (rect.height / 2)) - (window.innerHeight / 2);
+    };
+
+    const centerLockThreshold = 72;
+
+    const isWithinStage = () => {
+      const rect = section.getBoundingClientRect();
+      return rect.top <= navOffset + 12 && rect.bottom >= window.innerHeight - 12;
+    };
+
+    const keepSectionCentered = () => {
+      const centerTarget = window.scrollY + getCenterDelta();
+      window.scrollTo({ top: centerTarget, behavior: 'auto' });
+    };
+
+    const animateProgress = () => {
+      const current = visualProgressRef.current;
+      const target = targetProgressRef.current;
+      const next = current + ((target - current) * 0.18);
+      const settled = Math.abs(target - next) < 0.0005;
+      const finalValue = settled ? target : next;
+
+      visualProgressRef.current = finalValue;
+      setProgress(finalValue);
+
+      if (!settled) {
+        rafRef.current = requestAnimationFrame(animateProgress);
+      } else {
+        rafRef.current = null;
+      }
+    };
+
+    const queueProgressAnimation = () => {
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(animateProgress);
     };
 
     const advanceProgress = (delta) => {
-      const next = Math.min(1, Math.max(0, progressRef.current + (delta * 0.0011)));
-      progressRef.current = next;
-      setProgress(next);
+      const nextTarget = Math.min(1, Math.max(0, targetProgressRef.current + (delta * 0.00085)));
+      targetProgressRef.current = nextTarget;
+      queueProgressAnimation();
+    };
+
+    const shouldIntercept = (delta) => {
+      if (!isWithinStage()) return false;
+
+      const centerDelta = getCenterDelta();
+      if (Math.abs(centerDelta) > centerLockThreshold) {
+        if ((delta > 0 && targetProgressRef.current < 0.999) || (delta < 0 && targetProgressRef.current > 0.001)) {
+          keepSectionCentered();
+          return true;
+        }
+        return false;
+      }
+
+      return (delta > 0 && targetProgressRef.current < 0.999) || (delta < 0 && targetProgressRef.current > 0.001);
     };
 
     const onWheel = (event) => {
       const delta = event.deltaY;
-      if (!isLockedRange()) return;
-
-      const scrollingDown = delta > 0;
-      const shouldLock = (scrollingDown && progressRef.current < 0.999) || (!scrollingDown && progressRef.current > 0.001);
-      if (!shouldLock) return;
+      if (!shouldIntercept(delta)) return;
 
       event.preventDefault();
       advanceProgress(delta);
+      keepSectionCentered();
     };
 
     const onKeyDown = (event) => {
@@ -170,13 +218,13 @@ function ExplodedRebuildSection() {
         PageUp: -220
       };
 
-      if (!(event.key in map) || !isLockedRange()) return;
+      if (!(event.key in map)) return;
       const delta = map[event.key];
-      const shouldLock = (delta > 0 && progressRef.current < 0.999) || (delta < 0 && progressRef.current > 0.001);
-      if (!shouldLock) return;
+      if (!shouldIntercept(delta)) return;
 
       event.preventDefault();
       advanceProgress(delta);
+      keepSectionCentered();
     };
 
     const onTouchStart = (event) => {
@@ -184,17 +232,17 @@ function ExplodedRebuildSection() {
     };
 
     const onTouchMove = (event) => {
-      if (!isLockedRange() || touchState.y === null) return;
+      if (touchState.y === null) return;
 
       const y = event.touches[0]?.clientY ?? touchState.y;
       const delta = (touchState.y - y) * 1.4;
       touchState.y = y;
 
-      const shouldLock = (delta > 0 && progressRef.current < 0.999) || (delta < 0 && progressRef.current > 0.001);
-      if (!shouldLock) return;
+      if (!shouldIntercept(delta)) return;
 
       event.preventDefault();
       advanceProgress(delta);
+      keepSectionCentered();
     };
 
     const onTouchEnd = () => {
@@ -208,6 +256,7 @@ function ExplodedRebuildSection() {
     window.addEventListener('touchend', onTouchEnd, { passive: true });
 
     return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('touchstart', onTouchStart);
