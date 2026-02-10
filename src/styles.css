@@ -531,24 +531,24 @@ h1 span { color: #f43f5e; }
   border: 1px solid rgba(148, 163, 184, 0.42);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.28), rgba(15, 23, 42, 0.08));
   transform: translate(-50%, -50%);
-  opacity: calc(1 - var(--explode) * 1.5); /* FADE OUT EFFECT */
-  filter: blur(calc(var(--explode) * 10px)); /* BLUR EFFECT */
+  opacity: calc(1 - var(--explode) * 1.5);
+  filter: blur(calc(var(--explode) * 10px));
 }
 
 .piece-cover {
-  width: min(374px, 56vw); /* Increased to fill the frame */
+  width: min(374px, 56vw);
   aspect-ratio: 9 / 16;
-  z-index: 2; /* Lowered z-index to sit behind the UI */
+  z-index: 2;
   border-radius: 26px;
   background: linear-gradient(145deg, rgba(34, 51, 97, 0.95), rgba(76, 52, 124, 0.92));
   transform:
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * -300px + var(--rebuild) * -102px),
-      /* Changed -126px to 0px to center it in the frame */
       calc(0px + var(--explode) * -162px + var(--rebuild) * 12px)
     )
-    rotate(calc(var(--explode) * -18deg + var(--rebuild) * 14deg));
+    rotate(calc(var(--explode) * -18deg + var(--rebuild) * 14deg))
+    scale(calc(1 - var(--explode) * 0.15)); /* SCALING ADDED */
 }
 
 .piece-cover i {
@@ -577,13 +577,12 @@ h1 span { color: #f43f5e; }
 .piece-meta {
   width: min(304px, 44vw);
   padding: 1rem 1.1rem;
-  z-index: 50; /* UPDATED: Raised z-index to stay on top */
+  z-index: 50;
   background: rgba(15, 23, 42, 0.86);
   transform:
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * 278px + var(--rebuild) * 95px),
-      /* Changed 32px to 160px to push it down */
       calc(160px + var(--explode) * -135px + var(--rebuild) * -162px)
     )
     rotate(calc(var(--explode) * 8deg + var(--rebuild) * 0deg));
@@ -614,9 +613,10 @@ h1 span { color: #f43f5e; }
 }
 
 .piece-video {
-  width: min(186px, 27vw);
-  aspect-ratio: 9 / 14;
-  z-index: 3;
+  /* UPDATED: Matches cover size, behind cover */
+  width: min(374px, 56vw);
+  aspect-ratio: 9 / 16;
+  z-index: 1; /* Behind cover (which is 2) */
   display: grid;
   place-items: center;
   background:
@@ -626,10 +626,12 @@ h1 span { color: #f43f5e; }
   transform:
     translate(-50%, -50%)
     translate(
+      /* Start at 0px/0px to hide behind cover, then drift out */
       calc(0px + var(--explode) * -216px + var(--rebuild) * 96px),
-      calc(24px + var(--explode) * 180px + var(--rebuild) * 20px)
+      calc(0px + var(--explode) * 180px + var(--rebuild) * 20px)
     )
-    rotate(calc(var(--explode) * 15deg + var(--rebuild) * 0deg));
+    rotate(calc(var(--explode) * 15deg + var(--rebuild) * 0deg))
+    scale(calc(1 - var(--explode) * 0.15)); /* SCALING ADDED */
 }
 
 .piece-actions {
@@ -657,12 +659,12 @@ h1 span { color: #f43f5e; }
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  /* UPDATED: Opacity control */
+  opacity: var(--explode); /* Hidden when merged, fades in on split */
   transform:
     translate(-50%, -50%)
     translate(
-      /* Start at 0px (centered under playback) -> Explode out */
       calc(0px + var(--explode) * -72px + var(--rebuild) * 0px),
-      /* UPDATED: Start at 270px (Merged with controls) -> Explode Up (-120px) */
       calc(270px + var(--explode) * -120px + var(--rebuild) * 24px)
     )
     rotate(calc(var(--explode) * -12deg + var(--rebuild) * 0deg));
@@ -672,7 +674,7 @@ h1 span { color: #f43f5e; }
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  opacity: var(--explode); /* Only visible when exploded */
+  opacity: var(--explode);
   transition: opacity 0.2s;
 }
 
@@ -707,17 +709,40 @@ h1 span { color: #f43f5e; }
   z-index: 10;
   border-radius: 18px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* CHANGED to Column */
+  justify-content: center;
+  gap: 0.8rem; /* Space between bar and buttons */
   color: #cbd5e1;
   transform:
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * 220px + var(--rebuild) * 0px),
-      /* Changed 206px to 270px to anchor it to the bottom */
       calc(270px + var(--explode) * 220px + var(--rebuild) * 46px)
     )
     rotate(calc(var(--explode) * 12deg + var(--rebuild) * 0deg));
+}
+
+/* NEW STYLES FOR PLAYBACK BAR */
+.playback-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.playback-progress {
+  width: 35%;
+  height: 100%;
+  background: #ffffff; /* White looking progress bar */
+  border-radius: 4px;
+}
+
+.playback-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .piece-controls b {
@@ -753,6 +778,8 @@ h1 span { color: #f43f5e; }
   transform: translateX(-50%);
   background: rgba(2, 6, 23, 0.92);
   font-size: 0.62rem;
+  /* UPDATED: Opacity control */
+  opacity: calc((var(--explode) - 0.2) * 5); /* Invisible until split starts */
 }
 
 /* Titles that appear on pieces */
@@ -765,13 +792,12 @@ h1 span { color: #f43f5e; }
   opacity: 0; /* Hidden initially */
   animation: fadeInTitle 0.5s ease forwards;
   animation-delay: 0.2s;
-  animation-play-state: paused; /* Controlled via --explode manually via opacity in reality */
+  animation-play-state: paused;
 }
 
-/* We simply control opacity via the --explode variable for smooth scrubbing */
 .piece-video .piece-title,
 .piece-wave .piece-title {
-  opacity: calc((var(--explode) - 0.3) * 2); /* Starts fading in after 30% explosion */
+  opacity: calc((var(--explode) - 0.3) * 2);
 }
 
 .final-message {
@@ -784,7 +810,7 @@ h1 span { color: #f43f5e; }
   max-width: 400px;
   z-index: 50;
   pointer-events: none;
-  opacity: calc((var(--explode) - 0.85) * 10); /* Only visible at >85% progress */
+  opacity: calc((var(--explode) - 0.85) * 10);
 }
 
 .final-message h3 {
