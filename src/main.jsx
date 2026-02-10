@@ -164,7 +164,7 @@ function ExplodedRebuildSection() {
           <article className="mock-piece piece-frame"></article>
 
           <article className="mock-piece piece-cover">
-            <span>COVER</span><i></i>
+            <span>Extracted Image</span><i></i>
           </article>
 
           <article className="mock-piece piece-meta">
@@ -187,6 +187,7 @@ function ExplodedRebuildSection() {
           </article>
 
           <article className="mock-piece piece-controls">
+            <span>Playback Info</span>
             <div className="playback-bar">
               <div className="playback-progress"></div>
             </div>
