@@ -151,7 +151,7 @@ function ExplodedRebuildSection() {
   }, []);
 
   return (
-    <section className="exploded-section">
+    <div className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-heading">
           <p className="eyebrow">SOCIAL THREAT BREAKDOWN</p>
@@ -176,7 +176,7 @@ function ExplodedRebuildSection() {
           <article className="mock-piece piece-pill">IG + TT UI</article>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

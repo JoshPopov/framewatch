@@ -440,25 +440,24 @@ h1 span { color: #f43f5e; }
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
-  min-height: 210vh;
 }
 
 .exploded-section {
-  min-height: 210vh;
+  min-height: 180vh;
   position: relative;
 }
 
 .exploded-sticky {
   position: sticky;
-  top: 0;
-  min-height: 100vh;
-  padding: 6.2rem 1.2rem 2rem;
+  top: 4.6rem;
+  min-height: calc(100vh - 4.6rem);
+  padding: 3.8rem 1.2rem 2rem;
   display: grid;
   place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 46%, rgba(2, 6, 23, 0.28), transparent 54%),
-    linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    radial-gradient(circle at 50% 48%, rgba(148, 163, 184, 0.14), transparent 56%),
+    linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
 }
 
 .exploded-heading {
@@ -473,11 +472,11 @@ h1 span { color: #f43f5e; }
 
 .exploded-heading .eyebrow {
   color: rgba(251, 113, 133, 0.9);
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+  text-shadow: none;
 }
 
 .exploded-heading .title {
-  color: #e2e8f0;
+  color: #020617;
   margin-top: 0.8rem;
   font-size: clamp(2rem, 4.7vw, 4rem);
 }
@@ -518,24 +517,24 @@ h1 span { color: #f43f5e; }
 }
 
 .piece-cover {
-  width: min(420px, 62vw);
-  aspect-ratio: 1;
+  width: min(290px, 42vw);
+  aspect-ratio: 9 / 16;
   z-index: 4;
   border-radius: 36px;
   background: linear-gradient(140deg, rgba(34, 51, 97, 0.96), rgba(76, 52, 124, 0.94));
   transform:
     translate(-50%, -50%)
     translate(
-      calc(0px + var(--explode) * -240px + var(--rebuild) * -250px),
-      calc(-92px + var(--explode) * -115px + var(--rebuild) * -75px)
+      calc(0px + var(--explode) * -248px + var(--rebuild) * -236px),
+      calc(-90px + var(--explode) * -120px + var(--rebuild) * -84px)
     )
     rotate(calc(var(--explode) * -18deg + var(--rebuild) * 18deg));
 }
 
 .piece-cover i {
   position: absolute;
-  width: 96px;
-  height: 96px;
+  width: 74px;
+  height: 74px;
   border-radius: 999px;
   border: 3px solid rgba(148, 163, 184, 0.38);
   left: 50%;
