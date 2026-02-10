@@ -484,6 +484,15 @@ h1 span { color: #f43f5e; }
   text-shadow: none;
 }
 
+
+.badge-font {
+  text-transform: uppercase;
+  letter-spacing: 0.23em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+
 .exploded-heading .title {
   color: #020617;
   margin-top: 0.8rem;

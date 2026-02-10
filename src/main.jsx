@@ -186,8 +186,8 @@ function ExplodedRebuildSection() {
     <div ref={sectionRef} className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-heading">
-          <p className="eyebrow">HOW IT WORKS</p>
-          <h2 className="title">From One Mockup to Full Platform Control</h2>
+          <p className="eyebrow badge-font">HOW IT WORKS</p>
+          <h2 className="title">See the full picture</h2>
         </div>
 
         <div ref={stageRef} className="mockup-stage">
