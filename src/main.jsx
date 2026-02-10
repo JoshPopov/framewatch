@@ -58,7 +58,7 @@ function MatrixGrid() {
     color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
     duration: `${9 + Math.random() * 14}s`,
     delay: `${-Math.random() * 12}s`,
-    top: `${Math.random() * 100}%`,
+    top: `${46 + Math.random() * 54}%`,
     left: `${Math.random() * 100}%`,
     xDrift: `${-32 + Math.random() * 64}px`,
     yDrift: `${-42 + Math.random() * 84}px`,
@@ -274,6 +274,36 @@ function App() {
             </article>
           ))}
         </section>
+
+        <footer className="site-footer">
+          <div className="footer-grid">
+            <div className="footer-brand">
+              <div className="brand"><span>⛨</span> FRAMEWATCH</div>
+              <p>Proactive identity defense for creators, professionals, and teams.</p>
+            </div>
+            <div>
+              <h4>Product</h4>
+              <a href="#about">Monitoring</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#">API Access</a>
+            </div>
+            <div>
+              <h4>Company</h4>
+              <a href="#">Privacy</a>
+              <a href="#">Terms</a>
+              <a href="#">Contact</a>
+            </div>
+            <div>
+              <h4>Status</h4>
+              <p>24/7 Threat Scanning</p>
+              <p>Real-Time Takedown Queue</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <small>© {new Date().getFullYear()} Framewatch. All rights reserved.</small>
+            <small>Built for modern identity protection.</small>
+          </div>
+        </footer>
       </main>
     </>
   );
