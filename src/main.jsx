@@ -195,7 +195,10 @@ function App() {
   return (
     <>
       <header className="glass-nav">
-        <div className="brand"><span>⛨</span> FRAMEWATCH</div>
+        <div className="brand" aria-label="FrameWatch">
+          <span className="brand-mark" aria-hidden="true"><i></i></span>
+          <span className="brand-word"><b>Frame</b><strong>Watch</strong></span>
+        </div>
         <nav>
           <span className="nav-blob" aria-hidden="true"></span>
           <a href="#home">Home</a>
