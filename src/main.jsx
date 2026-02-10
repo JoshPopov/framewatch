@@ -132,6 +132,7 @@ function ExplodedRebuildSection() {
   const [progress, setProgress] = useState(0);
   const visualProgressRef = React.useRef(0);
   const frameRef = React.useRef(null);
+  const lockedScrollYRef = React.useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -140,6 +141,11 @@ function ExplodedRebuildSection() {
 
     const navOffset = 86;
     const touchState = { y: null };
+
+    const getSectionLockY = () => {
+      const rect = section.getBoundingClientRect();
+      return Math.max(0, window.scrollY + rect.top - navOffset);
+    };
 
     const syncVisual = () => {
       if (frameRef.current !== null) return;
@@ -160,8 +166,9 @@ function ExplodedRebuildSection() {
     };
 
     const keepTrackPinned = () => {
-      const sectionTop = section.offsetTop;
-      window.scrollTo({ top: sectionTop - navOffset, behavior: 'auto' });
+      const lockY = lockedScrollYRef.current ?? getSectionLockY();
+      lockedScrollYRef.current = lockY;
+      window.scrollTo({ top: lockY, behavior: 'auto' });
     };
 
     const isSectionFullyVisible = () => {
@@ -173,7 +180,16 @@ function ExplodedRebuildSection() {
     };
 
     const shouldLock = (delta) => {
-      if (!isSectionFullyVisible()) return false;
+      const fullyVisible = isSectionFullyVisible();
+
+      if (fullyVisible && lockedScrollYRef.current === null) {
+        lockedScrollYRef.current = getSectionLockY();
+      }
+
+      if (!fullyVisible) {
+        lockedScrollYRef.current = null;
+        return false;
+      }
 
       if (delta > 0) {
         return visualProgressRef.current < 0.999;
