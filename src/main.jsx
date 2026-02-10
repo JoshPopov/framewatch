@@ -163,7 +163,10 @@ function TakedownStreams() {
               const isFlagged = flagged[rowIdx] === cellIdx;
 
               return (
-                <article key={`${label}-${itemIdx}`} className={`stream-card ${isFlagged ? 'flagged' : ''}`}>
+                <article
+                  key={`${label}-${itemIdx}`}
+                  className={`stream-card ${isFlagged ? `flagged ${rowIdx % 2 ? 'flick-right' : 'flick-left'}` : ''}`}
+                >
                   <div className="stream-media">
                     <span className="scan-line"></span>
                   </div>

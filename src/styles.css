@@ -398,7 +398,8 @@ h1 span { color: #f43f5e; }
   position: relative;
   overflow: hidden;
   background: #f1f5f9;
-  padding: 4.8rem 1.2rem 6rem;
+  min-height: 115vh;
+  padding: 8.5rem 1.2rem 9rem;
 }
 
 .pricing {
@@ -412,8 +413,8 @@ h1 span { color: #f43f5e; }
   position: absolute;
   inset: 0;
   display: grid;
-  gap: 1.1rem;
-  padding: 2rem 0;
+  gap: 1.55rem;
+  padding: 2.5rem 0;
   pointer-events: none;
 }
 
@@ -430,12 +431,13 @@ h1 span { color: #f43f5e; }
   display: flex;
   width: max-content;
   gap: 1rem;
-  animation: streamMove 24s linear infinite;
+  animation: streamMove 32s linear infinite;
+  will-change: transform;
 }
 
 .stream-row.reverse .stream-track {
   animation-direction: reverse;
-  animation-duration: 27s;
+  animation-duration: 36s;
 }
 
 @keyframes streamMove {
@@ -447,14 +449,15 @@ h1 span { color: #f43f5e; }
   width: min(24vw, 250px);
   min-width: 180px;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
   padding: 0.7rem;
   position: relative;
-  opacity: 0.46;
-  filter: blur(0.2px);
+  opacity: 0.38;
+  transform: translate3d(0, 0, 0) rotate(-1deg);
+  transition: opacity 0.35s ease;
+  will-change: transform, opacity;
 }
 
 .stream-media {
@@ -474,7 +477,8 @@ h1 span { color: #f43f5e; }
   inset: 0;
   background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.45), transparent);
   transform: translateY(-100%);
-  animation: scan 3.8s linear infinite;
+  animation: scan 5s linear infinite;
+  opacity: 0.65;
 }
 
 @keyframes scan {
@@ -503,56 +507,77 @@ h1 span { color: #f43f5e; }
 }
 
 .stream-card.flagged {
-  opacity: 0.88;
-  animation: strikeOut 1.35s var(--ease) forwards;
+  opacity: 0.92;
+}
+
+.stream-card.flagged.flick-left {
+  animation: flickLeft 0.75s cubic-bezier(0.22, 0.75, 0.18, 1) forwards;
+}
+
+.stream-card.flagged.flick-right {
+  animation: flickRight 0.75s cubic-bezier(0.22, 0.75, 0.18, 1) forwards;
 }
 
 .stream-card.flagged .remove-mark {
-  animation: xFlash 1.35s var(--ease) forwards;
+  animation: xFlash 0.58s var(--ease) forwards;
 }
 
-@keyframes strikeOut {
-  0% { opacity: 0.86; filter: blur(0); }
-  55% { opacity: 0.9; }
-  100% { opacity: 0.08; filter: blur(2.4px); }
+@keyframes flickLeft {
+  0% { transform: translate3d(0, 0, 0) rotate(-1deg) scale(1); opacity: 0.9; }
+  14% { transform: translate3d(22px, -10px, 0) rotate(4deg) scale(1.01); }
+  100% { transform: translate3d(-340px, -34px, 0) rotate(-22deg) scale(0.95); opacity: 0; }
+}
+
+@keyframes flickRight {
+  0% { transform: translate3d(0, 0, 0) rotate(1deg) scale(1); opacity: 0.9; }
+  14% { transform: translate3d(-22px, -10px, 0) rotate(-4deg) scale(1.01); }
+  100% { transform: translate3d(340px, -34px, 0) rotate(22deg) scale(0.95); opacity: 0; }
 }
 
 @keyframes xFlash {
-  0% { opacity: 0; transform: scale(0.5) rotate(-14deg); }
-  22% { opacity: 1; transform: scale(1.02) rotate(0); }
-  100% { opacity: 0; transform: scale(1.1) rotate(9deg); }
+  0% { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+  38% { opacity: 1; transform: scale(1.04) rotate(0); }
+  100% { opacity: 0; transform: scale(1.13) rotate(8deg); }
 }
 
 .feature-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(241, 245, 249, 0.38), rgba(241, 245, 249, 0.93) 62%);
+  background:
+    radial-gradient(circle at center, rgba(241, 245, 249, 0.3), rgba(241, 245, 249, 0.9) 60%),
+    linear-gradient(180deg, rgba(241, 245, 249, 0.74) 0%, rgba(241, 245, 249, 0.92) 100%);
 }
 
 .feature-content {
   position: relative;
   z-index: 2;
-  max-width: 1120px;
+  max-width: 1040px;
   margin: 0 auto;
 }
 
 .feature-list {
-  margin: 3rem auto 0;
+  margin: 5rem auto 0;
   display: grid;
-  gap: 1.2rem;
+  gap: 2.2rem;
 }
 
 .feature-step {
   border-radius: 1.1rem;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(8px);
-  padding: 1.1rem 1.2rem;
+  padding: 1.35rem 1.4rem;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1rem;
   align-items: start;
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+.feature-step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
 }
 
 .feature-step > span {
@@ -567,14 +592,14 @@ h1 span { color: #f43f5e; }
 }
 
 .feature-step h3 {
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
   margin-bottom: 0.35rem;
 }
 
 .feature-step p {
   margin: 0;
   color: #475569;
-  line-height: 1.5;
+  line-height: 1.6;
   max-width: 70ch;
 }
 
@@ -713,7 +738,7 @@ h1 span { color: #f43f5e; }
   }
 
   .stream-card {
-    width: min(58vw, 260px);
+    width: min(62vw, 270px);
   }
 
   .feature-step {
