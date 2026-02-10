@@ -444,12 +444,10 @@ h1 span { color: #f43f5e; }
 
 .features {
   position: relative;
-  /* overflow: hidden;  <-- REMOVED! This was breaking sticky */
   background: linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
 }
 
 .exploded-section {
-  /* Increased height to 500vh to ensure a solid "lock" feel */
   height: 250vh;
   position: relative;
   z-index: 10;
@@ -464,7 +462,7 @@ h1 span { color: #f43f5e; }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Clips the animation within the viewport */
+  overflow: hidden;
   background:
     radial-gradient(circle at 50% 44%, rgba(148, 163, 184, 0.16), transparent 54%),
     linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
@@ -524,6 +522,8 @@ h1 span { color: #f43f5e; }
   border: 1px solid rgba(148, 163, 184, 0.42);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.28), rgba(15, 23, 42, 0.08));
   transform: translate(-50%, -50%);
+  opacity: calc(1 - var(--explode) * 1.5); /* FADE OUT EFFECT */
+  filter: blur(calc(var(--explode) * 10px)); /* BLUR EFFECT */
 }
 
 .piece-cover {
@@ -606,6 +606,8 @@ h1 span { color: #f43f5e; }
   width: min(186px, 27vw);
   aspect-ratio: 9 / 14;
   z-index: 3;
+  display: grid;
+  place-items: center;
   background:
     radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.35), transparent 45%),
     repeating-radial-gradient(circle at 54% 52%, rgba(148, 163, 184, 0.72) 0 0.9px, rgba(51, 65, 85, 0.84) 1px 2px),
@@ -641,20 +643,39 @@ h1 span { color: #f43f5e; }
   width: min(304px, 45vw);
   padding: 0.7rem 0.8rem;
   z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   transform:
     translate(-50%, -50%)
     translate(
+      /* Start at 0px (centered under playback) -> Explode out */
       calc(0px + var(--explode) * -72px + var(--rebuild) * 0px),
-      calc(120px + var(--explode) * 190px + var(--rebuild) * 24px)
+      /* Start much lower (inside playback area) -> Explode up/out */
+      calc(200px + var(--explode) * 110px + var(--rebuild) * 24px)
     )
     rotate(calc(var(--explode) * -12deg + var(--rebuild) * 0deg));
 }
 
-.piece-wave div {
+.wave-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: var(--explode); /* Only visible when exploded */
+  transition: opacity 0.2s;
+}
+
+.music-icon {
+  color: #3b82f6;
+  font-size: 1rem;
+}
+
+.wave-bars {
   display: flex;
   gap: 0.22rem;
   align-items: flex-end;
   height: 30px;
+  width: 100%;
 }
 
 .piece-wave i {
@@ -699,25 +720,6 @@ h1 span { color: #f43f5e; }
   box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
 }
 
-.piece-pill {
-  width: fit-content;
-  padding: 0.28rem 0.6rem;
-  border-radius: 10px;
-  z-index: 11;
-  color: #f8fafc;
-  background: rgba(2, 6, 23, 0.8);
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.04em;
-  font-size: 0.66rem;
-  transform:
-    translate(-50%, -50%)
-    translate(
-      calc(92px + var(--explode) * 270px + var(--rebuild) * -20px),
-      calc(232px + var(--explode) * -102px + var(--rebuild) * 46px)
-    )
-    rotate(calc(var(--explode) * 9deg + var(--rebuild) * 0deg));
-}
-
 .mock-piece > span {
   position: absolute;
   left: 12px;
@@ -739,6 +741,50 @@ h1 span { color: #f43f5e; }
   transform: translateX(-50%);
   background: rgba(2, 6, 23, 0.92);
   font-size: 0.62rem;
+}
+
+/* Titles that appear on pieces */
+.piece-title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  opacity: 0; /* Hidden initially */
+  animation: fadeInTitle 0.5s ease forwards;
+  animation-delay: 0.2s;
+  animation-play-state: paused; /* Controlled via --explode manually via opacity in reality */
+}
+
+/* We simply control opacity via the --explode variable for smooth scrubbing */
+.piece-video .piece-title,
+.piece-wave .piece-title {
+  opacity: calc((var(--explode) - 0.3) * 2); /* Starts fading in after 30% explosion */
+}
+
+.final-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  z-index: 50;
+  pointer-events: none;
+  opacity: calc((var(--explode) - 0.85) * 10); /* Only visible at >85% progress */
+}
+
+.final-message h3 {
+  font-size: 2rem;
+  color: #020617;
+  margin-bottom: 0.5rem;
+}
+
+.final-message p {
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.4;
 }
 
 .pricing {
@@ -924,7 +970,7 @@ h1 span { color: #f43f5e; }
   }
 
   .exploded-section {
-    height: 500vh;
+    height: 250vh; /* Also updated for mobile consistency */
   }
 
   .exploded-sticky {
