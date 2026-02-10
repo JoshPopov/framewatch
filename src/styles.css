@@ -536,16 +536,17 @@ h1 span { color: #f43f5e; }
 }
 
 .piece-cover {
-  width: min(238px, 34vw);
+  width: min(374px, 56vw); /* Increased to fill the frame */
   aspect-ratio: 9 / 16;
-  z-index: 4;
+  z-index: 2; /* Lowered z-index to sit behind the UI */
   border-radius: 26px;
   background: linear-gradient(145deg, rgba(34, 51, 97, 0.95), rgba(76, 52, 124, 0.92));
   transform:
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * -300px + var(--rebuild) * -102px),
-      calc(-126px + var(--explode) * -162px + var(--rebuild) * 12px)
+      /* Changed -126px to 0px to center it in the frame */
+      calc(0px + var(--explode) * -162px + var(--rebuild) * 12px)
     )
     rotate(calc(var(--explode) * -18deg + var(--rebuild) * 14deg));
 }
@@ -582,7 +583,8 @@ h1 span { color: #f43f5e; }
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * 278px + var(--rebuild) * 95px),
-      calc(32px + var(--explode) * -135px + var(--rebuild) * -162px)
+      /* Changed 32px to 160px to push it down */
+      calc(160px + var(--explode) * -135px + var(--rebuild) * -162px)
     )
     rotate(calc(var(--explode) * 8deg + var(--rebuild) * 0deg));
 }
@@ -712,7 +714,8 @@ h1 span { color: #f43f5e; }
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * 220px + var(--rebuild) * 0px),
-      calc(206px + var(--explode) * 220px + var(--rebuild) * 46px)
+      /* Changed 206px to 270px to anchor it to the bottom */
+      calc(270px + var(--explode) * 220px + var(--rebuild) * 46px)
     )
     rotate(calc(var(--explode) * 12deg + var(--rebuild) * 0deg));
 }
