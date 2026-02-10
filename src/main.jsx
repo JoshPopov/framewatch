@@ -17,21 +17,6 @@ const stats = [
   { icon: '◎', ghost: '24/7', headline: '24/7', title: 'Placeholder Coverage Metric', copy: 'Placeholder: Continuous monitoring coverage placeholder text for additional trust indicator and future reporting data.' }
 ];
 
-const featurePoints = [
-  { step: '01', title: 'Continuous Global Surveillance', body: 'Our detection rails watch known mirror sites, search surfaces, and repost channels in real-time across thousands of endpoints.' },
-  { step: '02', title: 'Automated Strike Pipeline', body: 'Every confirmed match enters a notice stream with platform-specific templates and auto escalation timers.' },
-  { step: '03', title: 'Live Clearance Feedback', body: 'As assets are removed, your dashboard updates status and confidence so response teams can stay focused.' }
-];
-
-const streamRows = [
-  ['portrait-feed-983', 'ugc-sync-441', 'mirror-archive-72', 'faceclip-20', 'live-share-998', 'leakdump-511'],
-  ['voice-sample-077', 'seed-video-551', 'framepack-301', 'clonepool-014', 'repost-node-822', 'crawl-index-419'],
-  ['dumpboard-291', 'tagged-cut-114', 'fakecast-665', 'region-cache-742', 'hash-match-502', 'clipchain-039'],
-  ['source-hub-811', 'takedown-log-230', 'scrape-batch-095', 'alert-cache-474', 'queue-run-123', 'drift-copy-954'],
-  ['biometric-hold-604', 'threat-frame-410', 'voicefork-052', 'node-relay-283', 'counterfeed-735', 'audit-drop-168'],
-  ['mirror-feed-540', 'rapid-spread-914', 'multicast-221', 'media-loop-366', 'danger-index-841', 'tracker-run-014']
-];
-
 const plans = [
   { name: 'Individual', detail: 'Personal social monitoring', icon: '◔', tags: ['2 Profiles', 'Weekly Sync', 'Takedowns'], price: '$29', unit: '/MO', cta: 'Select', featured: false },
   { name: 'Professional', detail: 'For creators & public figures', icon: '✦', tags: ['10 Profiles', '24/7 Monitoring', 'Priority Removal', 'Voice Protection'], price: '$89', unit: '/MO', cta: 'Monitor', featured: true },
@@ -141,26 +126,57 @@ function MatrixGrid() {
   );
 }
 
-function TakedownStreams() {
+function ExplodedRebuildSection() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const section = document.querySelector('.exploded-section');
+    if (!section) return;
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const total = rect.height - viewport;
+      const current = Math.min(Math.max(-rect.top, 0), total);
+      setProgress(total > 0 ? current / total : 0);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="stream-wall" aria-hidden="true">
-      {streamRows.map((row, rowIdx) => (
-        <div key={`row-${rowIdx}`} className={`stream-row ${rowIdx % 2 ? 'reverse' : ''}`}>
-          <div className="stream-track">
-            {[...row, ...row].map((label, itemIdx) => {
-              return (
-                <article key={`${label}-${itemIdx}`} className="stream-card">
-                  <div className="stream-media">
-                    <span className="scan-line"></span>
-                  </div>
-                  <p>{label}</p>
-                </article>
-              );
-            })}
-          </div>
+    <section className="exploded-section">
+      <div className="exploded-sticky">
+        <div className="exploded-heading">
+          <p className="eyebrow">SOCIAL THREAT BREAKDOWN</p>
+          <h2 className="title">From One Mockup to Full Platform Control</h2>
         </div>
-      ))}
-    </div>
+
+        <div className="mockup-stage" style={{ '--progress': progress }}>
+          <article className="mock-piece piece-frame"><span>FRAME</span></article>
+          <article className="mock-piece piece-cover"><span>COVER</span><i></i></article>
+          <article className="mock-piece piece-meta">
+            <span>POST INFO</span>
+            <h3>@luna.orchestra</h3>
+            <p>Midnight Echoes • Reel</p>
+            <b></b>
+          </article>
+          <article className="mock-piece piece-video"></article>
+          <article className="mock-piece piece-actions"><span>♡</span><span>💬</span><span>↗</span><span>♪</span></article>
+          <article className="mock-piece piece-wave">
+            <div>{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
+          </article>
+          <article className="mock-piece piece-controls"><span>⏮</span><b>▶</b><span>⏭</span></article>
+          <article className="mock-piece piece-pill">IG + TT UI</article>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -232,23 +248,7 @@ function App() {
         </section>
 
         <section className="features">
-          <TakedownStreams />
-          <div className="feature-overlay"></div>
-          <div className="feature-content">
-            <p className="eyebrow reveal" data-reveal>OUR METHODOLOGY</p>
-            <h2 className="title reveal" data-reveal>We exist to change that.</h2>
-            <div className="feature-list">
-              {featurePoints.map((feature) => (
-                <article key={feature.title} className="feature-step reveal" data-reveal>
-                  <span>{feature.step}</span>
-                  <div>
-                    <h3>{feature.title}</h3>
-                    <p>{feature.body}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
+          <ExplodedRebuildSection />
         </section>
 
         <section id="pricing" className="pricing">
