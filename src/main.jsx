@@ -140,10 +140,16 @@ function ExplodedRebuildSection() {
       const totalDist = rect.height - viewportHeight;
       const scrolled = -rect.top;
 
+      /* UPDATED LOGIC: DELAY ANIMATION START */
+      // Users must scroll 25% of the viewport height into the section before animation starts.
+      const startBuffer = viewportHeight * 0.25;
+      const effectiveDist = totalDist - startBuffer;
+
       let progress = 0;
-      if (scrolled > 0) {
-        progress = Math.min(1, scrolled / totalDist);
+      if (scrolled > startBuffer) {
+        progress = Math.min(1, (scrolled - startBuffer) / effectiveDist);
       }
+      
       stage.style.setProperty('--progress', progress.toFixed(4));
     };
 
@@ -164,11 +170,11 @@ function ExplodedRebuildSection() {
           <article className="mock-piece piece-frame"></article>
 
           <article className="mock-piece piece-cover">
-            <span>Extracted Image</span><i></i>
+            <span>Extracted Image</span>
           </article>
 
           <article className="mock-piece piece-meta">
-            <span>MEDIA INFO</span>
+            <span>Media Info</span>
             <h3>@misa.amane</h3>
             <p>Midnight Echoes • Reel</p>
             <b></b>
