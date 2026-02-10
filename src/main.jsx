@@ -142,37 +142,18 @@ function MatrixGrid() {
 }
 
 function TakedownStreams() {
-  const [flagged, setFlagged] = useState([]);
-
-  useEffect(() => {
-    setFlagged(streamRows.map(() => Math.floor(Math.random() * 6)));
-
-    const timer = setInterval(() => {
-      setFlagged(streamRows.map(() => Math.floor(Math.random() * 6)));
-    }, 1650);
-
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <div className="stream-wall" aria-hidden="true">
       {streamRows.map((row, rowIdx) => (
         <div key={`row-${rowIdx}`} className={`stream-row ${rowIdx % 2 ? 'reverse' : ''}`}>
           <div className="stream-track">
             {[...row, ...row].map((label, itemIdx) => {
-              const cellIdx = itemIdx % row.length;
-              const isFlagged = flagged[rowIdx] === cellIdx;
-
               return (
-                <article
-                  key={`${label}-${itemIdx}`}
-                  className={`stream-card ${isFlagged ? `flagged ${rowIdx % 2 ? 'flick-right' : 'flick-left'}` : ''}`}
-                >
+                <article key={`${label}-${itemIdx}`} className="stream-card">
                   <div className="stream-media">
                     <span className="scan-line"></span>
                   </div>
                   <p>{label}</p>
-                  <span className="remove-mark">✕</span>
                 </article>
               );
             })}
@@ -224,7 +205,7 @@ function App() {
           <div className="hero-content hero-intro">
             <p className="hero-badge"><span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE v2.0</p>
             <h1>Your Face.<br /><span>Your Control.</span></h1>
-            <p className="lead">If someone is using your face or voice without consent. We help you find it, and take it down.</p>
+            <p className="lead">If someone is using your face or voice without consent.<br />We help you find it, and take it down.</p>
           </div>
           <div className="chevron" aria-hidden="true">⌄</div>
         </section>
@@ -278,10 +259,11 @@ function App() {
 
         <footer className="site-footer">
           <div className="footer-glass-row">
-            <div className="brand"><span>⛨</span> FRAMEWATCH</div>
             <small>© 2026 FrameWatch. All rights reserved.</small>
+            <span className="footer-sep" aria-hidden="true"></span>
             <small>Built for modern identity protection.</small>
-            <small>Built in Canada 🇨🇦</small>
+            <span className="footer-sep" aria-hidden="true"></span>
+            <small>Made in Canada 🇨🇦</small>
           </div>
         </footer>
       </main>
