@@ -115,14 +115,13 @@ nav {
   max-width: 300px;
 }
 
-/* UPDATED: Specific font for Nav to feel more "Apple" */
 nav a {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   text-decoration: none;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-weight: 700; /* Adjusted weight for system font */
+  font-weight: 700;
   color: #64748b;
   position: relative;
   padding: 0.45rem 0.6rem;
@@ -182,7 +181,6 @@ nav:has(a:nth-of-type(3):focus-visible) .nav-blob {
 
 .btn:hover { background: #0b1227; color: white; }
 
-/* NEW STYLE for Profile Icon */
 .btn-icon-profile {
   background: transparent;
   border: none;
@@ -516,6 +514,117 @@ h1 span { color: #f43f5e; }
   font-size: clamp(1.8rem, 4.2vw, 3.25rem);
 }
 
+/* NEW: Detection Algorithms Section Styles */
+.algo-section {
+  padding: 6rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  background: #f1f5f9; /* Blend with previous section */
+}
+
+.algo-container {
+  max-width: 1080px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.algo-content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s var(--ease);
+}
+.algo-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.algo-title {
+  color: #020617; /* Black title as requested */
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  margin: 0.6rem 0 1.2rem;
+  line-height: 1.1;
+}
+
+.algo-text {
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.algo-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #0f172a;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 1s var(--ease) 0.2s;
+}
+.algo-visual.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.scan-grid {
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  position: relative;
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #3b82f6;
+  box-shadow: 0 0 20px #3b82f6;
+  animation: scanDown 3s linear infinite;
+}
+
+@keyframes scanDown {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.scan-node {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #f43f5e;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #f43f5e;
+  opacity: 0;
+}
+
+.scan-node.n1 { top: 30%; left: 40%; animation: pulseNode 3s infinite 1s; }
+.scan-node.n2 { top: 60%; left: 70%; animation: pulseNode 3s infinite 1.8s; }
+.scan-node.n3 { top: 45%; left: 20%; animation: pulseNode 3s infinite 2.4s; }
+
+@keyframes pulseNode {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+
 .mockup-stage {
   --progress: 0;
   --explode: clamp(0, calc(var(--progress) * 2.2), 1);
@@ -811,31 +920,156 @@ h1 span { color: #f43f5e; }
   line-height: 1.4;
 }
 
+/* REDESIGNED PRICING SECTION - APPLE STYLE */
 .pricing {
-  background:
-    radial-gradient(circle at 50% -10%, rgba(251, 113, 133, 0.12), transparent 48%),
-    linear-gradient(180deg, #edf2f7 0%, #f8fafc 22%);
-  padding: 6rem 1.2rem;
+  background: #fff; /* Clean white background */
+  padding: 8rem 1.5rem;
   display: block;
 }
 
-.pricing .title {
-  color: #020617;
-  margin: 0.8rem 0 2.2rem;
-  font-size: clamp(1.8rem, 4.2vw, 3.25rem);
+.pricing-header {
   text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
 }
 
-.pricing .eyebrow {
-  color: rgba(251, 113, 133, 0.9);
-  text-shadow: none;
-  width: fit-content;
-  margin: 0 auto 0.75rem;
+.pricing .title {
+  color: #1d1d1f; /* Apple dark grey */
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
 }
+
+.pricing .lead {
+  font-size: 1.25rem;
+  color: #86868b; /* Apple subtle grey */
+  font-weight: 500;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.apple-card {
+  background: #fbfbfd;
+  border-radius: 24px; /* Big rounded corners */
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(0,0,0,0.08); /* Subtle border */
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.apple-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+.apple-card.featured {
+  background: #f5f5f7;
+  border-color: #000;
+}
+
+.card-top {
+  margin-bottom: 2rem;
+}
+
+.plan-icon {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #1d1d1f;
+}
+
+.plan-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0 0 0.4rem;
+}
+
+.plan-detail {
+  font-size: 0.95rem;
+  color: #86868b;
+  line-height: 1.4;
+}
+
+.card-price {
+  margin: 1.5rem 0;
+}
+
+.amt {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.03em;
+}
+
+.unit {
+  font-size: 1rem;
+  color: #86868b;
+  font-weight: 600;
+}
+
+.card-features {
+  margin-bottom: 2.5rem;
+}
+
+.feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.92rem;
+  color: #424245;
+  line-height: 1.5;
+}
+
+.check {
+  color: #0071e3; /* Apple Blue */
+  font-weight: 900;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #0071e3;
+  color: #fff;
+  border: none;
+}
+.btn-primary:hover {
+  background: #0077ed;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #0071e3;
+  border: 1px solid #0071e3;
+}
+.btn-outline:hover {
+  background: #0071e3;
+  color: white;
+}
+
 
 /* UPDATED: Prettier "Why does this cost money?" button */
 .pricing-info {
-  margin: 2rem auto 0;
+  margin: 4rem auto 0; /* More spacing */
   display: flex;
   width: fit-content;
   align-items: center;
