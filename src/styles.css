@@ -67,30 +67,14 @@ body.scroll-locked {
   align-items: center;
   gap: 0.55rem;
   color: #0b1227;
+  text-decoration: none; /* Removed underline */
+  cursor: pointer;
 }
 
-/* LOGO STYLES */
 .brand-logo-img {
-  width: 24px;
-  height: 24px;
+  width: 28px; /* Slightly larger for standalone look */
+  height: 28px;
   object-fit: contain;
-}
-
-.brand-word {
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
-
-.brand-word b {
-  color: #020b3f;
-  font-weight: 900;
-}
-
-.brand-word strong {
-  color: #fb4a5d;
-  font-weight: 900;
 }
 
 nav {
@@ -121,6 +105,7 @@ nav a {
   transition: color 0.45s var(--ease);
 }
 
+/* UPDATED: Smoother "Apple-like" Blob */
 .nav-blob {
   position: absolute;
   top: 0.16rem;
@@ -129,9 +114,10 @@ nav a {
   height: calc(100% - 0.32rem);
   border-radius: 999px;
   background: #334155;
-  box-shadow: 0 6px 14px rgba(51, 65, 85, 0.32);
+  box-shadow: 0 4px 10px rgba(51, 65, 85, 0.2);
   z-index: 1;
-  transition: transform 0.45s var(--ease), opacity 0.35s var(--ease);
+  /* Smoother bezier curve */
+  transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
   opacity: 0;
 }
 
@@ -156,21 +142,6 @@ nav:has(a:nth-of-type(3):focus-visible) .nav-blob {
   opacity: 1;
 }
 
-.btn {
-  border-radius: 999px;
-  border: var(--card-border);
-  background: #fff;
-  color: #0f172a;
-  padding: 0.68rem 1.45rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 11px;
-  font-weight: 900;
-  transition: all 0.5s var(--ease);
-}
-
-.btn:hover { background: #0b1227; color: white; }
-
 .btn-icon-profile {
   background: transparent;
   border: none;
@@ -186,15 +157,6 @@ nav:has(a:nth-of-type(3):focus-visible) .nav-blob {
   color: #0f172a;
   background: rgba(0,0,0,0.04);
 }
-
-.btn-rose {
-  background: var(--rose-600);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 10px 20px rgba(251, 113, 133, 0.26);
-}
-
-.btn-rose:hover { background: #e11d48; color: white; }
 
 .hero {
   position: relative;
@@ -449,7 +411,6 @@ h1 span { color: #f43f5e; }
 
 .features {
   position: relative;
-  /* Seamless background fix: Ensure it starts with #f1f5f9 to match algo-section */
   background: #f1f5f9;
 }
 
@@ -469,7 +430,6 @@ h1 span { color: #f43f5e; }
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  /* Updated Background: Starts with #f1f5f9 to seamlessly blend with algo-section */
   background:
     radial-gradient(circle at 50% 44%, rgba(148, 163, 184, 0.16), transparent 54%),
     linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
@@ -478,7 +438,7 @@ h1 span { color: #f43f5e; }
 .exploded-split-layout {
   width: min(1200px, 100%);
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr; /* Visual gets more space */
+  grid-template-columns: 1.3fr 0.7fr;
   gap: 2rem;
   align-items: center;
   height: 100%;
@@ -493,7 +453,7 @@ h1 span { color: #f43f5e; }
   width: 100%;
   text-align: left;
   z-index: 20;
-  transition: opacity 0.1s linear, transform 0.1s linear; /* Smooth transition for JS changes */
+  transition: opacity 0.1s linear, transform 0.1s linear;
 }
 
 .exploded-heading .eyebrow {
@@ -523,10 +483,10 @@ h1 span { color: #f43f5e; }
 }
 
 .algo-section {
-  padding: 6rem 1.5rem 6rem; /* Removed bottom margin issues */
+  padding: 6rem 1.5rem 6rem;
   display: flex;
   justify-content: center;
-  background: #f1f5f9; /* Explicitly matching the sticky section top */
+  background: #f1f5f9;
 }
 
 .algo-container {
@@ -638,9 +598,9 @@ h1 span { color: #f43f5e; }
   --rebuild: clamp(0, calc((var(--progress) - 0.52) * 2.2), 1);
   position: relative;
   z-index: 8;
-  width: 100%; /* Full width of its column */
+  width: 100%;
   aspect-ratio: 1 / 0.9;
-  margin-top: 0; /* Reset margin */
+  margin-top: 0;
 }
 
 .mock-piece {
@@ -1387,16 +1347,63 @@ h1 span { color: #f43f5e; }
 
   .piece-cover {
     width: min(194px, 45vw);
+    /* MOBILE OVERRIDES: Compact vertical stack */
+    transform:
+      translate(-50%, -50%)
+      translate(
+        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
+        calc(0px + var(--explode) * -70px + var(--rebuild) * 0px)
+      )
+      rotate(calc(var(--explode) * 0deg + var(--rebuild) * 0deg))
+      scale(calc(1 - var(--explode) * 0.1));
   }
 
-  .piece-meta,
-  .piece-wave,
+  .piece-meta {
+    width: min(250px, 58vw);
+    /* MOBILE OVERRIDES: Stack below cover */
+    transform:
+      translate(-50%, -50%)
+      translate(
+        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
+        calc(160px + var(--explode) * 60px + var(--rebuild) * 0px)
+      )
+      rotate(0deg);
+  }
+
+  .piece-wave {
+    width: min(250px, 58vw);
+    /* MOBILE OVERRIDES */
+    transform:
+      translate(-50%, -50%)
+      translate(
+        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
+        calc(270px + var(--explode) * -40px + var(--rebuild) * 0px)
+      )
+      rotate(0deg);
+  }
+
   .piece-controls {
     width: min(250px, 58vw);
+    /* MOBILE OVERRIDES */
+    transform:
+      translate(-50%, -50%)
+      translate(
+        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
+        calc(270px + var(--explode) * 40px + var(--rebuild) * 0px)
+      )
+      rotate(0deg);
   }
 
   .piece-video {
     width: min(148px, 35vw);
+    /* MOBILE OVERRIDES: Hide behind or slight shift */
+    transform:
+      translate(-50%, -50%)
+      translate(
+        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
+        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px)
+      )
+      rotate(0deg);
   }
 
   .price-cta {
@@ -1424,9 +1431,14 @@ h1 span { color: #f43f5e; }
     font-size: 1rem;
   }
 
-  .brand-logo-img {
-    width: 20px;
-    height: 20px;
+  .brand-mark {
+    width: 22px;
+    height: 22px;
+  }
+
+  .brand-mark i {
+    width: 9px;
+    height: 9px;
   }
 
   nav {
