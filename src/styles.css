@@ -69,21 +69,11 @@ body.scroll-locked {
   color: #0b1227;
 }
 
-.brand-mark {
+/* LOGO STYLES */
+.brand-logo-img {
   width: 24px;
   height: 24px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  display: grid;
-  place-items: center;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
-}
-
-.brand-mark i {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  background: #fb4a5d;
+  object-fit: contain;
 }
 
 .brand-word {
@@ -459,7 +449,8 @@ h1 span { color: #f43f5e; }
 
 .features {
   position: relative;
-  background: linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
+  /* Seamless background fix: Ensure it starts with #f1f5f9 to match algo-section */
+  background: #f1f5f9;
 }
 
 .exploded-section {
@@ -478,12 +469,12 @@ h1 span { color: #f43f5e; }
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  /* Updated Background: Starts with #f1f5f9 to seamlessly blend with algo-section */
   background:
     radial-gradient(circle at 50% 44%, rgba(148, 163, 184, 0.16), transparent 54%),
     linear-gradient(180deg, #f1f5f9 0%, #edf2f7 100%);
 }
 
-/* UPDATED: Split Layout Logic */
 .exploded-split-layout {
   width: min(1200px, 100%);
   display: grid;
@@ -502,6 +493,7 @@ h1 span { color: #f43f5e; }
   width: 100%;
   text-align: left;
   z-index: 20;
+  transition: opacity 0.1s linear, transform 0.1s linear; /* Smooth transition for JS changes */
 }
 
 .exploded-heading .eyebrow {
@@ -531,10 +523,10 @@ h1 span { color: #f43f5e; }
 }
 
 .algo-section {
-  padding: 6rem 1.5rem;
+  padding: 6rem 1.5rem 6rem; /* Removed bottom margin issues */
   display: flex;
   justify-content: center;
-  background: #f1f5f9;
+  background: #f1f5f9; /* Explicitly matching the sticky section top */
 }
 
 .algo-container {
@@ -905,23 +897,35 @@ h1 span { color: #f43f5e; }
   transform: translate(-50%, -50%);
   text-align: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   z-index: 50;
   pointer-events: none;
   opacity: calc((var(--explode) - 0.85) * 10);
   filter: blur(calc((1 - var(--explode)) * 20px));
 }
 
-.final-message h3 {
-  font-size: 2rem;
-  color: #020617;
+.final-message .eyebrow {
+  color: rgba(251, 113, 133, 0.9);
+  text-shadow: none;
+  display: block;
   margin-bottom: 0.5rem;
 }
 
-.final-message p {
+.final-message .title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  color: #020617;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+  text-shadow: none;
+}
+
+.final-message .lead {
   font-size: 1.1rem;
   color: #475569;
-  line-height: 1.4;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 1.2rem auto 0;
+  font-weight: normal;
 }
 
 .pricing {
@@ -1420,14 +1424,9 @@ h1 span { color: #f43f5e; }
     font-size: 1rem;
   }
 
-  .brand-mark {
-    width: 22px;
-    height: 22px;
-  }
-
-  .brand-mark i {
-    width: 9px;
-    height: 9px;
+  .brand-logo-img {
+    width: 20px;
+    height: 20px;
   }
 
   nav {
