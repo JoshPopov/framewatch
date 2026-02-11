@@ -71,10 +71,10 @@ body.scroll-locked {
   cursor: pointer;
 }
 
-/* UPDATED: Bigger logo for readability */
 .brand-logo-img {
   width: auto;
-  height: 34px; /* Increased from 24/28px */
+  height: clamp(22px, 2.4vw, 28px);
+  max-width: min(170px, 34vw);
   object-fit: contain;
   display: block;
 }
@@ -638,11 +638,11 @@ h1 span { color: #f43f5e; }
   transform:
     translate(-50%, -50%)
     translate(
-      calc(0px + var(--explode) * -340px + var(--rebuild) * -102px),
-      calc(0px + var(--explode) * -220px + var(--rebuild) * 12px)
+      calc(0px + var(--explode) * -380px + var(--rebuild) * -102px),
+      calc(0px + var(--explode) * -260px + var(--rebuild) * 12px)
     )
     rotate(calc(var(--explode) * -15deg + var(--rebuild) * 14deg))
-    scale(calc(1 - var(--explode) * 0.15));
+    scale(calc(1 - var(--explode) * 0.42 + var(--rebuild) * 0.08));
 }
 
 .piece-meta {
@@ -1317,6 +1317,11 @@ h1 span { color: #f43f5e; }
     gap: 0.2rem;
   }
 
+  .brand-logo-img {
+    height: clamp(18px, 4.8vw, 22px);
+    max-width: min(130px, 30vw);
+  }
+
   .algo-container {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -1356,65 +1361,66 @@ h1 span { color: #f43f5e; }
     height: 100vh;
   }
 
-  /* UPDATED MOBILE TRANSFORMS: Explode outwards (up/down) instead of stacking */
+  /* Mobile keeps the desktop explosion pattern but scales offsets for small screens */
   .piece-frame {
     width: min(330px, 76vw);
   }
 
   .piece-cover {
-    width: min(194px, 45vw);
+    width: min(238px, 54vw);
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
-        calc(0px + var(--explode) * -140px + var(--rebuild) * 0px)
+        calc(0px + var(--explode) * -168px + var(--rebuild) * -46px),
+        calc(0px + var(--explode) * -148px + var(--rebuild) * 10px)
       )
-      rotate(calc(var(--explode) * -5deg + var(--rebuild) * 0deg))
-      scale(calc(1 - var(--explode) * 0.1));
+      rotate(calc(var(--explode) * -12deg + var(--rebuild) * 10deg))
+      scale(calc(1 - var(--explode) * 0.34 + var(--rebuild) * 0.06));
   }
 
   .piece-meta {
-    width: min(250px, 58vw);
+    width: min(250px, 60vw);
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
-        calc(160px + var(--explode) * -180px + var(--rebuild) * 0px)
+        calc(0px + var(--explode) * 176px + var(--rebuild) * 56px),
+        calc(144px + var(--explode) * -162px + var(--rebuild) * -90px)
       )
-      rotate(calc(var(--explode) * 5deg + var(--rebuild) * 0deg));
+      rotate(calc(var(--explode) * 8deg));
   }
 
   .piece-wave {
-    width: min(250px, 58vw);
+    width: min(246px, 60vw);
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
-        calc(270px + var(--explode) * 40px + var(--rebuild) * 0px)
+        calc(0px + var(--explode) * 164px + var(--rebuild) * 0px),
+        calc(230px + var(--explode) * -112px + var(--rebuild) * 20px)
       )
-      rotate(calc(var(--explode) * -3deg + var(--rebuild) * 0deg));
+      rotate(calc(var(--explode) * -4deg));
   }
 
   .piece-controls {
-    width: min(250px, 58vw);
+    width: min(246px, 60vw);
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
-        calc(270px + var(--explode) * 160px + var(--rebuild) * 0px)
+        calc(0px + var(--explode) * 156px + var(--rebuild) * 0px),
+        calc(230px + var(--explode) * -14px + var(--rebuild) * 44px)
       )
-      rotate(calc(var(--explode) * 3deg + var(--rebuild) * 0deg));
+      rotate(calc(var(--explode) * -8deg));
   }
 
   .piece-video {
-    width: min(148px, 35vw);
+    width: min(176px, 40vw);
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 0px + var(--rebuild) * 0px),
-        calc(0px + var(--explode) * -80px + var(--rebuild) * 0px)
+        calc(0px + var(--explode) * -166px + var(--rebuild) * 52px),
+        calc(0px + var(--explode) * 154px + var(--rebuild) * 20px)
       )
-      rotate(0deg);
+      rotate(calc(var(--explode) * 13deg))
+      scale(calc(1 - var(--explode) * 0.12));
   }
 
   .price-cta {
