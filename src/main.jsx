@@ -206,9 +206,7 @@ function ExplodedRebuildSection() {
       const textFadeMultiplier = isMobile ? 2.2 : 3.5;
       const textOpacity = Math.max(0, 1 - (progress * textFadeMultiplier));
       heading.style.opacity = textOpacity.toFixed(2);
-      heading.style.transform = isMobile
-        ? `translateX(-50%) translateY(${progress * -20}px)`
-        : `translateY(${progress * -20}px)`;
+      heading.style.transform = `translateY(${progress * -20}px)`;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
