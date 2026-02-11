@@ -42,16 +42,16 @@ function MatrixGrid() {
     const zone = Math.floor(Math.random() * 4);
     let top, left;
 
-    if (zone === 0) { // Top Band (Closer)
+    if (zone === 0) { // Top Band
       top = Math.random() * 38; 
       left = Math.random() * 100;
-    } else if (zone === 1) { // Bottom Band (Closer)
+    } else if (zone === 1) { // Bottom Band
       top = 62 + Math.random() * 38;
       left = Math.random() * 100;
-    } else if (zone === 2) { // Left Band (Closer)
+    } else if (zone === 2) { // Left Band
       top = Math.random() * 100;
       left = Math.random() * 25; 
-    } else { // Right Band (Closer)
+    } else { // Right Band
       top = Math.random() * 100;
       left = 75 + Math.random() * 25;
     }
@@ -168,9 +168,10 @@ function ExplodedRebuildSection() {
     const container = document.querySelector('.exploded-section');
     const sticky = document.querySelector('.exploded-sticky');
     const stage = document.querySelector('.mockup-stage');
+    const heading = document.querySelector('.exploded-heading');
 
     const handleScroll = () => {
-      if (!container || !sticky || !stage) return;
+      if (!container || !sticky || !stage || !heading) return;
       const rect = container.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const totalDist = rect.height - viewportHeight;
@@ -185,6 +186,11 @@ function ExplodedRebuildSection() {
       }
       
       stage.style.setProperty('--progress', progress.toFixed(4));
+      
+      // Calculate opacity for the heading text (fade out as progress goes from 0 to 0.5)
+      const textOpacity = Math.max(0, 1 - (progress * 3.5)); // Fades out quickly
+      heading.style.opacity = textOpacity.toFixed(2);
+      heading.style.transform = `translateY(${progress * -20}px)`; // Slight movement up
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -217,12 +223,13 @@ function ExplodedRebuildSection() {
               <div className="playback-buttons"><span>⏮</span><b>▶</b><span>⏭</span></div>
             </article>
             <div className="final-message">
-              <h3>Complete Analysis</h3>
-              <p>We break content down so you can fully understand what’s happening.</p>
+              <p className="eyebrow badge-font">Final Report</p>
+              <h2 className="title">Complete Analysis</h2>
+              <p className="lead">We break content down so you can fully understand what’s happening.</p>
             </div>
           </div>
 
-          {/* Text on the Right */}
+          {/* Text on the Right - This will fade out */}
           <div className="exploded-heading">
             <h2 className="title">Deconstructed Detection</h2>
             <p className="lead">
@@ -262,6 +269,7 @@ function App() {
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
 
+  // Lock scroll when modal is open
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
@@ -291,7 +299,8 @@ function App() {
     <>
       <header className="glass-nav">
         <div className="brand" aria-label="FrameWatch">
-          <span className="brand-mark" aria-hidden="true"><i></i></span>
+          {/* LOGO UPDATE: Replaced the CSS icon with an img tag */}
+          <img src="/logo.png" alt="" className="brand-logo-img" />
           <span className="brand-word"><b>Frame</b><strong>Watch</strong></span>
         </div>
         <nav>
@@ -369,7 +378,6 @@ function App() {
             ))}
           </div>
 
-          {/* UPDATED: Clean icon inside the button */}
           <button className="pricing-info" type="button" aria-label="Why does this cost money?" onClick={() => setIsPricingInfoOpen(true)}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="info-icon-svg">
               <circle cx="12" cy="12" r="10"></circle>
