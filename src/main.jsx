@@ -39,21 +39,22 @@ function useReveal() {
 
 function MatrixGrid() {
   const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => {
+    // Top Gap Fix: Specifically target the area between nav and text (approx 0-30% vertical)
     const zone = Math.floor(Math.random() * 4);
     let top, left;
 
-    if (zone === 0) {
-      top = Math.random() * 38; 
+    if (zone === 0) { // Top Band (Fill the gap between nav and text)
+      top = Math.random() * 30; // 0-30%
       left = Math.random() * 100;
-    } else if (zone === 1) {
-      top = 62 + Math.random() * 38;
+    } else if (zone === 1) { // Bottom Band
+      top = 70 + Math.random() * 30; // 70-100%
       left = Math.random() * 100;
-    } else if (zone === 2) {
+    } else if (zone === 2) { // Left Side
       top = Math.random() * 100;
-      left = Math.random() * 25; 
-    } else {
+      left = Math.random() * 15; // 0-15%
+    } else { // Right Side
       top = Math.random() * 100;
-      left = 75 + Math.random() * 25;
+      left = 85 + Math.random() * 15; // 85-100%
     }
 
     return {
@@ -177,7 +178,9 @@ function ExplodedRebuildSection() {
       const totalDist = rect.height - viewportHeight;
       const scrolled = -rect.top;
 
-      const startBuffer = viewportHeight * 0.25;
+      // UPDATED: Mobile logic - Start animation later (40% buffer) to ensure center screen
+      const isMobile = window.innerWidth <= 980;
+      const startBuffer = viewportHeight * (isMobile ? 0.40 : 0.25);
       const effectiveDist = totalDist - startBuffer;
 
       let progress = 0;
@@ -253,7 +256,6 @@ function App() {
   useEffect(() => {
     const links = document.querySelectorAll('.glass-nav nav a, .brand');
     const handleClick = (event) => {
-      // Find closest anchor tag
       const anchor = event.currentTarget.closest('a');
       if (!anchor) return;
       
@@ -302,7 +304,6 @@ function App() {
   return (
     <>
       <header className="glass-nav">
-        {/* UPDATED: Link wrapped around logo only, no text */}
         <a href="#home" className="brand" aria-label="FrameWatch Home">
           <img src="/logo.png" alt="FrameWatch" className="brand-logo-img" />
         </a>
