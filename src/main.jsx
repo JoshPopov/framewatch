@@ -18,9 +18,9 @@ const stats = [
 ];
 
 const plans = [
-  { name: 'Individual', detail: 'Personal social monitoring', icon: '◔', tags: ['2 Profiles', 'Weekly Sync', 'Takedowns'], price: '$29', unit: '/MO', cta: 'Select', featured: false },
-  { name: 'Professional', detail: 'For creators & public figures', icon: '✦', tags: ['10 Profiles', '24/7 Monitoring', 'Priority Removal', 'Voice Protection'], price: '$89', unit: '/MO', cta: 'Monitor', featured: true },
-  { name: 'Enterprise', detail: 'Corporate identity defense', icon: '▦', tags: ['Unlimited Scans', 'Full API Access', 'Dedicated Crisis Mgr'], price: 'Quote', unit: 'Custom', cta: 'Contact', featured: false }
+  { name: 'Individual', detail: 'Personal social monitoring', icon: '◔', features: ['2 Profiles Monitored', 'Weekly Scan Reports', 'Automated Takedowns', 'Email Support'], price: '$29', unit: '/mo', cta: 'Get Started', featured: false },
+  { name: 'Professional', detail: 'For creators & public figures', icon: '✦', features: ['10 Profiles Monitored', 'Real-time Alerts', 'Priority Legal Action', 'Voice Cloning Defense', 'Dedicated Agent'], price: '$89', unit: '/mo', cta: 'Start Trial', featured: true },
+  { name: 'Enterprise', detail: 'Corporate identity defense', icon: '▦', features: ['Unlimited Scans', 'Full API Access', 'Crisis Management Team', 'Custom SSO', 'SLA Guarantee'], price: 'Custom', unit: '', cta: 'Contact Sales', featured: false }
 ];
 
 function useReveal() {
@@ -38,25 +38,24 @@ function useReveal() {
 }
 
 function MatrixGrid() {
-  // UPDATED: Logic to spawn snippets around the center text (Safe Zone)
+  // UPDATED: Tighter safe zone around the center text
+  // Safe Zone: Top 38%-62%, Left 25%-75%
   const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => {
-    // We pick one of 4 zones to ensure the center is empty
-    // Center Safe Zone approx: Top 35%-65%, Left 20%-80%
     const zone = Math.floor(Math.random() * 4);
     let top, left;
 
-    if (zone === 0) { // Top Band
-      top = Math.random() * 32; // 0% to 32%
+    if (zone === 0) { // Top Band (Closer)
+      top = Math.random() * 38; 
       left = Math.random() * 100;
-    } else if (zone === 1) { // Bottom Band
-      top = 68 + Math.random() * 32; // 68% to 100%
+    } else if (zone === 1) { // Bottom Band (Closer)
+      top = 62 + Math.random() * 38;
       left = Math.random() * 100;
-    } else if (zone === 2) { // Left Band
+    } else if (zone === 2) { // Left Band (Closer)
       top = Math.random() * 100;
-      left = Math.random() * 18; // 0% to 18%
-    } else { // Right Band
+      left = Math.random() * 25; 
+    } else { // Right Band (Closer)
       top = Math.random() * 100;
-      left = 82 + Math.random() * 18; // 82% to 100%
+      left = 75 + Math.random() * 25;
     }
 
     return {
@@ -77,29 +76,21 @@ function MatrixGrid() {
 
   useEffect(() => {
     const timeouts = new Set();
-
     const timer = setInterval(() => {
       const fadingIds = new Set();
-
       setCells((prev) => {
         const next = [...prev];
-
         for (let i = 0; i < 12; i += 1) {
           const idx = Math.floor(Math.random() * next.length);
           fadingIds.add(next[idx].id);
-          next[idx] = {
-            ...next[idx],
-            opacity: 0.02
-          };
+          next[idx] = { ...next[idx], opacity: 0.02 };
         }
-
         return next;
       });
 
       const timeoutId = setTimeout(() => {
         setCells((prev) => prev.map((cell) => {
           if (!fadingIds.has(cell.id)) return cell;
-
           return {
             ...cell,
             text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
@@ -112,7 +103,6 @@ function MatrixGrid() {
         }));
         timeouts.delete(timeoutId);
       }, 600);
-
       timeouts.add(timeoutId);
     }, 2800);
 
@@ -149,6 +139,33 @@ function MatrixGrid() {
   );
 }
 
+// New Section Component
+function DetectionAlgorithms() {
+  return (
+    <div className="algo-section">
+      <div className="algo-container">
+        <div className="algo-content" data-reveal>
+          <p className="eyebrow badge-font">How It Works</p>
+          <h2 className="algo-title">Detection Algorithms</h2>
+          <p className="algo-text">
+            Our proprietary multi-modal models analyze standard video feeds in real-time. 
+            By decomposing signals into distinct biometric layers, we can identify synthetic 
+            artifacts that are invisible to the naked eye.
+          </p>
+        </div>
+        <div className="algo-visual" data-reveal>
+          <div className="scan-grid">
+            <div className="scan-line"></div>
+            <div className="scan-node n1"></div>
+            <div className="scan-node n2"></div>
+            <div className="scan-node n3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ExplodedRebuildSection() {
   useEffect(() => {
     const container = document.querySelector('.exploded-section');
@@ -182,43 +199,29 @@ function ExplodedRebuildSection() {
     <div className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-heading">
-          <p className="eyebrow badge-font">How It Works</p>
+          {/* Removed eyebrow here as it's now in the section above */}
           <h2 className="title">Deconstructed Detection</h2>
         </div>
 
         <div className="mockup-stage">
           <article className="mock-piece piece-frame"></article>
-
-          <article className="mock-piece piece-cover">
-            <span>Extracted Image</span>
-          </article>
-
+          <article className="mock-piece piece-cover"><span>Extracted Image</span></article>
           <article className="mock-piece piece-meta">
             <span>Media Info</span>
             <h3>@misa.amane</h3>
             <p>Midnight Echoes • Reel</p>
             <b></b>
           </article>
-
-          <article className="mock-piece piece-video">
-            <span>Hidden Metadata</span>
-          </article>
-
+          <article className="mock-piece piece-video"><span>Hidden Metadata</span></article>
           <article className="mock-piece piece-wave">
             <span>Extracted Audio</span>
             <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
           </article>
-
           <article className="mock-piece piece-controls">
             <span>Playback Info</span>
-            <div className="playback-bar">
-              <div className="playback-progress"></div>
-            </div>
-            <div className="playback-buttons">
-              <span>⏮</span><b>▶</b><span>⏭</span>
-            </div>
+            <div className="playback-bar"><div className="playback-progress"></div></div>
+            <div className="playback-buttons"><span>⏮</span><b>▶</b><span>⏭</span></div>
           </article>
-
           <div className="final-message">
             <h3>Complete Analysis</h3>
             <p>We break content down so you can fully understand what’s happening.</p>
@@ -244,17 +247,13 @@ function App() {
     const handleClick = (event) => {
       const href = event.currentTarget.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
-
       const target = document.querySelector(href);
       if (!target) return;
-
       event.preventDefault();
       const navOffset = 104;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
-
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
     };
-
     links.forEach((link) => link.addEventListener('click', handleClick));
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
@@ -262,7 +261,6 @@ function App() {
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
-
     if (isPricingInfoOpen) {
       root.classList.add('scroll-locked');
       body.classList.add('scroll-locked');
@@ -270,7 +268,6 @@ function App() {
       root.classList.remove('scroll-locked');
       body.classList.remove('scroll-locked');
     }
-
     return () => {
       root.classList.remove('scroll-locked');
       body.classList.remove('scroll-locked');
@@ -331,27 +328,43 @@ function App() {
         </section>
 
         <section className="features">
+          {/* New Section placed here */}
+          <DetectionAlgorithms />
           <ExplodedRebuildSection />
         </section>
 
         <section id="pricing" className="pricing">
-          <p className="eyebrow badge-font">Plans & Pricing</p>
-          <h2 className="title">Protection for Everyone</h2>
+          <div className="pricing-header">
+            <h2 className="title">Plans & Pricing</h2>
+            <p className="lead">Simple, transparent pricing for everyone.</p>
+          </div>
 
-          {plans.map((plan) => (
-            <article key={plan.name} className={`price-card ${plan.featured ? 'featured' : ''}`}>
-              {plan.featured && <span className="popular">Most Popular</span>}
-              <div className="plan-id">
-                <div className="plan-icon">{plan.icon}</div>
-                <div>
-                  <h3>{plan.name}</h3>
-                  <p>{plan.detail}</p>
+          <div className="pricing-grid">
+            {plans.map((plan) => (
+              <article key={plan.name} className={`apple-card ${plan.featured ? 'featured' : ''}`}>
+                <div className="card-top">
+                  <div className="plan-icon">{plan.icon}</div>
+                  <h3 className="plan-name">{plan.name}</h3>
+                  <p className="plan-detail">{plan.detail}</p>
                 </div>
-              </div>
-              <div className="tags">{plan.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
-              <div className="price-cta"><strong>{plan.price}</strong><small>{plan.unit}</small><button className={`btn ${plan.featured ? 'btn-rose' : ''}`}>{plan.cta}</button></div>
-            </article>
-          ))}
+                
+                <div className="card-price">
+                  <span className="amt">{plan.price}</span>
+                  <span className="unit">{plan.unit}</span>
+                </div>
+
+                <div className="card-features">
+                  {plan.features.map(feat => (
+                    <div key={feat} className="feature-row">
+                      <span className="check">✓</span> {feat}
+                    </div>
+                  ))}
+                </div>
+
+                <button className={`btn-block ${plan.featured ? 'btn-primary' : 'btn-outline'}`}>{plan.cta}</button>
+              </article>
+            ))}
+          </div>
 
           <button className="pricing-info" type="button" aria-label="Why does this cost money?" onClick={() => setIsPricingInfoOpen(true)}>
             <span className="info-icon" aria-hidden="true">?</span>
@@ -368,27 +381,13 @@ function App() {
         </footer>
       </main>
 
-      <div
-        className={`info-modal-backdrop ${isPricingInfoOpen ? 'open' : ''}`}
-        onClick={() => setIsPricingInfoOpen(false)}
-        aria-hidden={!isPricingInfoOpen}
-      >
-        <div
-          className="info-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="pricing-info-title"
-          onClick={(event) => event.stopPropagation()}
-        >
+      <div className={`info-modal-backdrop ${isPricingInfoOpen ? 'open' : ''}`} onClick={() => setIsPricingInfoOpen(false)} aria-hidden={!isPricingInfoOpen}>
+        <div className="info-modal" role="dialog" aria-modal="true" aria-labelledby="pricing-info-title" onClick={(event) => event.stopPropagation()}>
           <button className="info-modal-close" type="button" aria-label="Close" onClick={() => setIsPricingInfoOpen(false)}>×</button>
           <h3 id="pricing-info-title">Why does this cost money?</h3>
-          <p>
-            Placeholder text: Pricing covers continuous monitoring infrastructure, legal takedown workflows,
-            and the human support needed to respond quickly when identity abuse is detected.
-          </p>
+          <p>Placeholder text: Pricing covers continuous monitoring infrastructure, legal takedown workflows, and the human support needed to respond quickly when identity abuse is detected.</p>
         </div>
       </div>
-
     </>
   );
 }
