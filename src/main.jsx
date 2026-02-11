@@ -42,16 +42,16 @@ function MatrixGrid() {
     const zone = Math.floor(Math.random() * 4);
     let top, left;
 
-    if (zone === 0) { // Top Band
+    if (zone === 0) {
       top = Math.random() * 38; 
       left = Math.random() * 100;
-    } else if (zone === 1) { // Bottom Band
+    } else if (zone === 1) {
       top = 62 + Math.random() * 38;
       left = Math.random() * 100;
-    } else if (zone === 2) { // Left Band
+    } else if (zone === 2) {
       top = Math.random() * 100;
       left = Math.random() * 25; 
-    } else { // Right Band
+    } else {
       top = Math.random() * 100;
       left = 75 + Math.random() * 25;
     }
@@ -187,10 +187,9 @@ function ExplodedRebuildSection() {
       
       stage.style.setProperty('--progress', progress.toFixed(4));
       
-      // Calculate opacity for the heading text (fade out as progress goes from 0 to 0.5)
-      const textOpacity = Math.max(0, 1 - (progress * 3.5)); // Fades out quickly
+      const textOpacity = Math.max(0, 1 - (progress * 3.5));
       heading.style.opacity = textOpacity.toFixed(2);
-      heading.style.transform = `translateY(${progress * -20}px)`; // Slight movement up
+      heading.style.transform = `translateY(${progress * -20}px)`;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -202,7 +201,6 @@ function ExplodedRebuildSection() {
     <div className="exploded-section">
       <div className="exploded-sticky">
         <div className="exploded-split-layout">
-          {/* Visual on the Left */}
           <div className="mockup-stage">
             <article className="mock-piece piece-frame"></article>
             <article className="mock-piece piece-cover"><span>Extracted Image</span></article>
@@ -229,7 +227,6 @@ function ExplodedRebuildSection() {
             </div>
           </div>
 
-          {/* Text on the Right - This will fade out */}
           <div className="exploded-heading">
             <h2 className="title">Deconstructed Detection</h2>
             <p className="lead">
@@ -254,22 +251,29 @@ function App() {
   const [isPricingInfoOpen, setIsPricingInfoOpen] = useState(false);
 
   useEffect(() => {
-    const links = document.querySelectorAll('.glass-nav nav a');
+    const links = document.querySelectorAll('.glass-nav nav a, .brand');
     const handleClick = (event) => {
-      const href = event.currentTarget.getAttribute('href');
+      // Find closest anchor tag
+      const anchor = event.currentTarget.closest('a');
+      if (!anchor) return;
+      
+      const href = anchor.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
+      
       const target = document.querySelector(href);
       if (!target) return;
+      
       event.preventDefault();
       const navOffset = 104;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
+      
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
     };
+
     links.forEach((link) => link.addEventListener('click', handleClick));
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
 
-  // Lock scroll when modal is open
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
@@ -298,11 +302,10 @@ function App() {
   return (
     <>
       <header className="glass-nav">
-        <div className="brand" aria-label="FrameWatch">
-          {/* LOGO UPDATE: Replaced the CSS icon with an img tag */}
-          <img src="/logo.png" alt="" className="brand-logo-img" />
-          <span className="brand-word"><b>Frame</b><strong>Watch</strong></span>
-        </div>
+        {/* UPDATED: Link wrapped around logo only, no text */}
+        <a href="#home" className="brand" aria-label="FrameWatch Home">
+          <img src="/logo.png" alt="FrameWatch" className="brand-logo-img" />
+        </a>
         <nav>
           <span className="nav-blob" aria-hidden="true"></span>
           <a href="#home">Home</a>
