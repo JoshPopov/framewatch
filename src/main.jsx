@@ -173,26 +173,42 @@ function ExplodedRebuildSection() {
 
     const handleScroll = () => {
       if (!container || !sticky || !stage || !heading) return;
+
       const rect = container.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const totalDist = rect.height - viewportHeight;
       const scrolled = -rect.top;
-
-      // UPDATED: Mobile logic - Start animation later (40% buffer) to ensure center screen
       const isMobile = window.innerWidth <= 980;
-      const startBuffer = viewportHeight * (isMobile ? 0.40 : 0.25);
-      const effectiveDist = totalDist - startBuffer;
+
+      let startBuffer = viewportHeight * (isMobile ? 0.52 : 0.25);
+
+      if (isMobile) {
+        const frame = stage.querySelector('.piece-frame');
+        if (frame) {
+          const frameRect = frame.getBoundingClientRect();
+          const frameCenter = frameRect.top + frameRect.height / 2;
+          const viewportCenter = viewportHeight / 2;
+          const centerDistance = Math.abs(frameCenter - viewportCenter);
+          const alignmentBoost = Math.min(viewportHeight * 0.22, centerDistance * 0.8);
+          startBuffer += alignmentBoost;
+        }
+      }
+
+      const effectiveDist = Math.max(1, totalDist - startBuffer);
 
       let progress = 0;
       if (scrolled > startBuffer) {
         progress = Math.min(1, (scrolled - startBuffer) / effectiveDist);
       }
-      
+
       stage.style.setProperty('--progress', progress.toFixed(4));
-      
-      const textOpacity = Math.max(0, 1 - (progress * 3.5));
+
+      const textFadeMultiplier = isMobile ? 2.2 : 3.5;
+      const textOpacity = Math.max(0, 1 - (progress * textFadeMultiplier));
       heading.style.opacity = textOpacity.toFixed(2);
-      heading.style.transform = `translateY(${progress * -20}px)`;
+      heading.style.transform = isMobile
+        ? `translateX(-50%) translateY(${progress * -20}px)`
+        : `translateY(${progress * -20}px)`;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
