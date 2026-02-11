@@ -38,8 +38,6 @@ function useReveal() {
 }
 
 function MatrixGrid() {
-  // UPDATED: Tighter safe zone around the center text
-  // Safe Zone: Top 38%-62%, Left 25%-75%
   const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => {
     const zone = Math.floor(Math.random() * 4);
     let top, left;
@@ -139,7 +137,6 @@ function MatrixGrid() {
   );
 }
 
-// New Section Component
 function DetectionAlgorithms() {
   return (
     <div className="algo-section">
@@ -198,33 +195,40 @@ function ExplodedRebuildSection() {
   return (
     <div className="exploded-section">
       <div className="exploded-sticky">
-        <div className="exploded-heading">
-          {/* Removed eyebrow here as it's now in the section above */}
-          <h2 className="title">Deconstructed Detection</h2>
-        </div>
+        <div className="exploded-split-layout">
+          {/* Visual on the Left */}
+          <div className="mockup-stage">
+            <article className="mock-piece piece-frame"></article>
+            <article className="mock-piece piece-cover"><span>Extracted Image</span></article>
+            <article className="mock-piece piece-meta">
+              <span>Media Info</span>
+              <h3>@misa.amane</h3>
+              <p>Midnight Echoes • Reel</p>
+              <b></b>
+            </article>
+            <article className="mock-piece piece-video"><span>Hidden Metadata</span></article>
+            <article className="mock-piece piece-wave">
+              <span>Extracted Audio</span>
+              <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
+            </article>
+            <article className="mock-piece piece-controls">
+              <span>Playback Info</span>
+              <div className="playback-bar"><div className="playback-progress"></div></div>
+              <div className="playback-buttons"><span>⏮</span><b>▶</b><span>⏭</span></div>
+            </article>
+            <div className="final-message">
+              <h3>Complete Analysis</h3>
+              <p>We break content down so you can fully understand what’s happening.</p>
+            </div>
+          </div>
 
-        <div className="mockup-stage">
-          <article className="mock-piece piece-frame"></article>
-          <article className="mock-piece piece-cover"><span>Extracted Image</span></article>
-          <article className="mock-piece piece-meta">
-            <span>Media Info</span>
-            <h3>@misa.amane</h3>
-            <p>Midnight Echoes • Reel</p>
-            <b></b>
-          </article>
-          <article className="mock-piece piece-video"><span>Hidden Metadata</span></article>
-          <article className="mock-piece piece-wave">
-            <span>Extracted Audio</span>
-            <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
-          </article>
-          <article className="mock-piece piece-controls">
-            <span>Playback Info</span>
-            <div className="playback-bar"><div className="playback-progress"></div></div>
-            <div className="playback-buttons"><span>⏮</span><b>▶</b><span>⏭</span></div>
-          </article>
-          <div className="final-message">
-            <h3>Complete Analysis</h3>
-            <p>We break content down so you can fully understand what’s happening.</p>
+          {/* Text on the Right */}
+          <div className="exploded-heading">
+            <h2 className="title">Deconstructed Detection</h2>
+            <p className="lead">
+              We separate every layer of media to verify authenticity. 
+              Audio waves, metadata headers, and frame-by-frame pixel density are analyzed in isolation.
+            </p>
           </div>
         </div>
       </div>
@@ -328,7 +332,6 @@ function App() {
         </section>
 
         <section className="features">
-          {/* New Section placed here */}
           <DetectionAlgorithms />
           <ExplodedRebuildSection />
         </section>
@@ -366,8 +369,13 @@ function App() {
             ))}
           </div>
 
+          {/* UPDATED: Clean icon inside the button */}
           <button className="pricing-info" type="button" aria-label="Why does this cost money?" onClick={() => setIsPricingInfoOpen(true)}>
-            <span className="info-icon" aria-hidden="true">?</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="info-icon-svg">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
             Why does this cost money?
           </button>
         </section>
