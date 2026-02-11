@@ -17,11 +17,6 @@ const stats = [
   { icon: '◎', ghost: '24/7', headline: '24/7', title: 'Placeholder Coverage Metric', copy: 'Placeholder: Continuous monitoring coverage placeholder text for additional trust indicator and future reporting data.' }
 ];
 
-const plans = [
-  { name: 'Individual', detail: 'Personal social monitoring', icon: '◔', features: ['2 Profiles Monitored', 'Weekly Scan Reports', 'Automated Takedowns', 'Email Support'], price: '$29', unit: '/mo', cta: 'Get Started', featured: false },
-  { name: 'Professional', detail: 'For creators & public figures', icon: '✦', features: ['10 Profiles Monitored', 'Real-time Alerts', 'Priority Legal Action', 'Voice Cloning Defense', 'Dedicated Agent'], price: '$89', unit: '/mo', cta: 'Start Trial', featured: true },
-  { name: 'Enterprise', detail: 'Corporate identity defense', icon: '▦', features: ['Unlimited Scans', 'Full API Access', 'Crisis Management Team', 'Custom SSO', 'SLA Guarantee'], price: 'Custom', unit: '', cta: 'Contact Sales', featured: false }
-];
 
 function useReveal() {
   useEffect(() => {
@@ -265,8 +260,6 @@ function App() {
     return /win/i.test(platform);
   }, []);
 
-  const [isPricingInfoOpen, setIsPricingInfoOpen] = useState(false);
-
   useEffect(() => {
     const links = document.querySelectorAll('.glass-nav nav a, .brand');
     const handleClick = (event) => {
@@ -290,31 +283,6 @@ function App() {
     return () => links.forEach((link) => link.removeEventListener('click', handleClick));
   }, []);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const body = document.body;
-    if (isPricingInfoOpen) {
-      root.classList.add('scroll-locked');
-      body.classList.add('scroll-locked');
-    } else {
-      root.classList.remove('scroll-locked');
-      body.classList.remove('scroll-locked');
-    }
-    return () => {
-      root.classList.remove('scroll-locked');
-      body.classList.remove('scroll-locked');
-    };
-  }, [isPricingInfoOpen]);
-
-  useEffect(() => {
-    if (!isPricingInfoOpen) return;
-    const handleEsc = (event) => {
-      if (event.key === 'Escape') setIsPricingInfoOpen(false);
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isPricingInfoOpen]);
-
   return (
     <>
       <header className="glass-nav">
@@ -325,7 +293,7 @@ function App() {
           <span className="nav-blob" aria-hidden="true"></span>
           <a href="#home">Home</a>
           <a href="#about">About</a>
-          <a href="#pricing">Pricing</a>
+          <a href="#cta">Start</a>
         </nav>
         <button className="btn-icon-profile" aria-label="User Profile">
            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -363,47 +331,9 @@ function App() {
           <ExplodedRebuildSection />
         </section>
 
-        <section id="pricing" className="pricing">
-          <div className="pricing-header">
-            <h2 className="title">Plans & Pricing</h2>
-            <p className="lead">Simple, transparent pricing for everyone.</p>
-          </div>
-
-          <div className="pricing-grid">
-            {plans.map((plan) => (
-              <article key={plan.name} className={`apple-card ${plan.featured ? 'featured' : ''}`}>
-                <div className="card-top">
-                  <div className="plan-icon">{plan.icon}</div>
-                  <h3 className="plan-name">{plan.name}</h3>
-                  <p className="plan-detail">{plan.detail}</p>
-                </div>
-                
-                <div className="card-price">
-                  <span className="amt">{plan.price}</span>
-                  <span className="unit">{plan.unit}</span>
-                </div>
-
-                <div className="card-features">
-                  {plan.features.map(feat => (
-                    <div key={feat} className="feature-row">
-                      <span className="check">✓</span> {feat}
-                    </div>
-                  ))}
-                </div>
-
-                <button className={`btn-block ${plan.featured ? 'btn-primary' : 'btn-outline'}`}>{plan.cta}</button>
-              </article>
-            ))}
-          </div>
-
-          <button className="pricing-info" type="button" aria-label="Why does this cost money?" onClick={() => setIsPricingInfoOpen(true)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="info-icon-svg">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-            Why does this cost money?
-          </button>
+        <section id="cta" className="cta-section">
+          <h2 className="title">Ready to check?</h2>
+          <button className="cta-button" type="button">Let's do this</button>
         </section>
 
         <footer className="site-footer">
@@ -415,13 +345,6 @@ function App() {
         </footer>
       </main>
 
-      <div className={`info-modal-backdrop ${isPricingInfoOpen ? 'open' : ''}`} onClick={() => setIsPricingInfoOpen(false)} aria-hidden={!isPricingInfoOpen}>
-        <div className="info-modal" role="dialog" aria-modal="true" aria-labelledby="pricing-info-title" onClick={(event) => event.stopPropagation()}>
-          <button className="info-modal-close" type="button" aria-label="Close" onClick={() => setIsPricingInfoOpen(false)}>×</button>
-          <h3 id="pricing-info-title">Why does this cost money?</h3>
-          <p>Placeholder text: Pricing covers continuous monitoring infrastructure, legal takedown workflows, and the human support needed to respond quickly when identity abuse is detected.</p>
-        </div>
-      </div>
     </>
   );
 }
