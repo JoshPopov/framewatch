@@ -73,8 +73,8 @@ body.scroll-locked {
 
 .brand-logo-img {
   width: auto;
-  height: clamp(22px, 2.4vw, 28px);
-  max-width: min(170px, 34vw);
+  height: clamp(20px, 2.1vw, 25px);
+  max-width: min(152px, 30vw);
   object-fit: contain;
   display: block;
 }
@@ -639,10 +639,10 @@ h1 span { color: #f43f5e; }
     translate(-50%, -50%)
     translate(
       calc(0px + var(--explode) * -380px + var(--rebuild) * -102px),
-      calc(0px + var(--explode) * -260px + var(--rebuild) * 12px)
+      calc(0px + var(--explode) * -240px + var(--rebuild) * 12px)
     )
-    rotate(calc(var(--explode) * -15deg + var(--rebuild) * 14deg))
-    scale(calc(1 - var(--explode) * 0.42 + var(--rebuild) * 0.08));
+    rotate(calc(var(--explode) * -10deg + var(--rebuild) * 8deg))
+    scale(calc(1 - var(--explode) * 0.34 + var(--rebuild) * 0.06));
 }
 
 .piece-meta {
@@ -834,6 +834,11 @@ h1 span { color: #f43f5e; }
   opacity: calc((var(--explode) - 0.2) * 5);
 }
 
+.piece-cover > span {
+  top: -12px;
+  z-index: 12;
+}
+
 .piece-title {
   margin: 0;
   color: #f8fafc;
@@ -925,7 +930,7 @@ h1 span { color: #f43f5e; }
 .apple-card {
   background: #fbfbfd;
   border-radius: 24px;
-  padding: 2.5rem 2rem;
+  padding: 1.8rem 1.55rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -946,12 +951,12 @@ h1 span { color: #f43f5e; }
 }
 
 .card-top {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .plan-icon {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  font-size: 1.65rem;
+  margin-bottom: 0.7rem;
   color: #1d1d1f;
 }
 
@@ -969,11 +974,11 @@ h1 span { color: #f43f5e; }
 }
 
 .card-price {
-  margin: 1.5rem 0;
+  margin: 0.8rem 0 1rem;
 }
 
 .amt {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #1d1d1f;
   letter-spacing: -0.03em;
@@ -986,17 +991,17 @@ h1 span { color: #f43f5e; }
 }
 
 .card-features {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.3rem;
 }
 
 .feature-row {
   display: flex;
   align-items: flex-start;
-  gap: 0.8rem;
-  margin-bottom: 0.8rem;
-  font-size: 0.92rem;
+  gap: 0.72rem;
+  margin-bottom: 0.52rem;
+  font-size: 0.9rem;
   color: #424245;
-  line-height: 1.5;
+  line-height: 1.42;
 }
 
 .check {
@@ -1006,7 +1011,7 @@ h1 span { color: #f43f5e; }
 
 .btn-block {
   width: 100%;
-  padding: 0.9rem;
+  padding: 0.74rem;
   border-radius: 999px;
   font-size: 0.95rem;
   font-weight: 600;
@@ -1318,8 +1323,8 @@ h1 span { color: #f43f5e; }
   }
 
   .brand-logo-img {
-    height: clamp(18px, 4.8vw, 22px);
-    max-width: min(130px, 30vw);
+    height: clamp(17px, 4.2vw, 20px);
+    max-width: min(118px, 28vw);
   }
 
   .algo-container {
@@ -1372,10 +1377,10 @@ h1 span { color: #f43f5e; }
       translate(-50%, -50%)
       translate(
         calc(0px + var(--explode) * -168px + var(--rebuild) * -46px),
-        calc(0px + var(--explode) * -148px + var(--rebuild) * 10px)
+        calc(0px + var(--explode) * -136px + var(--rebuild) * 10px)
       )
-      rotate(calc(var(--explode) * -12deg + var(--rebuild) * 10deg))
-      scale(calc(1 - var(--explode) * 0.34 + var(--rebuild) * 0.06));
+      rotate(calc(var(--explode) * -8deg + var(--rebuild) * 8deg))
+      scale(calc(1 - var(--explode) * 0.3 + var(--rebuild) * 0.05));
   }
 
   .piece-meta {
@@ -1421,6 +1426,26 @@ h1 span { color: #f43f5e; }
       )
       rotate(calc(var(--explode) * 13deg))
       scale(calc(1 - var(--explode) * 0.12));
+  }
+
+  .mock-piece:not(.piece-frame) {
+    opacity: calc(1 - var(--rebuild) * 1.3);
+  }
+
+  .piece-meta > span,
+  .piece-controls > span,
+  .piece-cover > span,
+  .piece-video > span,
+  .piece-wave > span {
+    top: -13px;
+    font-size: 0.66rem;
+    padding: 0.26rem 0.58rem;
+    opacity: clamp(0.72, calc((var(--explode) - 0.04) * 3), 1);
+    z-index: 66;
+  }
+
+  .final-message {
+    z-index: 80;
   }
 
   .price-cta {
