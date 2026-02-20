@@ -402,7 +402,7 @@ export default function LandingPage() {
 
         <section id="cta" className="cta-section">
           <h2 className="title">Ready to check?</h2>
-          <Link href="/auth/sign-up" className="cta-button">
+          <Link href="/auth/login" className="cta-button">
             {"Let's do this"}
           </Link>
         </section>
