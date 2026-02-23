@@ -262,7 +262,7 @@ function App() {
 
   useEffect(() => {
     const nav = document.querySelector('.glass-nav');
-    const darkSections = () => document.querySelectorAll('.bold-statement, .notify-section');
+    const darkSections = () => document.querySelectorAll('.bold-statement, .notify-section, .cta-section');
 
     const checkNav = () => {
       if (!nav) return;
@@ -434,6 +434,7 @@ function App() {
             <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
           </div>
           <h2 className="title">Ready to check?</h2>
+          <p className="cta-lead">Be the first to take control of your digital identity.</p>
           <button className="cta-button" type="button">Join Waitlist</button>
         </section>
 
