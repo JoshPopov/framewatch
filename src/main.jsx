@@ -295,12 +295,7 @@ function App() {
           <a href="#about">About</a>
           <a href="#cta">Start</a>
         </nav>
-        <button className="btn-icon-profile" aria-label="User Profile">
-           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-             <circle cx="12" cy="7" r="4" />
-           </svg>
-        </button>
+        <button className="btn-waitlist" type="button">Join Waitlist</button>
       </header>
 
       <main>
@@ -333,7 +328,7 @@ function App() {
 
         <section id="cta" className="cta-section">
           <h2 className="title">Ready to check?</h2>
-          <button className="cta-button" type="button">Let's do this</button>
+          <button className="cta-button" type="button">Join Waitlist</button>
         </section>
 
         <footer className="site-footer">

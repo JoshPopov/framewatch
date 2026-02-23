@@ -46,16 +46,17 @@ body.scroll-locked {
   border-radius: 999px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   padding: 0.35rem 0.45rem 0.35rem 0.7rem;
-  animation: navFloatIn 1.15s var(--ease) both;
+  transition: box-shadow 0.6s cubic-bezier(0.25, 1, 0.5, 1), background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  animation: navFloatIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) both;
 }
 
 @keyframes navFloatIn {
-  from {
+  0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(-26px) scale(0.95);
-    filter: blur(12px);
+    transform: translateX(-50%) translateY(-20px) scale(0.97);
+    filter: blur(8px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateX(-50%) translateY(0) scale(1);
     filter: blur(0);
@@ -104,7 +105,7 @@ nav a {
   border-radius: 999px;
   z-index: 2;
   text-align: center;
-  transition: color 0.45s var(--ease);
+  transition: color 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .nav-blob {
@@ -117,7 +118,7 @@ nav a {
   background: #334155;
   box-shadow: 0 4px 10px rgba(51, 65, 85, 0.2);
   z-index: 1;
-  transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   opacity: 0;
 }
 
@@ -142,20 +143,28 @@ nav:has(a:nth-of-type(3):focus-visible) .nav-blob {
   opacity: 1;
 }
 
-.btn-icon-profile {
-  background: transparent;
+.btn-waitlist {
   border: none;
-  color: #64748b;
-  cursor: pointer;
-  padding: 0.5rem;
   border-radius: 999px;
-  transition: color 0.3s ease, background 0.3s ease;
-  display: grid;
-  place-items: center;
+  background: #0f172a;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.btn-icon-profile:hover {
-  color: #0f172a;
-  background: rgba(0,0,0,0.04);
+.btn-waitlist:hover {
+  background: #1e293b;
+  transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+}
+.btn-waitlist:active {
+  transform: scale(0.97);
+  transition-duration: 0.12s;
 }
 
 .hero {
@@ -1271,12 +1280,17 @@ h1 span { color: #f43f5e; }
   padding: 0.95rem 1.8rem;
   cursor: pointer;
   box-shadow: 0 16px 34px rgba(244, 63, 94, 0.28);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .cta-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
   box-shadow: 0 20px 40px rgba(244, 63, 94, 0.34);
+}
+
+.cta-button:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.12s;
 }
 
 .site-footer {
@@ -1523,7 +1537,8 @@ h1 span { color: #f43f5e; }
     padding: 0.48rem 0.35rem;
   }
 
-  .btn-login {
-    display: none;
+  .btn-waitlist {
+    font-size: 10px;
+    padding: 0.42rem 0.7rem;
   }
 }
