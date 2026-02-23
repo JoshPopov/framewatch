@@ -261,6 +261,29 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const nav = document.querySelector('.glass-nav');
+    const darkSections = () => document.querySelectorAll('.bold-statement, .notify-section');
+
+    const checkNav = () => {
+      if (!nav) return;
+      const navRect = nav.getBoundingClientRect();
+      const navMid = navRect.top + navRect.height / 2;
+      let onDark = false;
+
+      darkSections().forEach((section) => {
+        const r = section.getBoundingClientRect();
+        if (navMid >= r.top && navMid <= r.bottom) onDark = true;
+      });
+
+      nav.classList.toggle('nav-dark', onDark);
+    };
+
+    window.addEventListener('scroll', checkNav, { passive: true });
+    checkNav();
+    return () => window.removeEventListener('scroll', checkNav);
+  }, []);
+
+  useEffect(() => {
     const links = document.querySelectorAll('.glass-nav nav a, .brand');
     const handleClick = (event) => {
       const anchor = event.currentTarget.closest('a');
@@ -387,8 +410,6 @@ function App() {
             </div>
 
             <div className="notify-footer" data-reveal>
-              <p>You stay informed.</p>
-              <p>You stay in control.</p>
               <p className="notify-footer-bold">Nothing happens behind your back.</p>
             </div>
           </div>
