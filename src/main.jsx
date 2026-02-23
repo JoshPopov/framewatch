@@ -12,9 +12,9 @@ const MATRIX_SNIPPETS = [
 const MATRIX_COLORS = ['#fb7185', '#0d9488', '#f59e0b', '#0284c7', '#7c3aed'];
 
 const stats = [
-  { icon: '⚠', ghost: '90%', headline: '90%+', title: 'Non-Consensual Material', copy: 'Research indicates over 90% of deepfake content appearing on public forums is created without explicit permission.' },
-  { icon: '↗', ghost: '10×', headline: '10× Volume', title: 'Explosive Growth', copy: 'AI tooling has accelerated abuse creation and distribution, increasing malicious volume by over 1,000%.' },
-  { icon: '◎', ghost: '24/7', headline: '24/7', title: 'Placeholder Coverage Metric', copy: 'Placeholder: Continuous monitoring coverage placeholder text for additional trust indicator and future reporting data.' }
+  { icon: '⚠', ghost: '90%', headline: '90%+', title: 'Without Consent', copy: 'Most deepfake content is created without permission. Yours could already be out there.' },
+  { icon: '↗', ghost: '100×', headline: '100×', title: 'Growth', copy: 'AI has made abuse cheap, fast, and scalable.' },
+  { icon: '◎', ghost: '700+', headline: '700+ Per Minute', title: 'Uploaded Deepfakes', copy: 'That’s how many deepfake images and videos hit the internet every minute.' }
 ];
 
 
@@ -141,9 +141,9 @@ function DetectionAlgorithms() {
           <p className="eyebrow badge-font">How It Works</p>
           <h2 className="algo-title">Detection Algorithms</h2>
           <p className="algo-text">
-            Our proprietary multi-modal models analyze standard video feeds in real-time. 
-            By decomposing signals into distinct biometric layers, we can identify synthetic 
-            artifacts that are invisible to the naked eye.
+            Our proprietary multi-modal models analyze image and video feeds in real-time from tens of thousands of sources from the public and dark web. 
+              By decomposing signals into distinct biometric layers, we can identify synthetic 
+              artifacts that are invisible to the naked eye.
           </p>
         </div>
         <div className="algo-visual" data-reveal>
@@ -304,7 +304,8 @@ function App() {
           <div className="hero-content hero-intro">
             <p className="hero-badge"><span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE v2.0</p>
             <h1>Your Face.<br /><span>Your Control.</span></h1>
-            <p className="lead">If someone is using your face or voice without consent. We'll know about it, and we'll take it down. Instantly.</p>
+            <p className="lead">Someone is using your face or voice without consent.
+            We help you find it and take it down.</p>
           </div>
         </section>
 
@@ -324,6 +325,85 @@ function App() {
         <section className="features">
           <DetectionAlgorithms />
           <ExplodedRebuildSection />
+        </section>
+
+        <section className="bold-statement" data-reveal>
+          <div className="bold-statement-bg" aria-hidden="true">
+            <div className="bold-ring r1"></div>
+            <div className="bold-ring r2"></div>
+            <div className="bold-ring r3"></div>
+            <div className="bold-pulse-dot"></div>
+          </div>
+          <div className="bold-statement-content">
+            <h2 className="bold-line line-1">Most people never find out.</h2>
+            <h2 className="bold-line line-2">You will.</h2>
+          </div>
+        </section>
+
+        <section className="notify-section">
+          <div className="notify-container">
+            <div className="notify-header" data-reveal>
+              <p className="eyebrow badge-font">How You Stay In Control</p>
+              <h2 className="notify-title">You're Notified. You're Shown. You Decide.</h2>
+              <p className="notify-subtitle">When we detect content using your likeness:</p>
+            </div>
+
+            <div className="notify-grid">
+              <div className="notify-card" data-reveal>
+                <div className="notify-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <h3>Instant alerts the moment a match is found</h3>
+                <div className="notify-card-line" aria-hidden="true"></div>
+              </div>
+              <div className="notify-card" data-reveal>
+                <div className="notify-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </div>
+                <h3>See the exact content using your face or voice</h3>
+                <div className="notify-card-line" aria-hidden="true"></div>
+              </div>
+              <div className="notify-card" data-reveal>
+                <div className="notify-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <h3>Confidence scores & evidence — no black boxes</h3>
+                <div className="notify-card-line" aria-hidden="true"></div>
+              </div>
+              <div className="notify-card" data-reveal>
+                <div className="notify-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3>One-click accelerated takedown requests</h3>
+                <div className="notify-card-line" aria-hidden="true"></div>
+              </div>
+              <div className="notify-card" data-reveal>
+                <div className="notify-card-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Ongoing monitoring so it doesn't come back</h3>
+                <div className="notify-card-line" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <div className="notify-footer" data-reveal>
+              <p>You stay informed.</p>
+              <p>You stay in control.</p>
+              <p className="notify-footer-bold">Nothing happens behind your back.</p>
+            </div>
+          </div>
+
+          <div className="notify-particles" aria-hidden="true">
+            {Array.from({ length: 18 }, (_, i) => (
+              <span key={i} className="notify-particle" style={{
+                '--x': `${10 + Math.random() * 80}%`,
+                '--y': `${10 + Math.random() * 80}%`,
+                '--d': `${6 + Math.random() * 14}s`,
+                '--del': `${-Math.random() * 8}s`,
+                '--s': `${0.4 + Math.random() * 0.8}`,
+              }}></span>
+            ))}
+          </div>
         </section>
 
         <section id="cta" className="cta-section">
