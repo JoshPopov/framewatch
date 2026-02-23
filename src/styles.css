@@ -35,17 +35,17 @@ body.scroll-locked {
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: min(520px, calc(100% - 1.5rem));
+  width: min(560px, calc(100% - 1.5rem));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.35rem;
+  gap: 0.4rem;
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  padding: 0.28rem 0.35rem 0.28rem 0.65rem;
+  padding: 0.34rem 0.4rem 0.34rem 0.7rem;
   transition: box-shadow 0.6s cubic-bezier(0.25, 1, 0.5, 1), background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   animation: navFloatIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) both;
 }
@@ -74,8 +74,8 @@ body.scroll-locked {
 
 .brand-logo-img {
   width: auto;
-  height: clamp(20px, 2.1vw, 25px);
-  max-width: min(152px, 30vw);
+  height: clamp(16px, 1.7vw, 20px);
+  max-width: min(120px, 26vw);
   object-fit: contain;
   display: block;
 }
@@ -91,11 +91,11 @@ nav {
 nav a {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
-  padding: 0.32rem 0.6rem;
+  padding: 0.36rem 0.7rem;
   border-radius: 999px;
   text-align: center;
   white-space: nowrap;
@@ -122,10 +122,10 @@ nav a:active {
   background: #0f172a;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0;
-  padding: 0.38rem 0.9rem;
+  padding: 0.42rem 1rem;
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -1231,38 +1231,118 @@ h1 span { color: #f43f5e; }
 
 .cta-section {
   background: #fff;
-  padding: clamp(4.5rem, 9vw, 7rem) 1.5rem clamp(5rem, 10vw, 8rem);
+  padding: clamp(5rem, 10vw, 9rem) 1.5rem clamp(5.5rem, 11vw, 10rem);
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .cta-section .title {
   color: #0f172a;
   font-size: clamp(2.3rem, 7vw, 5rem);
   letter-spacing: -0.03em;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-orbits {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 90vw);
+  aspect-ratio: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta-orbit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 63, 94, 0.08);
+}
+
+.cta-orbit:nth-child(1) {
+  inset: 10%;
+  border-color: rgba(244, 63, 94, 0.12);
+  animation: orbitSpin 28s linear infinite;
+}
+
+.cta-orbit:nth-child(2) {
+  inset: 22%;
+  border-color: rgba(244, 63, 94, 0.1);
+  animation: orbitSpin 22s linear infinite reverse;
+}
+
+.cta-orbit:nth-child(3) {
+  inset: 34%;
+  border-color: rgba(244, 63, 94, 0.07);
+  animation: orbitSpin 18s linear infinite;
+}
+
+.cta-orbit-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f43f5e;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+}
+
+.cta-orbit:nth-child(2) .cta-orbit-dot {
+  width: 5px;
+  height: 5px;
+  background: #fb7185;
+  opacity: 0.7;
+  top: auto;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+}
+
+.cta-orbit:nth-child(3) .cta-orbit-dot {
+  width: 4px;
+  height: 4px;
+  background: #fda4af;
+  opacity: 0.5;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .cta-button {
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #f43f5e, #fb7185);
+  background: #f43f5e;
   color: #fff;
   font-size: clamp(1rem, 1.7vw, 1.18rem);
   font-weight: 700;
   padding: 0.95rem 1.8rem;
   cursor: pointer;
-  box-shadow: 0 16px 34px rgba(244, 63, 94, 0.28);
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.2);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .cta-button:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(244, 63, 94, 0.34);
+  background: #e11d48;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(244, 63, 94, 0.3);
 }
 
 .cta-button:active {
-  transform: translateY(0) scale(0.98);
-  transition-duration: 0.12s;
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.1s;
 }
 
 .site-footer {

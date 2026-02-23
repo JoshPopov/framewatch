@@ -327,6 +327,11 @@ function App() {
         </section>
 
         <section id="cta" className="cta-section">
+          <div className="cta-orbits" aria-hidden="true">
+            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+          </div>
           <h2 className="title">Ready to check?</h2>
           <button className="cta-button" type="button">Join Waitlist</button>
         </section>
