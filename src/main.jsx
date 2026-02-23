@@ -273,7 +273,7 @@ function App() {
       if (!target) return;
       
       event.preventDefault();
-      const navOffset = 104;
+      const navOffset = 72;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
       
       window.scrollTo({ top: targetTop, behavior: 'smooth' });
