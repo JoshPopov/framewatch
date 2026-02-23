@@ -262,7 +262,7 @@ function App() {
 
   useEffect(() => {
     const nav = document.querySelector('.glass-nav');
-    const darkSections = () => document.querySelectorAll('.bold-statement, .notify-section, .cta-section');
+    const darkSections = () => document.querySelectorAll('.bold-statement, .notify-section, .cta-section, .site-footer');
 
     const checkNav = () => {
       if (!nav) return;

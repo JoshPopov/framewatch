@@ -1377,7 +1377,7 @@ h1 span { color: #f43f5e; }
 }
 
 .notify-container {
-  max-width: 860px;
+  max-width: 720px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -1439,9 +1439,7 @@ h1 span { color: #f43f5e; }
 }
 
 .notify-card:nth-child(5) {
-  grid-column: 1 / -1;
-  max-width: 50%;
-  margin: 0 auto;
+  grid-column: 1 / 2;
 }
 
 .notify-card:hover {
@@ -1664,8 +1662,8 @@ h1 span { color: #f43f5e; }
   font-weight: 700;
   padding: 0.95rem 2.2rem;
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(244, 63, 94, 0.3), 0 0 80px rgba(244, 63, 94, 0.1);
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease;
+  box-shadow: none;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease;
   position: relative;
   z-index: 2;
 }
@@ -1673,7 +1671,6 @@ h1 span { color: #f43f5e; }
 .cta-button:hover {
   background: #e11d48;
   transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(244, 63, 94, 0.4), 0 0 100px rgba(244, 63, 94, 0.15);
 }
 
 .cta-button:active {
@@ -1682,38 +1679,36 @@ h1 span { color: #f43f5e; }
 }
 
 .site-footer {
-  margin: 1rem auto 1.4rem;
-  width: min(1160px, calc(100% - 1.6rem));
-  padding: 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.3));
-  backdrop-filter: blur(24px) saturate(135%);
-  color: #334155;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
-  border-bottom-left-radius: 2rem;
-  border-bottom-right-radius: 2rem;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 1.5rem 2.2rem;
+  border: none;
+  background: #020617;
+  backdrop-filter: none;
+  color: #94a3b8;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .footer-glass-row {
   width: 100%;
-  min-height: 68px;
-  border-radius: 1.35rem;
-  padding: 0.85rem 1.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  background: rgba(255, 255, 255, 0.52);
-  backdrop-filter: blur(12px);
-  display: grid;
-  grid-template-columns: repeat(3, auto);
+  max-width: 1160px;
+  margin: 0 auto;
+  min-height: auto;
+  border-radius: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  backdrop-filter: none;
+  display: flex;
   justify-content: center;
-  gap: 0.7rem 0.95rem;
   align-items: center;
+  gap: 0.95rem;
 }
 
 .footer-glass-row small {
-  color: #475569;
-  font-size: 0.86rem;
+  color: #64748b;
+  font-size: 0.84rem;
   letter-spacing: 0.02em;
 }
 
@@ -1726,8 +1721,8 @@ h1 span { color: #f43f5e; }
 
 .footer-sep {
   width: 1px;
-  height: 14px;
-  background: rgba(71, 85, 105, 0.38);
+  height: 12px;
+  background: rgba(100, 116, 139, 0.3);
 }
 
 .price-cta small {
