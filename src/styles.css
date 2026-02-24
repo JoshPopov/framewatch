@@ -2180,19 +2180,19 @@ h1 span { color: #f43f5e; }
   }
   
   .exploded-heading {
-    order: -1 !important; /* Forces the text to render BEFORE the animation */
-    position: relative !important; /* Breaks it out of any absolute positioning */
-    top: auto !important; 
-    bottom: auto !important;
-    margin-bottom: 3rem !important; /* Adds a clean gap so they don't touch */
-    align-self: center !important;
-    text-align: center;
+    order: -1 !important; /* Puts text on top */
+    position: relative !important; 
+    margin-bottom: 2rem !important; /* Space between text and animation */
     z-index: 10 !important;
   }
 
   .mockup-stage {
-    order: 2 !important; /* Forces the animation to render BELOW the text */
+    order: 2 !important; /* Puts animation on bottom */
     position: relative !important;
+    
+    /* THE FIX: Forces the container to have a physical height so the text can't overlap it */
+    min-height: 500px !important; 
+    width: 100% !important;
     margin-top: 0 !important;
   }
 }
