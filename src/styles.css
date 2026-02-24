@@ -2173,10 +2173,12 @@ h1 span { color: #f43f5e; }
   margin: 0;
 }
 /* Mobile Overlap Fix for Exploded Section */
+/* Mobile Overlap Fix for Exploded Section */
 @media (max-width: 980px) {
   .exploded-split-layout {
     display: flex !important;
     flex-direction: column !important;
+    align-items: center !important; /* This centers the text container so it aligns with the centered frames */
   }
   
   .exploded-heading {
@@ -2185,17 +2187,22 @@ h1 span { color: #f43f5e; }
     margin-bottom: 2rem !important; 
     z-index: 10 !important;
     
-    /* THE FIX FOR ALIGNMENT */
-    align-self: flex-start !important; /* Pushes the container block to the left */
-    text-align: left !important; /* Aligns the text inside to the left */
+    /* ALIGNMENT FIX: Restrict the width so it visually lines up with the grey frames */
+    width: 90% !important; /* Tweak this % up or down slightly to perfectly match the frame edge */
+    max-width: 380px !important; 
+    text-align: left !important;
+  }
+
+  /* TEXT BOX FIX: Allow the text to stretch the full width of the container */
+  .exploded-heading .title {
+    max-width: 100% !important; 
     width: 100% !important;
+    /* font-size: 2.2rem !important; <-- If it STILL kicks to the 3rd line, uncomment this and slightly lower the rem value */
   }
 
   .mockup-stage {
     order: 2 !important; 
     position: relative !important;
-    
-    /* THE FIX FOR HEIGHT */
     min-height: 600px !important; 
     width: 100% !important;
     margin-top: 0 !important;
