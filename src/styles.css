@@ -1778,7 +1778,8 @@ h1 span { color: #f43f5e; }
     gap: 1.4rem;
     padding: 0 0.6rem;
     place-items: center;
-    align-content: center;
+    align-content: start;
+    padding-top: clamp(1rem, 5vh, 2.4rem);
   }
 
   .exploded-heading {
@@ -1793,6 +1794,7 @@ h1 span { color: #f43f5e; }
   .mockup-stage {
     width: min(560px, 98vw);
     margin: 0 auto;
+    margin-top: clamp(1rem, 3.5vh, 2.1rem);
   }
 
   .exploded-heading .lead {
@@ -1813,6 +1815,11 @@ h1 span { color: #f43f5e; }
   .exploded-sticky {
     top: 0;
     height: 100vh;
+  }
+
+  .exploded-heading .title {
+    font-size: clamp(1.6rem, 8vw, 2.45rem);
+    line-height: 1.2;
   }
 
   /* Mobile keeps the desktop explosion pattern but scales offsets for small screens */
