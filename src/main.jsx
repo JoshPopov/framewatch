@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
@@ -26,7 +32,7 @@ const stats = [
     ghost: "90%",
     headline: "90%+",
     title: "Without Consent",
-    copy: "Most deepfake content is created without permission. Yours could already be out there.",
+    copy: "Most deepfake content is created without permission.\nYours could already be out there.",
   },
   {
     icon: "↗",
@@ -247,10 +253,12 @@ function ExplodedRebuildSection() {
 
       stage.style.setProperty("--progress", progress.toFixed(4));
 
-      const textFadeMultiplier = isMobile ? 2.2 : 3.5;
-      const textOpacity = Math.max(0, 1 - progress * textFadeMultiplier);
-      heading.style.opacity = textOpacity.toFixed(2);
-      heading.style.transform = `translateY(${progress * -20}px)`;
+      if (!isMobile) {
+        const textFadeMultiplier = 3.5;
+        const textOpacity = Math.max(0, 1 - progress * textFadeMultiplier);
+        heading.style.opacity = textOpacity.toFixed(2);
+        heading.style.transform = `translateY(${progress * -20}px)`;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -270,7 +278,7 @@ function ExplodedRebuildSection() {
             <article className="mock-piece piece-meta">
               <span>Media Info</span>
               <h3>@misa.amane</h3>
-              <p>Midnight Echoes • Reel</p>
+              <p>Red Wine Supernova • Reel</p>
               <b></b>
             </article>
             <article className="mock-piece piece-video">
@@ -316,18 +324,18 @@ function ExplodedRebuildSection() {
 }
 
 function WaitlistModal({ open, onClose }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('idle');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
   const [closing, setClosing] = useState(false);
   const backdropRef = useRef(null);
 
   useEffect(() => {
     if (open) {
       setClosing(false);
-      document.body.classList.add('scroll-locked');
+      document.body.classList.add("scroll-locked");
     }
-    return () => document.body.classList.remove('scroll-locked');
+    return () => document.body.classList.remove("scroll-locked");
   }, [open]);
 
   const handleClose = useCallback(() => {
@@ -335,42 +343,47 @@ function WaitlistModal({ open, onClose }) {
     setTimeout(() => {
       onClose();
       setClosing(false);
-      setStatus('idle');
-      setName('');
-      setEmail('');
+      setStatus("idle");
+      setName("");
+      setEmail("");
     }, 300);
   }, [onClose]);
 
-  const handleBackdrop = useCallback((e) => {
-    if (e.target === backdropRef.current) handleClose();
-  }, [handleClose]);
+  const handleBackdrop = useCallback(
+    (e) => {
+      if (e.target === backdropRef.current) handleClose();
+    },
+    [handleClose],
+  );
 
   useEffect(() => {
     if (!open) return;
-    const handleKey = (e) => { if (e.key === 'Escape') handleClose(); };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
+    const handleKey = (e) => {
+      if (e.key === "Escape") handleClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, [open, handleClose]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('submitting');
+    setStatus("submitting");
 
     try {
       const formData = new FormData();
-      formData.append('email', email);
-      formData.append('name', name);
-      formData.append('l', '3d150e5c-b98b-414d-973a-e3237948289d');
+      formData.append("email", email);
+      formData.append("name", name);
+      formData.append("l", "3d150e5c-b98b-414d-973a-e3237948289d");
 
-      await fetch('https://mail.framewatch.org/subscription/form', {
-        method: 'POST',
+      await fetch("https://mail.framewatch.org/subscription/form", {
+        method: "POST",
         body: formData,
-        mode: 'no-cors',
+        mode: "no-cors",
       });
 
-      setStatus('success');
+      setStatus("success");
     } catch {
-      setStatus('success');
+      setStatus("success");
     }
   };
 
@@ -379,31 +392,58 @@ function WaitlistModal({ open, onClose }) {
   return (
     <div
       ref={backdropRef}
-      className={`wl-backdrop${closing ? ' wl-closing' : ''}`}
+      className={`wl-backdrop${closing ? " wl-closing" : ""}`}
       onClick={handleBackdrop}
     >
-      <div className={`wl-modal${closing ? ' wl-modal-closing' : ''}`}>
-        <button className="wl-close" onClick={handleClose} aria-label="Close" type="button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+      <div className={`wl-modal${closing ? " wl-modal-closing" : ""}`}>
+        <button
+          className="wl-close"
+          onClick={handleClose}
+          aria-label="Close"
+          type="button"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
 
-        {status === 'success' ? (
+        {status === "success" ? (
           <div className="wl-success">
             <div className="wl-check-wrap">
               <svg className="wl-check" viewBox="0 0 52 52">
-                <circle className="wl-check-circle" cx="26" cy="26" r="25" fill="none" />
-                <path className="wl-check-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                <circle
+                  className="wl-check-circle"
+                  cx="26"
+                  cy="26"
+                  r="25"
+                  fill="none"
+                />
+                <path
+                  className="wl-check-path"
+                  fill="none"
+                  d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                />
               </svg>
             </div>
             <h3 className="wl-success-title">You're in!</h3>
-            <p className="wl-success-msg">Welcome to the resistance. We'll be in touch before the machines take over.</p>
+            <p className="wl-success-msg">
+              You’ll be notified when access opens.
+            </p>
           </div>
         ) : (
           <>
             <h3 className="wl-title">Get Notified</h3>
-            <p className="wl-subtitle">Be among the first to defend your identity.</p>
+            <p className="wl-subtitle">Find out before it spreads.</p>
             <form className="wl-form" onSubmit={handleSubmit}>
               <div className="wl-field">
                 <input
@@ -428,12 +468,12 @@ function WaitlistModal({ open, onClose }) {
               <button
                 className="wl-submit"
                 type="submit"
-                disabled={status === 'submitting'}
+                disabled={status === "submitting"}
               >
-                {status === 'submitting' ? (
+                {status === "submitting" ? (
                   <span className="wl-spinner"></span>
                 ) : (
-                  'Join Waitlist'
+                  "Join Waitlist"
                 )}
               </button>
             </form>
@@ -517,7 +557,11 @@ function App() {
           <a href="#about">About</a>
           <a href="#cta">Start</a>
         </nav>
-        <button className="btn-waitlist" type="button" onClick={() => setWaitlistOpen(true)}>
+        <button
+          className="btn-waitlist"
+          type="button"
+          onClick={() => setWaitlistOpen(true)}
+        >
           Join Waitlist
         </button>
       </header>
@@ -536,8 +580,8 @@ function App() {
               <span>Your Control.</span>
             </h1>
             <p className="lead">
-              Someone is using your face or voice without consent. We help you
-              find it and take it down.
+              Someone is using your face or voice without consent. <br /> We
+              help you find it and take it down.
             </p>
           </div>
         </section>
@@ -550,7 +594,7 @@ function App() {
               <span className="ghost">{item.ghost}</span>
               <h2>{item.headline}</h2>
               <h3>{item.title}</h3>
-              <p>{item.copy}</p>
+              <p style={{ whiteSpace: "pre-line" }}>{item.copy}</p>
             </div>
           ))}
         </section>
@@ -722,7 +766,11 @@ function App() {
           <p className="cta-lead">
             Be the first to take control of your digital identity.
           </p>
-          <button className="cta-button" type="button" onClick={() => setWaitlistOpen(true)}>
+          <button
+            className="cta-button"
+            type="button"
+            onClick={() => setWaitlistOpen(true)}
+          >
             Join Waitlist
           </button>
         </section>
@@ -740,7 +788,10 @@ function App() {
           </div>
         </footer>
       </main>
-      <WaitlistModal open={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
+      <WaitlistModal
+        open={waitlistOpen}
+        onClose={() => setWaitlistOpen(false)}
+      />
     </>
   );
 }

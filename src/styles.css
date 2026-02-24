@@ -1354,7 +1354,7 @@ h1 span { color: #f43f5e; }
   font-size: clamp(3.5rem, 10vw, 8rem);
   color: #f43f5e;
   margin-top: 0.2em;
-  text-shadow: 0 0 60px rgba(244, 63, 94, 0.35);
+  text-shadow: none;
 }
 
 .bold-statement.visible .bold-line.line-1 {
@@ -1550,10 +1550,11 @@ h1 span { color: #f43f5e; }
   transform: translate(-50%, -50%);
   width: min(600px, 80vw);
   height: min(600px, 80vw);
-  background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, rgba(244, 63, 94, 0.05) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.08) 0%, rgba(244, 63, 94, 0.03) 40%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
-  animation: ctaGlow 6s ease-in-out infinite;
+  animation: none;
+  opacity: 0.5;
 }
 
 @keyframes ctaGlow {
@@ -1781,7 +1782,12 @@ h1 span { color: #f43f5e; }
   }
 
   .exploded-heading {
-    display: none;
+    display: block;
+    order: -1;
+    text-align: center;
+    position: relative;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .mockup-stage {
