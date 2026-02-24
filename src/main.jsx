@@ -227,7 +227,7 @@ function ExplodedRebuildSection() {
       const scrolled = -rect.top;
       const isMobile = window.innerWidth <= 980;
 
-      let startBuffer = viewportHeight * (isMobile ? 0.25 : 0.25);
+      let startBuffer = viewportHeight * (isMobile ? 0.35 : 0.25);
 
       if (isMobile) {
         const frame = stage.querySelector(".piece-frame");
