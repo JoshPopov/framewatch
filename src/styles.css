@@ -2172,16 +2172,3 @@ h1 span { color: #f43f5e; }
   line-height: 1.5;
   margin: 0;
 }
-
-/* Mobile Fix for Overlapping Text */
-@media (max-width: 768px) {
-  .hero-title {
-    position: relative; /* Restores normal document flow */
-    left: 0; /* Resets the -40px left offset */
-    margin-bottom: 24px; /* Adds a nice gap between the text and the animation */
-  }
-
-  .hero-animation {
-    margin-top: 0; /* Removes the hardcoded 50px top margin so the gap isn't too large */
-  }
-}
