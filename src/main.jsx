@@ -253,7 +253,11 @@ function ExplodedRebuildSection() {
 
       stage.style.setProperty("--progress", progress.toFixed(4));
 
-      if (!isMobile) {
+      if (isMobile) {
+        const mobileFade = Math.max(0, 1 - progress * 4);
+        heading.style.opacity = mobileFade.toFixed(2);
+        heading.style.transform = `translateY(${progress * -12}px)`;
+      } else {
         const textFadeMultiplier = 3.5;
         const textOpacity = Math.max(0, 1 - progress * textFadeMultiplier);
         heading.style.opacity = textOpacity.toFixed(2);

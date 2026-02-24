@@ -1786,8 +1786,8 @@ h1 span { color: #f43f5e; }
     order: -1;
     text-align: center;
     position: relative;
-    opacity: 1 !important;
-    transform: none !important;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
   .mockup-stage {
@@ -1905,7 +1905,8 @@ h1 span { color: #f43f5e; }
   }
 
   .cta-button {
-    width: min(260px, 88vw);
+    width: auto;
+    padding: 0.85rem 2rem;
   }
 
   .price-cta {
