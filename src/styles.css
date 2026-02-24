@@ -1932,3 +1932,224 @@ h1 span { color: #f43f5e; }
     padding: 0.36rem 0.7rem;
   }
 }
+
+.wl-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: wlFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  padding: 1rem;
+}
+
+.wl-backdrop.wl-closing {
+  animation: wlFadeOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wlFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes wlFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.wl-modal {
+  position: relative;
+  width: min(420px, 100%);
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.2rem;
+  padding: 2.5rem 2rem 2rem;
+  animation: wlSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.wl-modal.wl-modal-closing {
+  animation: wlSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wlSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes wlSlideDown {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(16px) scale(0.97); }
+}
+
+.wl-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 8px;
+  transition: color 0.2s ease, background 0.2s ease;
+  display: grid;
+  place-items: center;
+}
+
+.wl-close:hover {
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.wl-title {
+  color: #f8fafc;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.3rem;
+}
+
+.wl-subtitle {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin: 0 0 1.8rem;
+  font-weight: 500;
+}
+
+.wl-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.wl-field input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.wl-field input::placeholder {
+  color: #475569;
+}
+
+.wl-field input:focus {
+  border-color: rgba(244, 63, 94, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.wl-submit {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 0.7rem;
+  border: none;
+  background: #f43f5e;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.wl-submit:hover {
+  background: #e11d48;
+}
+
+.wl-submit:active {
+  transform: scale(0.98);
+  transition-duration: 0.1s;
+}
+
+.wl-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.wl-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: wlSpin 0.6s linear infinite;
+}
+
+@keyframes wlSpin {
+  to { transform: rotate(360deg); }
+}
+
+.wl-success {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+  animation: wlSuccessFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wlSuccessFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wl-check-wrap {
+  display: inline-flex;
+  margin-bottom: 1.2rem;
+}
+
+.wl-check {
+  width: 64px;
+  height: 64px;
+}
+
+.wl-check-circle {
+  stroke: #22c55e;
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: wlCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.1s forwards;
+}
+
+.wl-check-path {
+  stroke: #22c55e;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: wlTick 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.55s forwards;
+}
+
+@keyframes wlCircle {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes wlTick {
+  to { stroke-dashoffset: 0; }
+}
+
+.wl-success-title {
+  color: #f8fafc;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+}
+
+.wl-success-msg {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}

@@ -1,31 +1,60 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
 const MATRIX_SNIPPETS = [
-  'NODE_AUTH_BEARER_v2', 'if (match.score > 0.98)', 'payload: { status: "OK" }',
-  'stream.pipe(analyzer).on("match", alert)', 'await sync_authority()', 'while (active) monitor()',
-  'SCAN_STREAMS_ACTIVE', 'const hash = sha256(bio)', 'ERROR: ACCESS_DENIED',
-  'await takedown.send("PLATFORM_A")', 'X: 124.5 Y: 88.2', 'biometric.verify(face_sample)',
-  'DELETE FROM nodes WHERE id=?', 'const takedown = new LegalNotice(id);'
+  "NODE_AUTH_BEARER_v2",
+  "if (match.score > 0.98)",
+  'payload: { status: "OK" }',
+  'stream.pipe(analyzer).on("match", alert)',
+  "await sync_authority()",
+  "while (active) monitor()",
+  "SCAN_STREAMS_ACTIVE",
+  "const hash = sha256(bio)",
+  "ERROR: ACCESS_DENIED",
+  'await takedown.send("PLATFORM_A")',
+  "X: 124.5 Y: 88.2",
+  "biometric.verify(face_sample)",
+  "DELETE FROM nodes WHERE id=?",
+  "const takedown = new LegalNotice(id);",
 ];
-const MATRIX_COLORS = ['#fb7185', '#0d9488', '#f59e0b', '#0284c7', '#7c3aed'];
+const MATRIX_COLORS = ["#fb7185", "#0d9488", "#f59e0b", "#0284c7", "#7c3aed"];
 
 const stats = [
-  { icon: '⚠', ghost: '90%', headline: '90%+', title: 'Without Consent', copy: 'Most deepfake content is created without permission. Yours could already be out there.' },
-  { icon: '↗', ghost: '100×', headline: '100×', title: 'Growth', copy: 'AI has made abuse cheap, fast, and scalable.' },
-  { icon: '◎', ghost: '700+', headline: '700+ Per Minute', title: 'Uploaded Deepfakes', copy: 'That’s how many deepfake images and videos hit the internet every minute.' }
+  {
+    icon: "⚠",
+    ghost: "90%",
+    headline: "90%+",
+    title: "Without Consent",
+    copy: "Most deepfake content is created without permission. Yours could already be out there.",
+  },
+  {
+    icon: "↗",
+    ghost: "100×",
+    headline: "100×",
+    title: "Growth",
+    copy: "AI has made abuse cheap, fast, and scalable.",
+  },
+  {
+    icon: "◎",
+    ghost: "700+",
+    headline: "700+ Per Minute",
+    title: "Uploaded Deepfakes",
+    copy: "That’s how many deepfake images and videos hit the internet every minute.",
+  },
 ];
-
 
 function useReveal() {
   useEffect(() => {
-    const nodes = document.querySelectorAll('[data-reveal]');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.12 });
+    const nodes = document.querySelectorAll("[data-reveal]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.12 },
+    );
 
     nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
@@ -33,38 +62,49 @@ function useReveal() {
 }
 
 function MatrixGrid() {
-  const initialCells = useMemo(() => Array.from({ length: 72 }, (_, i) => {
-    // Top Gap Fix: Specifically target the area between nav and text (approx 0-30% vertical)
-    const zone = Math.floor(Math.random() * 4);
-    let top, left;
+  const initialCells = useMemo(
+    () =>
+      Array.from({ length: 72 }, (_, i) => {
+        // Top Gap Fix: Specifically target the area between nav and text (approx 0-30% vertical)
+        const zone = Math.floor(Math.random() * 4);
+        let top, left;
 
-    if (zone === 0) { // Top Band (Fill the gap between nav and text)
-      top = Math.random() * 30; // 0-30%
-      left = Math.random() * 100;
-    } else if (zone === 1) { // Bottom Band
-      top = 70 + Math.random() * 30; // 70-100%
-      left = Math.random() * 100;
-    } else if (zone === 2) { // Left Side
-      top = Math.random() * 100;
-      left = Math.random() * 15; // 0-15%
-    } else { // Right Side
-      top = Math.random() * 100;
-      left = 85 + Math.random() * 15; // 85-100%
-    }
+        if (zone === 0) {
+          // Top Band (Fill the gap between nav and text)
+          top = Math.random() * 30; // 0-30%
+          left = Math.random() * 100;
+        } else if (zone === 1) {
+          // Bottom Band
+          top = 70 + Math.random() * 30; // 70-100%
+          left = Math.random() * 100;
+        } else if (zone === 2) {
+          // Left Side
+          top = Math.random() * 100;
+          left = Math.random() * 15; // 0-15%
+        } else {
+          // Right Side
+          top = Math.random() * 100;
+          left = 85 + Math.random() * 15; // 85-100%
+        }
 
-    return {
-      id: i,
-      text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
-      color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-      duration: `${9 + Math.random() * 14}s`,
-      delay: `${-Math.random() * 12}s`,
-      top: `${top}%`,
-      left: `${left}%`,
-      xDrift: `${-32 + Math.random() * 64}px`,
-      yDrift: `${-42 + Math.random() * 84}px`,
-      opacity: 0.15 + Math.random() * 0.3
-    };
-  }), []);
+        return {
+          id: i,
+          text: MATRIX_SNIPPETS[
+            Math.floor(Math.random() * MATRIX_SNIPPETS.length)
+          ],
+          color:
+            MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
+          duration: `${9 + Math.random() * 14}s`,
+          delay: `${-Math.random() * 12}s`,
+          top: `${top}%`,
+          left: `${left}%`,
+          xDrift: `${-32 + Math.random() * 64}px`,
+          yDrift: `${-42 + Math.random() * 84}px`,
+          opacity: 0.15 + Math.random() * 0.3,
+        };
+      }),
+    [],
+  );
 
   const [cells, setCells] = useState(initialCells);
 
@@ -83,18 +123,23 @@ function MatrixGrid() {
       });
 
       const timeoutId = setTimeout(() => {
-        setCells((prev) => prev.map((cell) => {
-          if (!fadingIds.has(cell.id)) return cell;
-          return {
-            ...cell,
-            text: MATRIX_SNIPPETS[Math.floor(Math.random() * MATRIX_SNIPPETS.length)],
-            color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-            opacity: 0.14 + Math.random() * 0.32,
-            duration: `${8 + Math.random() * 15}s`,
-            xDrift: `${-38 + Math.random() * 76}px`,
-            yDrift: `${-50 + Math.random() * 100}px`
-          };
-        }));
+        setCells((prev) =>
+          prev.map((cell) => {
+            if (!fadingIds.has(cell.id)) return cell;
+            return {
+              ...cell,
+              text: MATRIX_SNIPPETS[
+                Math.floor(Math.random() * MATRIX_SNIPPETS.length)
+              ],
+              color:
+                MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
+              opacity: 0.14 + Math.random() * 0.32,
+              duration: `${8 + Math.random() * 15}s`,
+              xDrift: `${-38 + Math.random() * 76}px`,
+              yDrift: `${-50 + Math.random() * 100}px`,
+            };
+          }),
+        );
         timeouts.delete(timeoutId);
       }, 600);
       timeouts.add(timeoutId);
@@ -119,10 +164,10 @@ function MatrixGrid() {
               top: cell.top,
               left: cell.left,
               opacity: cell.opacity,
-              '--dur': cell.duration,
-              '--delay': cell.delay,
-              '--drift-x': cell.xDrift,
-              '--drift-y': cell.yDrift,
+              "--dur": cell.duration,
+              "--delay": cell.delay,
+              "--drift-x": cell.xDrift,
+              "--drift-y": cell.yDrift,
             }}
           >
             {cell.text}
@@ -141,9 +186,10 @@ function DetectionAlgorithms() {
           <p className="eyebrow badge-font">How It Works</p>
           <h2 className="algo-title">Detection Algorithms</h2>
           <p className="algo-text">
-            Our proprietary multi-modal models analyze image and video feeds in real-time from tens of thousands of sources from the public and dark web. 
-              By decomposing signals into distinct biometric layers, we can identify synthetic 
-              artifacts that are invisible to the naked eye.
+            Our proprietary multi-modal models analyze image and video feeds in
+            real-time from tens of thousands of sources from the public and dark
+            web. By decomposing signals into distinct biometric layers, we can
+            identify synthetic artifacts that are invisible to the naked eye.
           </p>
         </div>
         <div className="algo-visual" data-reveal>
@@ -161,10 +207,10 @@ function DetectionAlgorithms() {
 
 function ExplodedRebuildSection() {
   useEffect(() => {
-    const container = document.querySelector('.exploded-section');
-    const sticky = document.querySelector('.exploded-sticky');
-    const stage = document.querySelector('.mockup-stage');
-    const heading = document.querySelector('.exploded-heading');
+    const container = document.querySelector(".exploded-section");
+    const sticky = document.querySelector(".exploded-sticky");
+    const stage = document.querySelector(".mockup-stage");
+    const heading = document.querySelector(".exploded-heading");
 
     const handleScroll = () => {
       if (!container || !sticky || !stage || !heading) return;
@@ -178,13 +224,16 @@ function ExplodedRebuildSection() {
       let startBuffer = viewportHeight * (isMobile ? 0.52 : 0.25);
 
       if (isMobile) {
-        const frame = stage.querySelector('.piece-frame');
+        const frame = stage.querySelector(".piece-frame");
         if (frame) {
           const frameRect = frame.getBoundingClientRect();
           const frameCenter = frameRect.top + frameRect.height / 2;
           const viewportCenter = viewportHeight / 2;
           const centerDistance = Math.abs(frameCenter - viewportCenter);
-          const alignmentBoost = Math.min(viewportHeight * 0.22, centerDistance * 0.8);
+          const alignmentBoost = Math.min(
+            viewportHeight * 0.22,
+            centerDistance * 0.8,
+          );
           startBuffer += alignmentBoost;
         }
       }
@@ -196,17 +245,17 @@ function ExplodedRebuildSection() {
         progress = Math.min(1, (scrolled - startBuffer) / effectiveDist);
       }
 
-      stage.style.setProperty('--progress', progress.toFixed(4));
+      stage.style.setProperty("--progress", progress.toFixed(4));
 
       const textFadeMultiplier = isMobile ? 2.2 : 3.5;
-      const textOpacity = Math.max(0, 1 - (progress * textFadeMultiplier));
+      const textOpacity = Math.max(0, 1 - progress * textFadeMultiplier);
       heading.style.opacity = textOpacity.toFixed(2);
       heading.style.transform = `translateY(${progress * -20}px)`;
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -215,36 +264,50 @@ function ExplodedRebuildSection() {
         <div className="exploded-split-layout">
           <div className="mockup-stage">
             <article className="mock-piece piece-frame"></article>
-            <article className="mock-piece piece-cover"><span>Extracted Image</span></article>
+            <article className="mock-piece piece-cover">
+              <span>Extracted Image</span>
+            </article>
             <article className="mock-piece piece-meta">
               <span>Media Info</span>
               <h3>@misa.amane</h3>
               <p>Midnight Echoes • Reel</p>
               <b></b>
             </article>
-            <article className="mock-piece piece-video"><span>Hidden Metadata</span></article>
+            <article className="mock-piece piece-video">
+              <span>Hidden Metadata</span>
+            </article>
             <article className="mock-piece piece-wave">
               <span>Extracted Audio</span>
-              <div className="wave-bars">{Array.from({ length: 26 }, (_, i) => <i key={i}></i>)}</div>
+              <div className="wave-bars">
+                {Array.from({ length: 26 }, (_, i) => (
+                  <i key={i}></i>
+                ))}
+              </div>
             </article>
             <article className="mock-piece piece-controls">
               <span>Playback Info</span>
-              <div className="playback-bar"><div className="playback-progress"></div></div>
-              <div className="playback-buttons"><span>⏮</span><b>▶</b><span>⏭</span></div>
+              <div className="playback-bar">
+                <div className="playback-progress"></div>
+              </div>
+              <div className="playback-buttons">
+                <span>⏮</span>
+                <b>▶</b>
+                <span>⏭</span>
+              </div>
             </article>
             <div className="final-message">
               <p className="eyebrow badge-font">Final Report</p>
               <h2 className="title">Complete Analysis</h2>
-              <p className="lead">We break content down so you can fully understand what’s happening.</p>
+              <p className="lead">
+                We break content down so you can fully understand what’s
+                happening.
+              </p>
             </div>
           </div>
 
           <div className="exploded-heading">
-            <h2 className="title">Deconstructed Detection</h2>
-            <p className="lead">
-              We separate every layer of media to verify authenticity. 
-              Audio waves, metadata headers, and frame-by-frame pixel density are analyzed in isolation.
-            </p>
+            <h2 className="title">If it exists, you deserve to know.</h2>
+            <p className="lead"></p>
           </div>
         </div>
       </div>
@@ -252,17 +315,151 @@ function ExplodedRebuildSection() {
   );
 }
 
+function WaitlistModal({ open, onClose }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle');
+  const [closing, setClosing] = useState(false);
+  const backdropRef = useRef(null);
+
+  useEffect(() => {
+    if (open) {
+      setClosing(false);
+      document.body.classList.add('scroll-locked');
+    }
+    return () => document.body.classList.remove('scroll-locked');
+  }, [open]);
+
+  const handleClose = useCallback(() => {
+    setClosing(true);
+    setTimeout(() => {
+      onClose();
+      setClosing(false);
+      setStatus('idle');
+      setName('');
+      setEmail('');
+    }, 300);
+  }, [onClose]);
+
+  const handleBackdrop = useCallback((e) => {
+    if (e.target === backdropRef.current) handleClose();
+  }, [handleClose]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e) => { if (e.key === 'Escape') handleClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [open, handleClose]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('name', name);
+      formData.append('l', '3d150e5c-b98b-414d-973a-e3237948289d');
+
+      await fetch('https://mail.framewatch.org/subscription/form', {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors',
+      });
+
+      setStatus('success');
+    } catch {
+      setStatus('success');
+    }
+  };
+
+  if (!open) return null;
+
+  return (
+    <div
+      ref={backdropRef}
+      className={`wl-backdrop${closing ? ' wl-closing' : ''}`}
+      onClick={handleBackdrop}
+    >
+      <div className={`wl-modal${closing ? ' wl-modal-closing' : ''}`}>
+        <button className="wl-close" onClick={handleClose} aria-label="Close" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {status === 'success' ? (
+          <div className="wl-success">
+            <div className="wl-check-wrap">
+              <svg className="wl-check" viewBox="0 0 52 52">
+                <circle className="wl-check-circle" cx="26" cy="26" r="25" fill="none" />
+                <path className="wl-check-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+              </svg>
+            </div>
+            <h3 className="wl-success-title">You're in!</h3>
+            <p className="wl-success-msg">Welcome to the resistance. We'll be in touch before the machines take over.</p>
+          </div>
+        ) : (
+          <>
+            <h3 className="wl-title">Get Notified</h3>
+            <p className="wl-subtitle">Be among the first to defend your identity.</p>
+            <form className="wl-form" onSubmit={handleSubmit}>
+              <div className="wl-field">
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  autoComplete="name"
+                />
+              </div>
+              <div className="wl-field">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+              <button
+                className="wl-submit"
+                type="submit"
+                disabled={status === 'submitting'}
+              >
+                {status === 'submitting' ? (
+                  <span className="wl-spinner"></span>
+                ) : (
+                  'Join Waitlist'
+                )}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function App() {
   useReveal();
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   const isWindows = useMemo(() => {
-    const platform = navigator.userAgentData?.platform || navigator.platform || "";
+    const platform =
+      navigator.userAgentData?.platform || navigator.platform || "";
     return /win/i.test(platform);
   }, []);
 
   useEffect(() => {
-    const nav = document.querySelector('.glass-nav');
-    const darkSections = () => document.querySelectorAll('.bold-statement, .notify-section, .cta-section, .site-footer');
+    const nav = document.querySelector(".glass-nav");
+    const darkSections = () =>
+      document.querySelectorAll(
+        ".bold-statement, .notify-section, .cta-section, .site-footer",
+      );
 
     const checkNav = () => {
       if (!nav) return;
@@ -275,35 +472,37 @@ function App() {
         if (navMid >= r.top && navMid <= r.bottom) onDark = true;
       });
 
-      nav.classList.toggle('nav-dark', onDark);
+      nav.classList.toggle("nav-dark", onDark);
     };
 
-    window.addEventListener('scroll', checkNav, { passive: true });
+    window.addEventListener("scroll", checkNav, { passive: true });
     checkNav();
-    return () => window.removeEventListener('scroll', checkNav);
+    return () => window.removeEventListener("scroll", checkNav);
   }, []);
 
   useEffect(() => {
-    const links = document.querySelectorAll('.glass-nav nav a, .brand');
+    const links = document.querySelectorAll(".glass-nav nav a, .brand");
     const handleClick = (event) => {
-      const anchor = event.currentTarget.closest('a');
+      const anchor = event.currentTarget.closest("a");
       if (!anchor) return;
-      
-      const href = anchor.getAttribute('href');
-      if (!href || !href.startsWith('#')) return;
-      
+
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+
       const target = document.querySelector(href);
       if (!target) return;
-      
+
       event.preventDefault();
       const navOffset = 72;
-      const targetTop = target.getBoundingClientRect().top + window.scrollY - navOffset;
-      
-      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      const targetTop =
+        target.getBoundingClientRect().top + window.scrollY - navOffset;
+
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
     };
 
-    links.forEach((link) => link.addEventListener('click', handleClick));
-    return () => links.forEach((link) => link.removeEventListener('click', handleClick));
+    links.forEach((link) => link.addEventListener("click", handleClick));
+    return () =>
+      links.forEach((link) => link.removeEventListener("click", handleClick));
   }, []);
 
   return (
@@ -318,17 +517,28 @@ function App() {
           <a href="#about">About</a>
           <a href="#cta">Start</a>
         </nav>
-        <button className="btn-waitlist" type="button">Join Waitlist</button>
+        <button className="btn-waitlist" type="button" onClick={() => setWaitlistOpen(true)}>
+          Join Waitlist
+        </button>
       </header>
 
       <main>
         <section id="home" className="hero">
           <MatrixGrid />
           <div className="hero-content hero-intro">
-            <p className="hero-badge"><span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE v2.0</p>
-            <h1>Your Face.<br /><span>Your Control.</span></h1>
-            <p className="lead">Someone is using your face or voice without consent.
-            We help you find it and take it down.</p>
+            <p className="hero-badge">
+              <span className="pulse-dot"></span> AUTOMATED IDENTITY DEFENSE
+              v2.0
+            </p>
+            <h1>
+              Your Face.
+              <br />
+              <span>Your Control.</span>
+            </h1>
+            <p className="lead">
+              Someone is using your face or voice without consent. We help you
+              find it and take it down.
+            </p>
           </div>
         </section>
 
@@ -367,42 +577,105 @@ function App() {
           <div className="notify-container">
             <div className="notify-header" data-reveal>
               <p className="eyebrow badge-font">How You Stay In Control</p>
-              <h2 className="notify-title">You're Notified. You're Shown. You Decide.</h2>
-              <p className="notify-subtitle">When we detect content using your likeness:</p>
+              <h2 className="notify-title">
+                You're Notified. You're Shown. You Decide.
+              </h2>
+              <p className="notify-subtitle">
+                When we detect content using your likeness:
+              </p>
             </div>
 
             <div className="notify-grid">
               <div className="notify-card" data-reveal>
                 <div className="notify-card-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                  </svg>
                 </div>
                 <h3>Instant alerts the moment a match is found</h3>
                 <div className="notify-card-line" aria-hidden="true"></div>
               </div>
               <div className="notify-card" data-reveal>
                 <div className="notify-card-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
                 </div>
                 <h3>See the exact content using your face or voice</h3>
                 <div className="notify-card-line" aria-hidden="true"></div>
               </div>
               <div className="notify-card" data-reveal>
                 <div className="notify-card-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
                 </div>
-                <h3>Confidence scores & evidence — no black boxes</h3>
+                <h3>Confidence scores & evidence</h3>
                 <div className="notify-card-line" aria-hidden="true"></div>
               </div>
               <div className="notify-card" data-reveal>
                 <div className="notify-card-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
                 </div>
                 <h3>One-click accelerated takedown requests</h3>
                 <div className="notify-card-line" aria-hidden="true"></div>
               </div>
               <div className="notify-card" data-reveal>
                 <div className="notify-card-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
                 </div>
                 <h3>Ongoing monitoring so it doesn't come back</h3>
                 <div className="notify-card-line" aria-hidden="true"></div>
@@ -410,43 +683,64 @@ function App() {
             </div>
 
             <div className="notify-footer" data-reveal>
-              <p className="notify-footer-bold">Nothing happens behind your back.</p>
+              <p className="notify-footer-bold">
+                Nothing happens behind your back.
+              </p>
             </div>
           </div>
 
           <div className="notify-particles" aria-hidden="true">
             {Array.from({ length: 18 }, (_, i) => (
-              <span key={i} className="notify-particle" style={{
-                '--x': `${10 + Math.random() * 80}%`,
-                '--y': `${10 + Math.random() * 80}%`,
-                '--d': `${6 + Math.random() * 14}s`,
-                '--del': `${-Math.random() * 8}s`,
-                '--s': `${0.4 + Math.random() * 0.8}`,
-              }}></span>
+              <span
+                key={i}
+                className="notify-particle"
+                style={{
+                  "--x": `${10 + Math.random() * 80}%`,
+                  "--y": `${10 + Math.random() * 80}%`,
+                  "--d": `${6 + Math.random() * 14}s`,
+                  "--del": `${-Math.random() * 8}s`,
+                  "--s": `${0.4 + Math.random() * 0.8}`,
+                }}
+              ></span>
             ))}
           </div>
         </section>
 
         <section id="cta" className="cta-section">
           <div className="cta-orbits" aria-hidden="true">
-            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
-            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
-            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+            <div className="cta-orbit">
+              <span className="cta-orbit-dot"></span>
+            </div>
+            <div className="cta-orbit">
+              <span className="cta-orbit-dot"></span>
+            </div>
+            <div className="cta-orbit">
+              <span className="cta-orbit-dot"></span>
+            </div>
           </div>
           <h2 className="title">Ready to check?</h2>
-          <p className="cta-lead">Be the first to take control of your digital identity.</p>
-          <button className="cta-button" type="button">Join Waitlist</button>
+          <p className="cta-lead">
+            Be the first to take control of your digital identity.
+          </p>
+          <button className="cta-button" type="button" onClick={() => setWaitlistOpen(true)}>
+            Join Waitlist
+          </button>
         </section>
 
         <footer className="site-footer">
           <div className="footer-glass-row">
             <small>© 2026 FrameWatch. All rights reserved.</small>
             <span className="footer-sep" aria-hidden="true"></span>
-            <small>Made in Canada <span className="ca-flag" aria-hidden="true">{isWindows ? "🍁" : "🇨🇦"}</span></small>
+            <small>
+              Made in Canada{" "}
+              <span className="ca-flag" aria-hidden="true">
+                {isWindows ? "🍁" : "🇨🇦"}
+              </span>
+            </small>
           </div>
         </footer>
       </main>
-
+      <WaitlistModal open={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
     </>
   );
 }
