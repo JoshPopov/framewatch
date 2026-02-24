@@ -2180,18 +2180,23 @@ h1 span { color: #f43f5e; }
   }
   
   .exploded-heading {
-    order: -1 !important; /* Puts text on top */
+    order: -1 !important; 
     position: relative !important; 
-    margin-bottom: 2rem !important; /* Space between text and animation */
+    margin-bottom: 2rem !important; 
     z-index: 10 !important;
+    
+    /* THE FIX FOR ALIGNMENT */
+    align-self: flex-start !important; /* Pushes the container block to the left */
+    text-align: left !important; /* Aligns the text inside to the left */
+    width: 100% !important;
   }
 
   .mockup-stage {
-    order: 2 !important; /* Puts animation on bottom */
+    order: 2 !important; 
     position: relative !important;
     
-    /* THE FIX: Forces the container to have a physical height so the text can't overlap it */
-    min-height: 500px !important; 
+    /* THE FIX FOR HEIGHT */
+    min-height: 600px !important; 
     width: 100% !important;
     margin-top: 0 !important;
   }
