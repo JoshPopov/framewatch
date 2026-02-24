@@ -2172,26 +2172,27 @@ h1 span { color: #f43f5e; }
   line-height: 1.5;
   margin: 0;
 }
-/* Mobile Overlap Fixes */
+/* Mobile Overlap Fix for Exploded Section */
 @media (max-width: 980px) {
-  /* Fixes the Exploded Rebuild Section */
   .exploded-split-layout {
-    display: flex;
-    flex-direction: column-reverse; /* This forces the text to sit ABOVE the animation */
-    gap: 3rem; /* Adds breathing room */
+    display: flex !important;
+    flex-direction: column !important;
   }
-
+  
   .exploded-heading {
-    position: relative;
-    z-index: 10; 
-    margin-bottom: 2rem; /* Extra buffer so the JS scroll effect doesn't pull it into the animation */
+    order: -1 !important; /* Forces the text to render BEFORE the animation */
+    position: relative !important; /* Breaks it out of any absolute positioning */
+    top: auto !important; 
+    bottom: auto !important;
+    margin-bottom: 3rem !important; /* Adds a clean gap so they don't touch */
+    align-self: center !important;
     text-align: center;
+    z-index: 10 !important;
   }
 
-  /* Fixes the Detection Algorithms Section (just in case!) */
-  .algo-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
+  .mockup-stage {
+    order: 2 !important; /* Forces the animation to render BELOW the text */
+    position: relative !important;
+    margin-top: 0 !important;
   }
 }
