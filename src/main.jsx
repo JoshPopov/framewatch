@@ -768,7 +768,7 @@ function App() {
           </div>
           <h2 className="title">Ready to check?</h2>
           <p className="cta-lead">
-            Be the first to take control of your digital identity.
+            See who's using your face.
           </p>
           <button
             className="cta-button"
