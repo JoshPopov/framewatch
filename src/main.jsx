@@ -318,7 +318,7 @@ function ExplodedRebuildSection() {
           </div>
 
           <div className="exploded-heading">
-            <h2 className="title">If it exists, you deserve to know.</h2>
+            <h2 className="title">If it exists,<br/>you deserve to know.</h2>
             <p className="lead"></p>
           </div>
         </div>
