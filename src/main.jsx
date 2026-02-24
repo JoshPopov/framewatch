@@ -227,8 +227,9 @@ function ExplodedRebuildSection() {
       const scrolled = -rect.top;
       const isMobile = window.innerWidth <= 980;
 
-      let startBuffer = viewportHeight * (isMobile ? 0.52 : 0.25);
+      let startBuffer = viewportHeight * (isMobile ? 0.30 : 0.25);
 
+      /*
       if (isMobile) {
         const frame = stage.querySelector(".piece-frame");
         if (frame) {
@@ -243,6 +244,7 @@ function ExplodedRebuildSection() {
           startBuffer += alignmentBoost;
         }
       }
+      */
 
       const effectiveDist = Math.max(1, totalDist - startBuffer);
 
