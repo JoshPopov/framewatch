@@ -1773,32 +1773,42 @@ h1 span { color: #f43f5e; }
     order: 2;
   }
 
+  .exploded-sticky {
+    top: 0;
+    height: 100vh;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding-top: clamp(5.4rem, 12vh, 7.4rem);
+  }
+
   .exploded-split-layout {
     grid-template-columns: 1fr;
-    gap: 1.4rem;
-    padding: 0 0.6rem;
-    place-items: center;
-    align-content: center;
+    gap: 0.8rem;
+    padding: 0 1rem;
+    justify-items: stretch;
+    align-content: start;
   }
 
   .exploded-heading {
     display: block;
     order: -1;
-    text-align: center;
+    text-align: left;
     position: relative;
-    margin-bottom: 1.5rem;
+    width: min(560px, 100%);
+    margin-bottom: 0.25rem;
     transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
   .mockup-stage {
     width: min(560px, 98vw);
     margin: 0 auto;
+    margin-top: 0;
   }
 
   .exploded-heading .lead {
     margin-top: 0.95rem;
     max-width: 34ch;
-    margin-inline: auto;
+    margin-inline: 0;
   }
 
   .price-card {
@@ -1810,9 +1820,11 @@ h1 span { color: #f43f5e; }
     height: 320vh;
   }
 
-  .exploded-sticky {
-    top: 0;
-    height: 100vh;
+  .exploded-heading .title {
+    margin-top: 0;
+    font-size: clamp(1.6rem, 7.6vw, 2.3rem);
+    line-height: 1.1;
+    max-width: 11ch;
   }
 
   /* Mobile keeps the desktop explosion pattern but scales offsets for small screens */
