@@ -668,30 +668,33 @@ function App() {
                       <span>9:41</span>
                       <span>●●●</span>
                     </div>
-                    <div className="nf-notif-card">
-                      <div className="nf-notif-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                        </svg>
+                    <div className="nf-notif-stack">
+                      <div className="nf-notif-card">
+                        <div className="nf-notif-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                          </svg>
+                        </div>
+                        <div className="nf-notif-text">
+                          <strong>FrameWatch</strong>
+                          <span>Match detected — tap to review</span>
+                        </div>
+                        <span className="nf-notif-time">now</span>
                       </div>
-                      <div className="nf-notif-text">
-                        <strong>FrameWatch</strong>
-                        <span>Match detected — tap to review</span>
+                      <div className="nf-notif-card nf-notif-card--2">
+                        <div className="nf-notif-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                          </svg>
+                        </div>
+                        <div className="nf-notif-text">
+                          <strong>FrameWatch</strong>
+                          <span>New match found — @user_4821</span>
+                        </div>
+                        <span className="nf-notif-time">now</span>
                       </div>
-                      <span className="nf-notif-time">now</span>
-                    </div>
-                    <div className="nf-notif-card nf-notif-card--2">
-                      <div className="nf-notif-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
-                      </div>
-                      <div className="nf-notif-text">
-                        <strong>FrameWatch</strong>
-                        <span>Scan complete — 0 threats</span>
-                      </div>
-                      <span className="nf-notif-time">2m</span>
                     </div>
                   </div>
                 </div>
@@ -758,12 +761,7 @@ function App() {
                       </svg>
                     </div>
                   </div>
-                  <button className="nf-takedown-btn" type="button" aria-label="Request takedown">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                      <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                    Request Takedown
-                  </button>
+
                 </div>
               </div>
             </div>
@@ -781,7 +779,10 @@ function App() {
                     <svg className="nf-shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
-                    <span className="nf-shield-label badge-font">Active</span>
+                    <div className="nf-shield-counter">
+                      <span className="nf-shield-counter-num">24/7</span>
+                      <span className="nf-shield-counter-sub badge-font">Live</span>
+                    </div>
                   </div>
                   <div className="nf-shield-ring r1" aria-hidden="true"></div>
                   <div className="nf-shield-ring r2" aria-hidden="true"></div>
@@ -791,10 +792,7 @@ function App() {
                       <span>{p}</span>
                     </div>
                   ))}
-                  <div className="nf-shield-counter">
-                    <span className="nf-shield-counter-num">24/7</span>
-                    <span className="nf-shield-counter-sub badge-font">Monitoring</span>
-                  </div>
+
                 </div>
               </div>
             </div>
