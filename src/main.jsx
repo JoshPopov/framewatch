@@ -218,6 +218,11 @@ function ExplodedRebuildSection() {
     const stage = document.querySelector(".mockup-stage");
     const heading = document.querySelector(".exploded-heading");
 
+    // Cache mobileStartBuffer once so it never shifts while scrolling.
+    // (The phone position changes mid-scroll as layout reflows, so
+    // recalculating every frame meant progress never advanced.)
+    let mobileStartBuffer = null;
+
     const handleScroll = () => {
       if (!container || !sticky || !stage || !heading) return;
 
@@ -230,22 +235,21 @@ function ExplodedRebuildSection() {
       let startBuffer;
 
       if (isMobile) {
-        // On mobile: animation begins only once the phone frame is perfectly
-        // centered in the viewport. We compute startBuffer dynamically each
-        // frame so it reflects the phone's live position.
-        const frame = stage.querySelector(".piece-frame");
-        if (frame) {
-          const frameRect = frame.getBoundingClientRect();
-          const frameCenterY = frameRect.top + frameRect.height / 2;
-          const viewportCenterY = viewportHeight / 2;
-          // How many more pixels the user needs to scroll for the phone center
-          // to reach the viewport center (can be negative if already past center)
-          const distanceToCenter = frameCenterY - viewportCenterY;
-          // startBuffer = current scroll position + remaining distance to center
-          startBuffer = Math.max(0, scrolled + distanceToCenter);
-        } else {
-          startBuffer = viewportHeight * 0.4;
+        if (mobileStartBuffer === null) {
+          const frame = stage.querySelector(".piece-frame");
+          if (frame) {
+            const frameRect = frame.getBoundingClientRect();
+            const frameCenterY = frameRect.top + frameRect.height / 2;
+            const viewportCenterY = viewportHeight / 2;
+            const distanceToCenter = frameCenterY - viewportCenterY;
+            // Subtract a small offset so the phone sits slightly above true center
+            // (accounts for the heading above it taking visual weight)
+            mobileStartBuffer = Math.max(0, scrolled + distanceToCenter - viewportHeight * 0.06);
+          } else {
+            mobileStartBuffer = viewportHeight * 0.35;
+          }
         }
+        startBuffer = mobileStartBuffer;
       } else {
         startBuffer = viewportHeight * 0.25;
       }
@@ -260,15 +264,10 @@ function ExplodedRebuildSection() {
       stage.style.setProperty("--progress", progress.toFixed(4));
 
       if (isMobile) {
-        // Title fades out BEFORE the animation starts (as user approaches lock point).
-        // approachRatio goes 0→1 as user scrolls from 0 to startBuffer.
-        const approachRatio = startBuffer > 0
-          ? Math.min(1, scrolled / startBuffer)
-          : 1;
-        // Begin fading at 55% of the way to the lock point; fully transparent at 100%
-        const mobileFade = Math.max(0, 1 - Math.max(0, (approachRatio - 0.55) / 0.45));
+        // Fade title out as animation begins — no movement, just opacity.
+        const mobileFade = Math.max(0, 1 - progress * 4);
         heading.style.opacity = mobileFade.toFixed(3);
-        heading.style.transform = `translateY(${approachRatio * -18}px)`;
+        heading.style.transform = "none";
       } else {
         const textFadeMultiplier = 3.5;
         const textOpacity = Math.max(0, 1 - progress * textFadeMultiplier);
