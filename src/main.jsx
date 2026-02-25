@@ -627,99 +627,184 @@ function App() {
             <div className="bold-pulse-dot"></div>
           </div>
           <div className="bold-statement-content">
-            <h2 className="bold-line line-1">Most people never find out.</h2>
-            <h2 className="bold-line line-2">You will.</h2>
+            <div className="bold-eyebrow-row">
+              <span className="bold-eyebrow badge-font">The reality</span>
+            </div>
+            <div className="bold-split-row">
+              <div className="bold-left">
+                <div className="bold-stat-block">
+                  <span className="bold-stat-num">96<span className="bold-stat-pct">%</span></span>
+                  <span className="bold-stat-label">of victims never discover deepfake content made of them</span>
+                </div>
+              </div>
+              <div className="bold-divider" aria-hidden="true"></div>
+              <div className="bold-right">
+                <h2 className="bold-line line-1">Most people<br/>never find out.</h2>
+                <h2 className="bold-line line-2">You will.</h2>
+              </div>
+            </div>
           </div>
         </section>
 
         <section className="notify-section">
-          <div className="notify-container">
-            <div className="notify-header" data-reveal>
-              <p className="eyebrow badge-font">How You Stay In Control</p>
-              <h2 className="notify-title">
-                You&apos;re Notified.<br/>You&apos;re Shown.<br/>You Decide.
-              </h2>
-            </div>
+          <div className="nf-header" data-reveal>
+            <p className="eyebrow badge-font">How You Stay In Control</p>
+            <h2 className="nf-title">You&apos;re Notified.<br/>You&apos;re Shown.<br/>You Decide.</h2>
+          </div>
 
-            <div className="notify-steps">
-              <div className="notify-spine" aria-hidden="true">
-                <div className="notify-spine-fill"></div>
+          <div className="nf-features">
+
+            {/* ── 01 Instant Alert ── */}
+            <div className="nf-feature" data-reveal>
+              <div className="nf-feature-text">
+                <span className="nf-num badge-font">01</span>
+                <h3 className="nf-feature-title">Instant alert</h3>
+                <p className="nf-feature-body">The moment a match is found anywhere on the web or dark web, you get a push notification before anyone else.</p>
               </div>
-
-              {[
-                {
-                  num: "01",
-                  label: "Detection",
-                  title: "Instant alert",
-                  body: "The moment a match is found anywhere on the web or dark web, you're the first to know.",
-                  icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                    </svg>
-                  ),
-                },
-                {
-                  num: "02",
-                  label: "Evidence",
-                  title: "See exactly what was found",
-                  body: "View the exact content using your face or voice — with confidence scores and full forensic evidence.",
-                  icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  ),
-                },
-                {
-                  num: "03",
-                  label: "Action",
-                  title: "One-click takedown",
-                  body: "Request accelerated removal with a single tap. We handle the paperwork, platforms, and follow-up.",
-                  icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                  ),
-                },
-                {
-                  num: "04",
-                  label: "Protection",
-                  title: "Ongoing shield",
-                  body: "Continuous monitoring ensures it doesn't resurface. You stay protected — automatically.",
-                  icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
-                  ),
-                },
-              ].map((step, i) => (
-                <div className="notify-step" data-reveal key={i} style={{"--i": i}}>
-                  <div className="notify-step-node">
-                    <div className="notify-step-ring" aria-hidden="true"></div>
-                    <div className="notify-step-icon">{step.icon}</div>
-                  </div>
-                  <div className="notify-step-body">
-                    <div className="notify-step-meta">
-                      <span className="notify-step-num badge-font">{step.num}</span>
-                      <span className="notify-step-label badge-font">{step.label}</span>
+              <div className="nf-feature-vis">
+                <div className="nf-phone-notif">
+                  <div className="nf-phone-screen">
+                    <div className="nf-phone-statusbar">
+                      <span>9:41</span>
+                      <span>●●●</span>
                     </div>
-                    <h3 className="notify-step-title">{step.title}</h3>
-                    <p className="notify-step-text">{step.body}</p>
+                    <div className="nf-notif-card">
+                      <div className="nf-notif-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                      </div>
+                      <div className="nf-notif-text">
+                        <strong>FrameWatch</strong>
+                        <span>Match detected — tap to review</span>
+                      </div>
+                      <span className="nf-notif-time">now</span>
+                    </div>
+                    <div className="nf-notif-card nf-notif-card--2">
+                      <div className="nf-notif-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                      </div>
+                      <div className="nf-notif-text">
+                        <strong>FrameWatch</strong>
+                        <span>Scan complete — 0 threats</span>
+                      </div>
+                      <span className="nf-notif-time">2m</span>
+                    </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
 
-            <div className="notify-footer" data-reveal>
-              <p className="notify-footer-bold">
-                Nothing happens behind your back.
-              </p>
+            {/* ── 02 See What Was Found ── */}
+            <div className="nf-feature" data-reveal>
+              <div className="nf-feature-text">
+                <span className="nf-num badge-font">02</span>
+                <h3 className="nf-feature-title">See exactly what was found</h3>
+                <p className="nf-feature-body">View the exact content, the platform it was on, and full forensic evidence — with a confidence score so you always know how certain we are.</p>
+              </div>
+              <div className="nf-feature-vis">
+                <div className="nf-scan-vis">
+                  <div className="nf-scan-face">
+                    <div className="nf-scan-line"></div>
+                    <div className="nf-scan-corner tl"></div>
+                    <div className="nf-scan-corner tr"></div>
+                    <div className="nf-scan-corner bl"></div>
+                    <div className="nf-scan-corner br"></div>
+                    <div className="nf-scan-dot d1"></div>
+                    <div className="nf-scan-dot d2"></div>
+                    <div className="nf-scan-dot d3"></div>
+                    <div className="nf-scan-dot d4"></div>
+                    <div className="nf-scan-dot d5"></div>
+                    <span className="nf-scan-label">@unknown_user</span>
+                  </div>
+                  <div className="nf-confidence-bar">
+                    <span className="nf-confidence-label badge-font">Match Confidence</span>
+                    <div className="nf-confidence-track">
+                      <div className="nf-confidence-fill"></div>
+                    </div>
+                    <span className="nf-confidence-pct">97.4%</span>
+                  </div>
+                  <div className="nf-scan-tags">
+                    <span className="nf-tag">Instagram Reel</span>
+                    <span className="nf-tag">Deepfake</span>
+                    <span className="nf-tag nf-tag--alert">Action required</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* ── 03 One-click Takedown ── */}
+            <div className="nf-feature" data-reveal>
+              <div className="nf-feature-text">
+                <span className="nf-num badge-font">03</span>
+                <h3 className="nf-feature-title">One-click takedown</h3>
+                <p className="nf-feature-body">Request accelerated removal in a single tap. We handle the legal notices, platform submissions, and follow-up until it&apos;s gone.</p>
+              </div>
+              <div className="nf-feature-vis">
+                <div className="nf-takedown-vis">
+                  <div className="nf-content-card">
+                    <div className="nf-content-card-img"></div>
+                    <div className="nf-content-card-info">
+                      <span className="nf-content-card-platform badge-font">TikTok · @anon</span>
+                      <span className="nf-content-card-title">Unauthorized deepfake</span>
+                    </div>
+                    <div className="nf-content-card-dismiss">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </div>
+                  </div>
+                  <button className="nf-takedown-btn" type="button" aria-label="Request takedown">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    Request Takedown
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* ── 04 Ongoing Protection ── */}
+            <div className="nf-feature" data-reveal>
+              <div className="nf-feature-text">
+                <span className="nf-num badge-font">04</span>
+                <h3 className="nf-feature-title">Ongoing protection</h3>
+                <p className="nf-feature-body">Continuous 24/7 monitoring across 50,000+ sources — social platforms, adult sites, dark web forums — so it can&apos;t come back.</p>
+              </div>
+              <div className="nf-feature-vis">
+                <div className="nf-shield-vis">
+                  <div className="nf-shield-core">
+                    <svg className="nf-shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <span className="nf-shield-label badge-font">Active</span>
+                  </div>
+                  <div className="nf-shield-ring r1" aria-hidden="true"></div>
+                  <div className="nf-shield-ring r2" aria-hidden="true"></div>
+                  <div className="nf-shield-ring r3" aria-hidden="true"></div>
+                  {["TikTok","IG","X","OF","Reddit","Telegram"].map((p, i) => (
+                    <div className="nf-platform-dot" key={p} style={{"--pi": i, "--ptotal": 6}}>
+                      <span>{p}</span>
+                    </div>
+                  ))}
+                  <div className="nf-shield-counter">
+                    <span className="nf-shield-counter-num">24/7</span>
+                    <span className="nf-shield-counter-sub badge-font">Monitoring</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div className="nf-footer" data-reveal>
+            <p className="nf-footer-text">Nothing happens behind your back.</p>
           </div>
         </section>
-
         <section id="cta" className="cta-section">
           <div className="cta-orbits" aria-hidden="true">
             <div className="cta-orbit">
