@@ -637,108 +637,79 @@ function App() {
             <div className="notify-header" data-reveal>
               <p className="eyebrow badge-font">How You Stay In Control</p>
               <h2 className="notify-title">
-                You're Notified. You're Shown. You Decide.
+                You&apos;re Notified.<br/>You&apos;re Shown.<br/>You Decide.
               </h2>
-              <p className="notify-subtitle">
-                When we detect content using your likeness:
-              </p>
             </div>
 
-            <div className="notify-grid">
-              <div className="notify-card" data-reveal>
-                <div className="notify-card-icon">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                  </svg>
-                </div>
-                <h3>Instant alerts the moment a match is found</h3>
-                <div className="notify-card-line" aria-hidden="true"></div>
+            <div className="notify-steps">
+              <div className="notify-spine" aria-hidden="true">
+                <div className="notify-spine-fill"></div>
               </div>
-              <div className="notify-card" data-reveal>
-                <div className="notify-card-icon">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
+
+              {[
+                {
+                  num: "01",
+                  label: "Detection",
+                  title: "Instant alert",
+                  body: "The moment a match is found anywhere on the web or dark web, you're the first to know.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                    </svg>
+                  ),
+                },
+                {
+                  num: "02",
+                  label: "Evidence",
+                  title: "See exactly what was found",
+                  body: "View the exact content using your face or voice — with confidence scores and full forensic evidence.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  ),
+                },
+                {
+                  num: "03",
+                  label: "Action",
+                  title: "One-click takedown",
+                  body: "Request accelerated removal with a single tap. We handle the paperwork, platforms, and follow-up.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                  ),
+                },
+                {
+                  num: "04",
+                  label: "Protection",
+                  title: "Ongoing shield",
+                  body: "Continuous monitoring ensures it doesn't resurface. You stay protected — automatically.",
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                  ),
+                },
+              ].map((step, i) => (
+                <div className="notify-step" data-reveal key={i} style={{"--i": i}}>
+                  <div className="notify-step-node">
+                    <div className="notify-step-ring" aria-hidden="true"></div>
+                    <div className="notify-step-icon">{step.icon}</div>
+                  </div>
+                  <div className="notify-step-body">
+                    <div className="notify-step-meta">
+                      <span className="notify-step-num badge-font">{step.num}</span>
+                      <span className="notify-step-label badge-font">{step.label}</span>
+                    </div>
+                    <h3 className="notify-step-title">{step.title}</h3>
+                    <p className="notify-step-text">{step.body}</p>
+                  </div>
                 </div>
-                <h3>See the exact content using your face or voice</h3>
-                <div className="notify-card-line" aria-hidden="true"></div>
-              </div>
-              <div className="notify-card" data-reveal>
-                <div className="notify-card-icon">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                </div>
-                <h3>Confidence scores & evidence</h3>
-                <div className="notify-card-line" aria-hidden="true"></div>
-              </div>
-              <div className="notify-card" data-reveal>
-                <div className="notify-card-icon">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                </div>
-                <h3>One-click accelerated takedown requests</h3>
-                <div className="notify-card-line" aria-hidden="true"></div>
-              </div>
-              <div className="notify-card" data-reveal>
-                <div className="notify-card-icon">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  </svg>
-                </div>
-                <h3>Ongoing monitoring so it doesn't come back</h3>
-                <div className="notify-card-line" aria-hidden="true"></div>
-              </div>
+              ))}
             </div>
 
             <div className="notify-footer" data-reveal>
@@ -746,22 +717,6 @@ function App() {
                 Nothing happens behind your back.
               </p>
             </div>
-          </div>
-
-          <div className="notify-particles" aria-hidden="true">
-            {Array.from({ length: 18 }, (_, i) => (
-              <span
-                key={i}
-                className="notify-particle"
-                style={{
-                  "--x": `${10 + Math.random() * 80}%`,
-                  "--y": `${10 + Math.random() * 80}%`,
-                  "--d": `${6 + Math.random() * 14}s`,
-                  "--del": `${-Math.random() * 8}s`,
-                  "--s": `${0.4 + Math.random() * 0.8}`,
-                }}
-              ></span>
-            ))}
           </div>
         </section>
 
