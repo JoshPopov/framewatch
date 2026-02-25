@@ -1843,11 +1843,11 @@ h1 span { color: #f43f5e; }
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * -228px + var(--rebuild) * -62px),
-        calc(0px + var(--explode) * -186px + var(--rebuild) * 10px)
+        calc(0px + var(--explode) * -120px + var(--rebuild) * -62px),
+        calc(0px + var(--explode) * -130px + var(--rebuild) * 10px)
       )
-      rotate(calc(var(--explode) * -10deg + var(--rebuild) * 8deg))
-      scale(calc(1 - var(--explode) * 0.22 + var(--rebuild) * 0.05));
+      rotate(calc(var(--explode) * -6deg + var(--rebuild) * 4deg))
+      scale(calc(1 - var(--explode) * 0.18 + var(--rebuild) * 0.05));
   }
 
   .piece-meta {
@@ -1855,10 +1855,10 @@ h1 span { color: #f43f5e; }
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 242px + var(--rebuild) * 64px),
-        calc(182px + var(--explode) * -220px + var(--rebuild) * -96px)
+        calc(0px + var(--explode) * 120px + var(--rebuild) * 64px),
+        calc(182px + var(--explode) * -140px + var(--rebuild) * -96px)
       )
-      rotate(calc(var(--explode) * 8deg));
+      rotate(calc(var(--explode) * 5deg));
   }
 
   .piece-wave {
@@ -1866,10 +1866,10 @@ h1 span { color: #f43f5e; }
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 236px + var(--rebuild) * 0px),
-        calc(282px + var(--explode) * -168px + var(--rebuild) * 20px)
+        calc(0px + var(--explode) * 120px + var(--rebuild) * 0px),
+        calc(282px + var(--explode) * -100px + var(--rebuild) * 20px)
       )
-      rotate(calc(var(--explode) * -4deg));
+      rotate(calc(var(--explode) * -3deg));
   }
 
   .piece-controls {
@@ -1877,10 +1877,10 @@ h1 span { color: #f43f5e; }
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * 220px + var(--rebuild) * 0px),
-        calc(286px + var(--explode) * -44px + var(--rebuild) * 44px)
+        calc(0px + var(--explode) * 110px + var(--rebuild) * 0px),
+        calc(286px + var(--explode) * -24px + var(--rebuild) * 44px)
       )
-      rotate(calc(var(--explode) * -8deg));
+      rotate(calc(var(--explode) * -5deg));
   }
 
   .piece-video {
@@ -1888,11 +1888,11 @@ h1 span { color: #f43f5e; }
     transform:
       translate(-50%, -50%)
       translate(
-        calc(0px + var(--explode) * -244px + var(--rebuild) * 64px),
-        calc(0px + var(--explode) * 228px + var(--rebuild) * 20px)
+        calc(0px + var(--explode) * -120px + var(--rebuild) * 64px),
+        calc(0px + var(--explode) * 140px + var(--rebuild) * 20px)
       )
-      rotate(calc(var(--explode) * 13deg))
-      scale(calc(1 - var(--explode) * 0.1));
+      rotate(calc(var(--explode) * 8deg))
+      scale(calc(1 - var(--explode) * 0.08));
   }
 
   .piece-meta > span,
