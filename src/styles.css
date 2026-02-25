@@ -1908,9 +1908,11 @@ h1 span { color: #f43f5e; }
   }
 
   .final-message {
-    top: 62%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 90;
-    width: min(92vw, 430px);
+    width: min(88vw, 360px);
     opacity: clamp(0, calc((var(--progress) - 0.8) * 7), 1);
     background: rgba(241, 245, 249, 0.92);
     backdrop-filter: blur(16px);
