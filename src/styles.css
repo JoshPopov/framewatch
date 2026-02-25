@@ -1367,7 +1367,7 @@ h1 span { color: #f43f5e; }
   transform: translateX(0);
 }
 .bold-stat-num {
-  font-size: clamp(4rem, 12vw, 9rem);
+  font-size: clamp(4.5rem, 14vw, 11rem);
   font-weight: 900;
   letter-spacing: -0.05em;
   line-height: 0.9;
@@ -1375,14 +1375,14 @@ h1 span { color: #f43f5e; }
   display: block;
 }
 .bold-stat-pct {
-  font-size: 0.55em;
+  font-size: 0.5em;
   vertical-align: super;
-  color: rgba(244, 63, 94, 0.6);
+  color: #f43f5e;
 }
 .bold-stat-label {
-  color: #475569;
-  font-size: clamp(0.78rem, 1.2vw, 0.92rem);
-  line-height: 1.5;
+  color: #94a3b8;
+  font-size: clamp(0.82rem, 1.4vw, 1.05rem);
+  line-height: 1.55;
   max-width: 22ch;
   text-align: right;
 }
@@ -1541,7 +1541,7 @@ h1 span { color: #f43f5e; }
   background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 100%);
   border-radius: 28px;
   border: 1px solid rgba(255,255,255,0.1);
-  padding: 1.2rem 1rem 2rem;
+  padding: 1.2rem 1rem 2.2rem;
   box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
   overflow: hidden;
 }
@@ -1554,26 +1554,55 @@ h1 span { color: #f43f5e; }
   letter-spacing: 0.04em;
   padding: 0 0.3rem 1.4rem;
 }
+/* Stacking notification container — card-2 sits behind card-1 initially */
+.nf-notif-stack {
+  position: relative;
+  height: 68px; /* matches one card height */
+}
+/* Card 1 — slides in first, then shifts up to make room */
 .nf-notif-card {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.09);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.11);
   border-radius: 16px;
   padding: 0.75rem 1rem;
-  margin-bottom: 0.6rem;
-  animation: notifSlideIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  position: absolute;
+  width: 100%;
+  animation: notif1Lifecycle 4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s infinite;
 }
+/* Card 2 — arrives as a peek behind, then full card when card-1 shifts up */
 .nf-notif-card--2 {
-  animation-delay: 0.9s;
-  opacity: 0;
-  animation-fill-mode: both;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.08);
+  animation: notif2Lifecycle 4s cubic-bezier(0.34, 1.4, 0.64, 1) 0.3s infinite;
 }
-@keyframes notifSlideIn {
-  0% { opacity: 0; transform: translateY(-24px) scale(0.94); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes notif1Lifecycle {
+  /* 0–15%: slide in from top */
+  0%   { opacity: 0; transform: translateY(-20px) scale(0.95); z-index: 2; }
+  15%  { opacity: 1; transform: translateY(0) scale(1); z-index: 2; }
+  /* 40%: card-2 arrives, card-1 shifts up slightly */
+  40%  { transform: translateY(0) scale(1); z-index: 2; }
+  55%  { transform: translateY(-6px) scale(1); z-index: 2; }
+  /* hold stacked */
+  80%  { opacity: 1; transform: translateY(-6px) scale(1); z-index: 2; }
+  /* 90–100%: fade out together */
+  95%  { opacity: 0; transform: translateY(-16px) scale(0.96); z-index: 2; }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.95); z-index: 2; }
+}
+@keyframes notif2Lifecycle {
+  /* start hidden */
+  0%   { opacity: 0; transform: translateY(10px) scale(0.92); z-index: 1; }
+  38%  { opacity: 0; transform: translateY(10px) scale(0.92); z-index: 1; }
+  /* peek up behind card-1 */
+  55%  { opacity: 1; transform: translateY(6px) scale(0.95); z-index: 1; }
+  /* settle into full position */
+  70%  { opacity: 1; transform: translateY(0) scale(1); z-index: 1; }
+  80%  { opacity: 1; transform: translateY(0) scale(1); }
+  95%  { opacity: 0; transform: translateY(-10px) scale(0.96); }
+  100% { opacity: 0; transform: translateY(10px) scale(0.92); }
 }
 .nf-notif-icon {
   width: 32px;
@@ -1769,10 +1798,11 @@ h1 span { color: #f43f5e; }
   animation: cardFlick 2.8s cubic-bezier(0.25, 1, 0.5, 1) 1.2s infinite;
 }
 @keyframes cardFlick {
-  0%, 55% { transform: translate(0,0) rotate(0deg); opacity: 1; }
-  75% { transform: translate(140px, -60px) rotate(18deg); opacity: 0; }
-  76% { transform: translate(-20px, 10px) rotate(-2deg); opacity: 0; }
-  90%, 100% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+  0%, 50%  { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  52%      { transform: translate(4px, -4px) rotate(1deg); opacity: 1; }
+  72%      { transform: translate(160px, -55px) rotate(20deg); opacity: 0; }
+  73%      { opacity: 0; transform: translate(-8px, 8px) rotate(-1deg); }
+  88%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
 }
 .nf-content-card-img {
   height: 110px;
@@ -1817,22 +1847,7 @@ h1 span { color: #f43f5e; }
   75% { transform: scale(1); opacity: 1; }
   76%, 100% { transform: scale(0.6); opacity: 0; }
 }
-.nf-takedown-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #f43f5e;
-  color: #fff;
-  border: none;
-  border-radius: 99px;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  padding: 0.65rem 1.4rem;
-  cursor: default;
-  opacity: 0.9;
-}
+/* takedown button removed per design direction */
 
 /* ─────────────────────────────────
    VIS 04: Orbiting platforms shield
@@ -1847,16 +1862,16 @@ h1 span { color: #f43f5e; }
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
-  background: rgba(244, 63, 94, 0.08);
-  border: 1px solid rgba(244, 63, 94, 0.25);
+  background: rgba(244, 63, 94, 0.07);
+  border: 1px solid rgba(244, 63, 94, 0.22);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem;
+  gap: 0.2rem;
   z-index: 4;
 }
 .nf-shield-icon {
@@ -1867,7 +1882,8 @@ h1 span { color: #f43f5e; }
 .nf-shield-label {
   font-size: 7px;
   letter-spacing: 0.15em;
-  color: rgba(244,63,94,0.6);
+  color: rgba(244,63,94,0.55);
+  display: block;
 }
 .nf-shield-ring {
   position: absolute;
@@ -1933,24 +1949,22 @@ h1 span { color: #f43f5e; }
   }
 }
 .nf-shield-counter {
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+  display: contents; /* renders children directly inside .nf-shield-core flex */
 }
 .nf-shield-counter-num {
   display: block;
-  color: rgba(244,63,94,0.5);
-  font-size: 0.65rem;
+  color: #fb7185;
+  font-size: 0.7rem;
   font-weight: 800;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   font-family: "JetBrains Mono", monospace;
+  line-height: 1;
 }
 .nf-shield-counter-sub {
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.25);
   font-size: 7px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
+  display: block;
 }
 
 /* Footer */
