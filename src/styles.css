@@ -1776,17 +1776,20 @@ h1 span { color: #f43f5e; }
   .exploded-sticky {
     top: 0;
     height: 100vh;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding-top: clamp(5.4rem, 12vh, 7.4rem);
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    overflow: hidden;
   }
 
   .exploded-split-layout {
     grid-template-columns: 1fr;
-    gap: 0.8rem;
+    gap: 0;
     padding: 0 1rem;
-    justify-items: stretch;
-    align-content: start;
+    justify-items: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
   }
 
   .exploded-heading {
@@ -1794,15 +1797,18 @@ h1 span { color: #f43f5e; }
     order: -1;
     text-align: left;
     position: relative;
-    width: min(560px, 100%);
-    margin-bottom: 0.25rem;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    width: min(380px, 90vw);
+    margin-bottom: clamp(1.2rem, 3vh, 2rem);
+    /* No CSS transition — opacity/transform driven frame-by-frame via JS */
+    transition: none;
+    flex-shrink: 0;
   }
 
   .mockup-stage {
-    width: min(560px, 98vw);
+    width: min(380px, 90vw);
     margin: 0 auto;
     margin-top: 0;
+    flex-shrink: 0;
   }
 
   .exploded-heading .lead {
@@ -2172,23 +2178,28 @@ h1 span { color: #f43f5e; }
   line-height: 1.5;
   margin: 0;
 }
-/* Bulletproof Mobile Grid Fix for Exploded Section */
+/* Mobile Grid Fix for Exploded Section */
 @media (max-width: 980px) {
   .exploded-split-layout {
     display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 3rem !important; /* Breathing room between text and animation */
+    gap: 0 !important;
     width: 100% !important;
-    padding-top: 12vh !important; /* Pushes the whole block down to start in a natural visual center */
+    padding-top: 0 !important;
+    align-content: center !important;
+    height: 100% !important;
   }
   
   .exploded-heading {
-    grid-row: 1 !important; /* Forces text to the top */
-    width: 85% !important; /* Matches width with the grey frame */
+    grid-row: 1 !important;
+    width: min(380px, 90vw) !important;
     max-width: 380px !important;
-    margin: 0 auto !important; /* Centers the text box relative to the screen */
-    text-align: left !important; /* Aligns the actual text to the left */
+    margin: 0 auto !important;
+    margin-bottom: clamp(1.2rem, 3vh, 2rem) !important;
+    text-align: left !important;
     z-index: 10 !important;
+    /* JS drives opacity/transform, no CSS transition */
+    transition: none !important;
   }
 
   /* Prevents "know" from dropping to the 3rd line */
@@ -2198,8 +2209,12 @@ h1 span { color: #f43f5e; }
   }
 
   .mockup-stage {
-    grid-row: 2 !important; /* Forces animation to the bottom */
-    width: 100% !important;
-    min-height: 400px !important; /* Gives the absolute positioned frames a floor to stand on */
+    grid-row: 2 !important;
+    width: min(380px, 90vw) !important;
+    /* Height must contain the phone (9:16 ratio) plus overflow from exploded pieces */
+    min-height: min(600px, 88vw * 1.78) !important;
+    height: min(600px, 78vh) !important;
+    aspect-ratio: unset !important;
+    margin: 0 auto !important;
   }
 }
