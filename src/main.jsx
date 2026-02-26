@@ -44,8 +44,8 @@ const stats = [
   {
     icon: "◎",
     ghost: "700+",
-    headline: "700+ Per Minute",
-    title: "Uploaded Deepfakes",
+    headline: "700+",
+    title: "Uploaded Deepfakes Per Minute",
     copy: "That’s how many deepfake images and videos hit the internet every minute.",
   },
 ];
