@@ -513,7 +513,7 @@ function App() {
     const nav = document.querySelector(".glass-nav");
     const darkSections = () =>
       document.querySelectorAll(
-        ".bold-statement, .cta-section, .site-footer",
+        ".notify-section, .cta-section, .site-footer",
       );
 
     const checkNav = () => {
