@@ -633,7 +633,9 @@ function App() {
             <div className="bold-split-row">
               <div className="bold-left">
                 <div className="bold-stat-block">
-                  <span className="bold-stat-num">96<span className="bold-stat-pct">%</span></span>
+                  <div className="bold-stat-num-wrap">
+                    <span className="bold-stat-num">96<span className="bold-stat-pct">%</span></span>
+                  </div>
                   <span className="bold-stat-label">of victims never discover deepfake content made of them</span>
                 </div>
               </div>
