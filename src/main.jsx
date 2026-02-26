@@ -706,7 +706,7 @@ function App() {
               <div className="nf-feature-text">
                 <span className="nf-num badge-font">02</span>
                 <h3 className="nf-feature-title">See exactly what was found</h3>
-                <p className="nf-feature-body">View the exact content, the platform it was on, and full forensic evidence — with a confidence score so you always know how certain we are.</p>
+                <p className="nf-feature-body">View the exact content, the platform it was on, and full forensic evidence.</p>
               </div>
               <div className="nf-feature-vis">
                 <div className="nf-scan-vis">
@@ -721,7 +721,7 @@ function App() {
                     <div className="nf-scan-dot d3"></div>
                     <div className="nf-scan-dot d4"></div>
                     <div className="nf-scan-dot d5"></div>
-                    <span className="nf-scan-label">@unknown_user</span>
+                    <span className="nf-scan-label">@johnsmith</span>
                   </div>
                   <div className="nf-confidence-bar">
                     <span className="nf-confidence-label badge-font">Match Confidence</span>
@@ -751,7 +751,7 @@ function App() {
                   <div className="nf-content-card">
                     <div className="nf-content-card-img"></div>
                     <div className="nf-content-card-info">
-                      <span className="nf-content-card-platform badge-font">TikTok · @anon</span>
+                      <span className="nf-content-card-platform badge-font">TikTok · @user234895213</span>
                       <span className="nf-content-card-title">Unauthorized deepfake</span>
                     </div>
                     <div className="nf-content-card-dismiss">
@@ -771,7 +771,7 @@ function App() {
               <div className="nf-feature-text">
                 <span className="nf-num badge-font">04</span>
                 <h3 className="nf-feature-title">Ongoing protection</h3>
-                <p className="nf-feature-body">Continuous 24/7 monitoring across 50,000+ sources — social platforms, adult sites, dark web forums — so it can&apos;t come back.</p>
+                <p className="nf-feature-body">Continuous 24/7 monitoring across 50,000+ sources from social platforms, adult sites, and dark web forums so it can&apos;t come back.</p>
               </div>
               <div className="nf-feature-vis">
                 <div className="nf-shield-vis">
@@ -787,7 +787,7 @@ function App() {
                   <div className="nf-shield-ring r1" aria-hidden="true"></div>
                   <div className="nf-shield-ring r2" aria-hidden="true"></div>
                   <div className="nf-shield-ring r3" aria-hidden="true"></div>
-                  {["TikTok","IG","X","OF","Reddit","Telegram"].map((p, i) => (
+                  {["TikTok","Instagram","X","OnlyFans","Reddit","Telegram"].map((p, i) => (
                     <div className="nf-platform-dot" key={p} style={{"--pi": i, "--ptotal": 6}}>
                       <span>{p}</span>
                     </div>
