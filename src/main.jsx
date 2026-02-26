@@ -513,7 +513,7 @@ function App() {
     const nav = document.querySelector(".glass-nav");
     const darkSections = () =>
       document.querySelectorAll(
-        ".bold-statement, .notify-section, .cta-section, .site-footer",
+        ".bold-statement, .cta-section, .site-footer",
       );
 
     const checkNav = () => {
@@ -805,27 +805,41 @@ function App() {
         </section>
         <section id="cta" className="cta-section">
           <div className="cta-orbits" aria-hidden="true">
-            <div className="cta-orbit">
-              <span className="cta-orbit-dot"></span>
+            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+            <div className="cta-orbit"><span className="cta-orbit-dot"></span></div>
+          </div>
+          <div className="cta-inner">
+            <div className="cta-text-col">
+              <div className="cta-eyebrow">
+                <span className="cta-eyebrow-dot"></span>
+                <span className="cta-eyebrow-text badge-font">Free early access</span>
+              </div>
+              <h2 className="title">Ready to<br/><em>check?</em></h2>
+              <p className="cta-lead">Find out if your face or voice has been used without your consent — before it spreads further.</p>
             </div>
-            <div className="cta-orbit">
-              <span className="cta-orbit-dot"></span>
-            </div>
-            <div className="cta-orbit">
-              <span className="cta-orbit-dot"></span>
+            <div className="cta-action-col">
+              <div className="cta-card">
+                <div className="cta-card-stat">
+                  <span className="cta-card-stat-num">50,000+</span>
+                  <span className="cta-card-stat-label">Sources monitored daily</span>
+                </div>
+                <div className="cta-divider"></div>
+                <div className="cta-card-stat">
+                  <span className="cta-card-stat-num">24/7</span>
+                  <span className="cta-card-stat-label">Real-time scanning</span>
+                </div>
+                <div className="cta-divider"></div>
+                <button
+                  className="cta-button"
+                  type="button"
+                  onClick={() => setWaitlistOpen(true)}
+                >
+                  Join Waitlist
+                </button>
+              </div>
             </div>
           </div>
-          <h2 className="title">Ready to check?</h2>
-          <p className="cta-lead">
-            See who's using your face.
-          </p>
-          <button
-            className="cta-button"
-            type="button"
-            onClick={() => setWaitlistOpen(true)}
-          >
-            Join Waitlist
-          </button>
         </section>
 
         <footer className="site-footer">
