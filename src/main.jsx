@@ -598,6 +598,72 @@ function PrivacyMatrixGrid() {
   );
 }
 
+const DATA_FIELDS = [
+  { label: "username",    plain: "sarah_j_1997",         hash: "a3f9b2e1c7d8" },
+  { label: "email",       plain: "sarah@example.com",    hash: "04512b67a3c9" },
+  { label: "password",    plain: "hunter2!!secure",      hash: "e01f5d2c8b4a" },
+  { label: "payment",     plain: "4242 •••• •••• 9181",  hash: "f34c91e20d87" },
+  { label: "history",     plain: "browsed 847 pages",    hash: "7b2a0f63e195" },
+  { label: "location",    plain: "Toronto, ON, CA",      hash: "c9d4e5f10283" },
+];
+
+function DataEncryptVisual() {
+  const [phase, setPhase] = useState("plain"); // plain → encrypting → encrypted → pause
+  const [encryptedIdx, setEncryptedIdx] = useState(-1);
+
+  useEffect(() => {
+    let timeouts = [];
+    const run = () => {
+      setPhase("plain");
+      setEncryptedIdx(-1);
+
+      // After 1.8s start encrypting row by row
+      DATA_FIELDS.forEach((_, i) => {
+        timeouts.push(setTimeout(() => {
+          setEncryptedIdx(i);
+          if (i === DATA_FIELDS.length - 1) setPhase("encrypted");
+        }, 1800 + i * 340));
+      });
+
+      // After encrypted, pause then restart
+      timeouts.push(setTimeout(() => {
+        setPhase("plain");
+        setEncryptedIdx(-1);
+      }, 1800 + DATA_FIELDS.length * 340 + 2400));
+    };
+
+    run();
+    const loopInterval = setInterval(run, 1800 + DATA_FIELDS.length * 340 + 2800);
+    return () => { timeouts.forEach(clearTimeout); clearInterval(loopInterval); };
+  }, []);
+
+  return (
+    <div className="prv-encrypt-vis" aria-hidden="true">
+      <div className="prv-ev-header">
+        <span className="prv-ev-title badge-font">Your Data Vault</span>
+        <span className={`prv-ev-status badge-font${phase === "encrypted" ? " prv-ev-status--locked" : ""}`}>
+          {phase === "encrypted" ? "● ENCRYPTED" : "○ ENCRYPTING..."}
+        </span>
+      </div>
+      <div className="prv-ev-rows">
+        {DATA_FIELDS.map((field, i) => {
+          const isEncrypted = i <= encryptedIdx;
+          return (
+            <div key={field.label} className={`prv-ev-row${isEncrypted ? " prv-ev-row--enc" : ""}`}>
+              <span className="prv-ev-label">{field.label}</span>
+              <span className="prv-ev-value">
+                {isEncrypted ? field.hash : field.plain}
+              </span>
+              {isEncrypted && <span className="prv-ev-lock">🔒</span>}
+            </div>
+          );
+        })}
+      </div>
+      <div className={`prv-ev-sweep${encryptedIdx >= 0 ? " prv-ev-sweep--active" : ""}`}></div>
+    </div>
+  );
+}
+
 function PrivacyPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -630,7 +696,6 @@ function PrivacyPage() {
       {/* ── Hero ─────────────────────────────── */}
       <section className="privacy-hero">
         <PrivacyMatrixGrid />
-        {/* Dark vignette handled by ::after in CSS */}
         <div className="privacy-hero-content">
           <p className="prv-point-label">Privacy Policy</p>
           <div className="prv-hero-rule"></div>
@@ -650,64 +715,50 @@ function PrivacyPage() {
 
       {/* ── Block 1: Ownership ──────────────── */}
       <section className="prv-block prv-block--1" data-reveal="left">
-        <div className="prv-glow prv-glow--teal" style={{ width: 400, height: 400, top: "-10%", right: "-10%" }}></div>
-        <div className="prv-block-inner">
-          <div className="prv-eyebrow">
-            <span className="prv-dot prv-dot--teal"></span>
-            01 — Ownership
-          </div>
-          <h2 className="prv-headline">
-            Your data.<br />
-            <em className="prv-headline-underline">Not ours.</em><br />
-            Not anyone else&apos;s.
-          </h2>
-          <p className="prv-body">
-            Every scan, every result, every match — it belongs to you and only you. We don&apos;t touch it, we don&apos;t study it, we don&apos;t sell it. We&apos;re just the tool. You&apos;re the owner.
-          </p>
-          <div className="prv-stat-row">
-            <div className="prv-stat-chip">
-              <span className="prv-stat-chip-num">0</span>
-              <span className="prv-stat-chip-label">Data sales. Ever.</span>
+        <div className="prv-block-inner prv-block-inner--split">
+          <div>
+            <div className="prv-eyebrow">
+              <span className="prv-dot prv-dot--rose"></span>
+              01 — Ownership
             </div>
-            <div className="prv-stat-chip">
-              <span className="prv-stat-chip-num">0</span>
-              <span className="prv-stat-chip-label">Third-party access</span>
-            </div>
-            <div className="prv-stat-chip">
-              <span className="prv-stat-chip-num">100%</span>
-              <span className="prv-stat-chip-label">Yours</span>
+            <h2 className="prv-headline">
+              Your data.<br />
+              <em className="prv-headline-underline">Not ours.</em><br />
+              Not anyone else&apos;s.
+            </h2>
+            <p className="prv-body">
+              Every scan, every result, every match — it belongs to you and only you. We don&apos;t touch it, we don&apos;t study it, we don&apos;t sell it. We&apos;re just the tool. You&apos;re the owner.
+            </p>
+            <div className="prv-stat-row">
+              <div className="prv-stat-chip">
+                <span className="prv-stat-chip-num">0</span>
+                <span className="prv-stat-chip-label">Data sales. Ever.</span>
+              </div>
+              <div className="prv-stat-chip">
+                <span className="prv-stat-chip-num">0</span>
+                <span className="prv-stat-chip-label">Third-party access</span>
+              </div>
+              <div className="prv-stat-chip">
+                <span className="prv-stat-chip-num">100%</span>
+                <span className="prv-stat-chip-label">Yours</span>
+              </div>
             </div>
           </div>
-        </div>
-        {/* Orbiting lock visual */}
-        <div className="prv-lock-orbit" aria-hidden="true">
-          <div className="prv-lock-ring r1"></div>
-          <div className="prv-lock-ring r2"></div>
-          <div className="prv-lock-ring r3"></div>
-          <div className="prv-lock-core">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-          </div>
-          <div className="prv-orbit-dot d1"></div>
-          <div className="prv-orbit-dot d2"></div>
+          <DataEncryptVisual />
         </div>
       </section>
 
       {/* ── Block 2: No selling ──────────────── */}
       <section className="prv-block prv-block--2" data-reveal>
-        <div className="prv-glow prv-glow--rose" style={{ width: 350, height: 350, bottom: "-5%", left: "5%" }}></div>
         <div className="prv-block-inner prv-block-inner--center">
           <div className="prv-eyebrow">
             <span className="prv-dot prv-dot--rose"></span>
             02 — Data Sales
           </div>
-          <h2 className="prv-headline prv-headline--huge prv-headline--rose">
+          <h2 className="prv-headline prv-headline--huge">
             We don&apos;t sell<br />your data.<br />
             <span className="prv-period">Period.</span>
           </h2>
-          <div className="prv-divider"></div>
           <div className="prv-strike-list">
             <div className="prv-strike-row">
               <span className="prv-strike-x">✕</span>
@@ -727,7 +778,6 @@ function PrivacyPage() {
 
       {/* ── Block 3: No ads ──────────────── */}
       <section className="prv-block prv-block--3" data-reveal="right">
-        <div className="prv-glow prv-glow--blue" style={{ width: 320, height: 320, top: "10%", right: "-5%" }}></div>
         <div className="prv-block-inner prv-block-inner--split">
           <div>
             <div className="prv-eyebrow">
@@ -762,10 +812,9 @@ function PrivacyPage() {
 
       {/* ── Block 4: Encryption ──────────────── */}
       <section className="prv-block prv-block--4" data-reveal>
-        <div className="prv-glow prv-glow--teal" style={{ width: 500, height: 500, top: "-20%", left: "50%", transform: "translateX(-50%)" }}></div>
         <div className="prv-block-inner prv-block-inner--center">
           <div className="prv-eyebrow">
-            <span className="prv-dot prv-dot--teal"></span>
+            <span className="prv-dot prv-dot--rose"></span>
             04 — Encryption
           </div>
           <h2 className="prv-headline">
@@ -798,7 +847,7 @@ function PrivacyPage() {
       <section className="prv-block prv-block--close" data-reveal>
         <div className="prv-block-inner prv-block-inner--center">
           <div className="prv-eyebrow">
-            <span className="prv-dot prv-dot--teal"></span>
+            <span className="prv-dot prv-dot--rose"></span>
             The bottom line
           </div>
           <h2 className="prv-headline">
@@ -920,23 +969,14 @@ function App() {
         <nav>
           <span className="nav-blob" aria-hidden="true"></span>
           <button
-            className={`nav-page-btn${currentPage === "privacy" ? " nav-page-btn--active" : ""}`}
-            onClick={() => navigate("privacy")}
+            className="nav-page-btn"
+            onClick={() => navigate(currentPage === "privacy" ? "home" : "privacy")}
             type="button"
           >
-            Privacy
+            {currentPage === "privacy" ? "Home" : "Privacy"}
           </button>
           {currentPage === "home" && <a href="#about">About</a>}
           {currentPage === "home" && <a href="#cta">Start</a>}
-          {currentPage === "privacy" && (
-            <button
-              className="nav-page-btn"
-              onClick={() => navigate("home")}
-              type="button"
-            >
-              Home
-            </button>
-          )}
         </nav>
         <button
           className="btn-waitlist"
