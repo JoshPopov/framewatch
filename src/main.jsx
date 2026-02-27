@@ -512,31 +512,28 @@ const PRIVACY_SNIPPETS = [
   "privacy.enforce(true)",
   "const yours = data.yours",
   "GDPR_COMPLIANT: true",
+  "zeroKnowledge: true",
+  "assert(user === owner)",
+  "NO_LOGS: confirmed",
 ];
 
 function PrivacyMatrixGrid() {
+  // Spread snippets across the full canvas — not just edges
   const initialCells = useMemo(
     () =>
-      Array.from({ length: 72 }, (_, i) => {
-        const zone = Math.floor(Math.random() * 4);
-        let top, left;
-        if (zone === 0) { top = Math.random() * 30; left = Math.random() * 100; }
-        else if (zone === 1) { top = 70 + Math.random() * 30; left = Math.random() * 100; }
-        else if (zone === 2) { top = Math.random() * 100; left = Math.random() * 15; }
-        else { top = Math.random() * 100; left = 85 + Math.random() * 15; }
-        return {
-          id: i,
-          text: PRIVACY_SNIPPETS[Math.floor(Math.random() * PRIVACY_SNIPPETS.length)],
-          color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-          duration: `${9 + Math.random() * 14}s`,
-          delay: `${-Math.random() * 12}s`,
-          top: `${top}%`,
-          left: `${left}%`,
-          xDrift: `${-32 + Math.random() * 64}px`,
-          yDrift: `${-42 + Math.random() * 84}px`,
-          opacity: 0.15 + Math.random() * 0.3,
-        };
-      }),
+      Array.from({ length: 80 }, (_, i) => ({
+        id: i,
+        text: PRIVACY_SNIPPETS[Math.floor(Math.random() * PRIVACY_SNIPPETS.length)],
+        color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
+        duration: `${8 + Math.random() * 14}s`,
+        delay: `${-Math.random() * 14}s`,
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        xDrift: `${-40 + Math.random() * 80}px`,
+        yDrift: `${-50 + Math.random() * 100}px`,
+        // Higher opacity since we're on dark bg
+        opacity: 0.25 + Math.random() * 0.45,
+      })),
     [],
   );
 
@@ -548,10 +545,10 @@ function PrivacyMatrixGrid() {
       const fadingIds = new Set();
       setCells((prev) => {
         const next = [...prev];
-        for (let i = 0; i < 12; i += 1) {
+        for (let i = 0; i < 10; i += 1) {
           const idx = Math.floor(Math.random() * next.length);
           fadingIds.add(next[idx].id);
-          next[idx] = { ...next[idx], opacity: 0.02 };
+          next[idx] = { ...next[idx], opacity: 0.03 };
         }
         return next;
       });
@@ -563,50 +560,49 @@ function PrivacyMatrixGrid() {
               ...cell,
               text: PRIVACY_SNIPPETS[Math.floor(Math.random() * PRIVACY_SNIPPETS.length)],
               color: MATRIX_COLORS[Math.floor(Math.random() * MATRIX_COLORS.length)],
-              opacity: 0.14 + Math.random() * 0.32,
+              opacity: 0.22 + Math.random() * 0.42,
               duration: `${8 + Math.random() * 15}s`,
-              xDrift: `${-38 + Math.random() * 76}px`,
-              yDrift: `${-50 + Math.random() * 100}px`,
+              xDrift: `${-40 + Math.random() * 80}px`,
+              yDrift: `${-55 + Math.random() * 110}px`,
             };
           }),
         );
         timeouts.delete(timeoutId);
-      }, 600);
+      }, 650);
       timeouts.add(timeoutId);
-    }, 2800);
+    }, 2600);
     return () => { clearInterval(timer); timeouts.forEach(clearTimeout); };
   }, [initialCells]);
 
   return (
-    <>
-      <div className="matrix-mask"></div>
-      <div className="matrix-grid">
-        {cells.map((cell) => (
-          <span
-            key={cell.id}
-            className="snippet"
-            style={{
-              color: cell.color,
-              top: cell.top,
-              left: cell.left,
-              opacity: cell.opacity,
-              "--dur": cell.duration,
-              "--delay": cell.delay,
-              "--drift-x": cell.xDrift,
-              "--drift-y": cell.yDrift,
-            }}
-          >
-            {cell.text}
-          </span>
-        ))}
-      </div>
-    </>
+    <div className="matrix-grid" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+      {cells.map((cell) => (
+        <span
+          key={cell.id}
+          className="snippet"
+          style={{
+            color: cell.color,
+            top: cell.top,
+            left: cell.left,
+            opacity: cell.opacity,
+            "--dur": cell.duration,
+            "--delay": cell.delay,
+            "--drift-x": cell.xDrift,
+            "--drift-y": cell.yDrift,
+          }}
+        >
+          {cell.text}
+        </span>
+      ))}
+    </div>
   );
 }
 
-function PrivacyPage({ onNavigate }) {
+function PrivacyPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    // Force nav dark on this page
+    document.body.classList.add("privacy-page-active");
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -614,28 +610,37 @@ function PrivacyPage({ onNavigate }) {
           if (entry.isIntersecting) entry.target.classList.add("visible");
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
-    const nodes = document.querySelectorAll("[data-reveal]");
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
+    // Small delay so elements start hidden before observing
+    const t = setTimeout(() => {
+      document.querySelectorAll(".prv-block[data-reveal]").forEach((n) => observer.observe(n));
+    }, 60);
+
+    return () => {
+      clearTimeout(t);
+      observer.disconnect();
+      document.body.classList.remove("privacy-page-active");
+    };
   }, []);
 
   return (
-    <main className="privacy-main">
-      {/* Hero */}
+    <main className="privacy-main privacy-transition-enter">
+
+      {/* ── Hero ─────────────────────────────── */}
       <section className="privacy-hero">
         <PrivacyMatrixGrid />
-        <div className="privacy-hero-content hero-intro">
-          <p className="hero-badge">
-            <span className="pulse-dot"></span> PRIVACY POLICY
-          </p>
-          <h1 className="privacy-hero-title">
+        {/* Dark vignette handled by ::after in CSS */}
+        <div className="privacy-hero-content">
+          <p className="prv-point-label">Privacy Policy</p>
+          <div className="prv-hero-rule"></div>
+          <h1 className="prv-hero-headline">
             We&apos;re serious<br />
-            <span>about privacy.</span>
+            about <em>privacy.</em>
           </h1>
-          <p className="lead">
-            No cap — your data is yours. That&apos;s literally the whole thing.
+          <p className="prv-hero-sub">
+            Your data is yours. Not ours, not advertisers&apos;, not anyone else&apos;s.
+            That&apos;s the whole gig — and we mean it.
           </p>
         </div>
         <div className="privacy-scroll-hint">
@@ -643,69 +648,91 @@ function PrivacyPage({ onNavigate }) {
         </div>
       </section>
 
-      {/* Statement 1 — Your data */}
-      <section className="prv-block prv-block--light" data-reveal>
+      {/* ── Block 1: Ownership ──────────────── */}
+      <section className="prv-block prv-block--1" data-reveal="left">
+        <div className="prv-glow prv-glow--teal" style={{ width: 400, height: 400, top: "-10%", right: "-10%" }}></div>
         <div className="prv-block-inner">
-          <div className="prv-eyebrow badge-font">
+          <div className="prv-eyebrow">
             <span className="prv-dot prv-dot--teal"></span>
-            Ownership
+            01 — Ownership
           </div>
           <h2 className="prv-headline">
             Your data.<br />
-            <em>Not ours.</em><br />
+            <em className="prv-headline-underline">Not ours.</em><br />
             Not anyone else&apos;s.
           </h2>
           <p className="prv-body">
-            That&apos;s the whole gig. Every scan, every result, every match — it belongs to you and only you. We&apos;re just the tool. You&apos;re the owner.
+            Every scan, every result, every match — it belongs to you and only you. We don&apos;t touch it, we don&apos;t study it, we don&apos;t sell it. We&apos;re just the tool. You&apos;re the owner.
           </p>
-          <div className="prv-lock-visual" aria-hidden="true">
-            <div className="prv-lock-ring r1"></div>
-            <div className="prv-lock-ring r2"></div>
-            <div className="prv-lock-core">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
+          <div className="prv-stat-row">
+            <div className="prv-stat-chip">
+              <span className="prv-stat-chip-num">0</span>
+              <span className="prv-stat-chip-label">Data sales. Ever.</span>
+            </div>
+            <div className="prv-stat-chip">
+              <span className="prv-stat-chip-num">0</span>
+              <span className="prv-stat-chip-label">Third-party access</span>
+            </div>
+            <div className="prv-stat-chip">
+              <span className="prv-stat-chip-num">100%</span>
+              <span className="prv-stat-chip-label">Yours</span>
             </div>
           </div>
         </div>
+        {/* Orbiting lock visual */}
+        <div className="prv-lock-orbit" aria-hidden="true">
+          <div className="prv-lock-ring r1"></div>
+          <div className="prv-lock-ring r2"></div>
+          <div className="prv-lock-ring r3"></div>
+          <div className="prv-lock-core">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          </div>
+          <div className="prv-orbit-dot d1"></div>
+          <div className="prv-orbit-dot d2"></div>
+        </div>
       </section>
 
-      {/* Statement 2 — No selling */}
-      <section className="prv-block prv-block--dark" data-reveal>
+      {/* ── Block 2: No selling ──────────────── */}
+      <section className="prv-block prv-block--2" data-reveal>
+        <div className="prv-glow prv-glow--rose" style={{ width: 350, height: 350, bottom: "-5%", left: "5%" }}></div>
         <div className="prv-block-inner prv-block-inner--center">
-          <div className="prv-eyebrow badge-font">
+          <div className="prv-eyebrow">
             <span className="prv-dot prv-dot--rose"></span>
-            Data Sales
+            02 — Data Sales
           </div>
-          <h2 className="prv-headline prv-headline--huge">
+          <h2 className="prv-headline prv-headline--huge prv-headline--rose">
             We don&apos;t sell<br />your data.<br />
             <span className="prv-period">Period.</span>
           </h2>
-          <div className="prv-strike-card">
+          <div className="prv-divider"></div>
+          <div className="prv-strike-list">
             <div className="prv-strike-row">
               <span className="prv-strike-x">✕</span>
-              <span className="prv-strike-text">data brokers</span>
+              <span className="prv-strike-text">Data brokers</span>
             </div>
             <div className="prv-strike-row">
               <span className="prv-strike-x">✕</span>
-              <span className="prv-strike-text">third-party marketers</span>
+              <span className="prv-strike-text">Third-party marketers</span>
             </div>
             <div className="prv-strike-row">
               <span className="prv-strike-x">✕</span>
-              <span className="prv-strike-text">anyone, ever</span>
+              <span className="prv-strike-text">Anyone. Ever.</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Statement 3 — No ads */}
-      <section className="prv-block prv-block--light" data-reveal>
+      {/* ── Block 3: No ads ──────────────── */}
+      <section className="prv-block prv-block--3" data-reveal="right">
+        <div className="prv-glow prv-glow--blue" style={{ width: 320, height: 320, top: "10%", right: "-5%" }}></div>
         <div className="prv-block-inner prv-block-inner--split">
-          <div className="prv-split-text">
-            <div className="prv-eyebrow badge-font">
+          <div>
+            <div className="prv-eyebrow">
               <span className="prv-dot prv-dot--amber"></span>
-              Ads
+              03 — Advertising
             </div>
             <h2 className="prv-headline">
               We hate ads<br />
@@ -713,32 +740,33 @@ function PrivacyPage({ onNavigate }) {
               <em>as you do.</em>
             </h2>
             <p className="prv-body">
-              We don&apos;t run ads. We don&apos;t feed the system. No tracking pixels, no retargeting, no creepy &quot;hey we know what you searched&quot; energy. We&apos;re not in that business.
+              No ads. No tracking pixels. No retargeting. No creepy &ldquo;hey, we know what you searched&rdquo; energy. We don&apos;t feed that system — not now, not ever.
             </p>
           </div>
-          <div className="prv-ad-visual" aria-hidden="true">
-            <div className="prv-ad-card prv-ad-dead">
-              <span className="badge-font">AD BLOCKED</span>
-              <div className="prv-ad-x">✕</div>
+          <div className="prv-ad-stack" aria-hidden="true">
+            <div className="prv-ad-tomb">
+              <span>AD NETWORK</span>
+              <em className="prv-ad-x">✕</em>
             </div>
-            <div className="prv-ad-card prv-ad-dead" style={{"--delay-in": "0.15s"}}>
-              <span className="badge-font">NO TRACKING</span>
-              <div className="prv-ad-x">✕</div>
+            <div className="prv-ad-tomb">
+              <span>TRACKING PIXELS</span>
+              <em className="prv-ad-x">✕</em>
             </div>
-            <div className="prv-ad-card prv-ad-dead" style={{"--delay-in": "0.3s"}}>
-              <span className="badge-font">NO RETARGETING</span>
-              <div className="prv-ad-x">✕</div>
+            <div className="prv-ad-tomb">
+              <span>RETARGETING</span>
+              <em className="prv-ad-x">✕</em>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Statement 4 — Encryption */}
-      <section className="prv-block prv-block--dark" data-reveal>
+      {/* ── Block 4: Encryption ──────────────── */}
+      <section className="prv-block prv-block--4" data-reveal>
+        <div className="prv-glow prv-glow--teal" style={{ width: 500, height: 500, top: "-20%", left: "50%", transform: "translateX(-50%)" }}></div>
         <div className="prv-block-inner prv-block-inner--center">
-          <div className="prv-eyebrow badge-font">
+          <div className="prv-eyebrow">
             <span className="prv-dot prv-dot--teal"></span>
-            Encryption
+            04 — Encryption
           </div>
           <h2 className="prv-headline">
             End-to-end encrypted.<br />
@@ -751,33 +779,37 @@ function PrivacyPage({ onNavigate }) {
               </svg>
             </div>
             <div className="prv-encrypt-text">
-              <span className="prv-encrypt-label badge-font">Standard</span>
+              <span className="prv-encrypt-label">Encryption Standard</span>
               <span className="prv-encrypt-value">SHA-256</span>
             </div>
           </div>
           <p className="prv-body prv-body--centered">
-            The same encryption used by banks, governments, and the biggest tech companies on the planet. Your data is locked down. For real.
+            Same encryption used by banks, governments, and the biggest tech companies on the planet. Your data is locked. For real.
           </p>
           <div className="prv-hash-scroll" aria-hidden="true">
             <div className="prv-hash-track">
-              {"a3f9b2e1c7d8f04512b67a3c9e01f5d2a3f9b2e1c7d8f04512b67a3c9e01f5d2a3f9b2e1"}
+              {"a3f9b2e1c7d8f04512b67a3c9e01f5d2a3f9b2e1c7d8f04512b67a3c9e01f5d2 · sha256 · a3f9b2e1c7d8f04512b67a3c9e01f5d2a3f9b2e1c7d8f04512b67a3c9e01f5d2"}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Closing CTA */}
+      {/* ── Closing ──────────────────────────── */}
       <section className="prv-block prv-block--close" data-reveal>
         <div className="prv-block-inner prv-block-inner--center">
+          <div className="prv-eyebrow">
+            <span className="prv-dot prv-dot--teal"></span>
+            The bottom line
+          </div>
           <h2 className="prv-headline">
             Nothing behind<br />your back.<br />
             <em>Ever.</em>
           </h2>
           <p className="prv-body prv-body--centered">
-            Questions? Issues? Concerns? Hit us up. We&apos;re real people and we actually respond.
+            Questions? Hit us up. We&apos;re real people and we actually respond.
           </p>
           <a href="mailto:privacy@framewatch.org" className="prv-cta-btn">
-            Contact Us
+            Reach out
           </a>
         </div>
       </section>
@@ -786,10 +818,7 @@ function PrivacyPage({ onNavigate }) {
         <div className="footer-glass-row">
           <small>© 2026 FrameWatch. All rights reserved.</small>
           <span className="footer-sep" aria-hidden="true"></span>
-          <small>
-            Made in Canada{" "}
-            <span className="ca-flag" aria-hidden="true">🇨🇦</span>
-          </small>
+          <small>Made in Canada 🇨🇦</small>
         </div>
       </footer>
     </main>
@@ -798,8 +827,27 @@ function PrivacyPage({ onNavigate }) {
 
 function App() {
   useReveal();
-  const [currentPage, setCurrentPage] = useState("home");
+
+  // Hash-based routing: /#privacy ↔ /#home
+  const getPage = () =>
+    window.location.hash === "#privacy" ? "privacy" : "home";
+
+  const [currentPage, setCurrentPage] = useState(getPage);
   const [waitlistOpen, setWaitlistOpen] = useState(false);
+
+  // Keep state in sync with browser back/forward
+  useEffect(() => {
+    const onPop = () => setCurrentPage(getPage());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const navigate = useCallback((page) => {
+    const hash = page === "privacy" ? "#privacy" : "#home";
+    window.history.pushState(null, "", hash);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   const isWindows = useMemo(() => {
     const platform =
@@ -865,7 +913,7 @@ function App() {
           href="#home"
           className="brand"
           aria-label="FrameWatch Home"
-          onClick={() => { if (currentPage !== "home") { setCurrentPage("home"); window.scrollTo({ top: 0, behavior: "instant" }); } }}
+          onClick={(e) => { if (currentPage !== "home") { e.preventDefault(); navigate("home"); } }}
         >
           <img src="/logo.png" alt="FrameWatch" className="brand-logo-img" />
         </a>
@@ -873,7 +921,7 @@ function App() {
           <span className="nav-blob" aria-hidden="true"></span>
           <button
             className={`nav-page-btn${currentPage === "privacy" ? " nav-page-btn--active" : ""}`}
-            onClick={() => setCurrentPage("privacy")}
+            onClick={() => navigate("privacy")}
             type="button"
           >
             Privacy
@@ -883,7 +931,7 @@ function App() {
           {currentPage === "privacy" && (
             <button
               className="nav-page-btn"
-              onClick={() => { setCurrentPage("home"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+              onClick={() => navigate("home")}
               type="button"
             >
               Home
@@ -900,7 +948,7 @@ function App() {
       </header>
 
       {currentPage === "privacy" ? (
-        <PrivacyPage onNavigate={setCurrentPage} />
+        <PrivacyPage />
       ) : (
       <main>
         <section id="home" className="hero">
