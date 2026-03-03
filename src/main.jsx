@@ -664,238 +664,15 @@ function DataEncryptVisual() {
   );
 }
 
-function PrivacyPage() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-    // Force nav dark on this page
-    document.body.classList.add("privacy-page-active");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("visible");
-        });
-      },
-      { threshold: 0.1 },
-    );
-    // Small delay so elements start hidden before observing
-    const t = setTimeout(() => {
-      document.querySelectorAll(".prv-block[data-reveal]").forEach((n) => observer.observe(n));
-    }, 60);
-
-    return () => {
-      clearTimeout(t);
-      observer.disconnect();
-      document.body.classList.remove("privacy-page-active");
-    };
-  }, []);
-
-  return (
-    <main className="privacy-main privacy-transition-enter">
-
-      {/* ── Hero ─────────────────────────────── */}
-      <section className="privacy-hero">
-        <PrivacyMatrixGrid />
-        <div className="privacy-hero-content">
-          <p className="prv-point-label">Privacy Policy</p>
-          <div className="prv-hero-rule"></div>
-          <h1 className="prv-hero-headline">
-            We&apos;re serious<br />
-            about <em>privacy.</em>
-          </h1>
-          <p className="prv-hero-sub">
-            Your data is yours. Not ours, not advertisers&apos;, not anyone else&apos;s.
-            That&apos;s the whole gig — and we mean it.
-          </p>
-        </div>
-        <div className="privacy-scroll-hint">
-          <div className="privacy-scroll-arrow"></div>
-        </div>
-      </section>
-
-      {/* ── Block 1: Ownership ──────────────── */}
-      <section className="prv-block prv-block--1" data-reveal="left">
-        <div className="prv-block-inner prv-block-inner--split">
-          <div>
-            <div className="prv-eyebrow">
-              <span className="prv-dot prv-dot--rose"></span>
-              01 — Ownership
-            </div>
-            <h2 className="prv-headline">
-              Your data.<br />
-              <em className="prv-headline-underline">Not ours.</em><br />
-              Not anyone else&apos;s.
-            </h2>
-            <p className="prv-body">
-              Every scan, every result, every match — it belongs to you and only you. We don&apos;t touch it, we don&apos;t study it, we don&apos;t sell it. We&apos;re just the tool. You&apos;re the owner.
-            </p>
-            <div className="prv-stat-row">
-              <div className="prv-stat-chip">
-                <span className="prv-stat-chip-num">0</span>
-                <span className="prv-stat-chip-label">Data sales. Ever.</span>
-              </div>
-              <div className="prv-stat-chip">
-                <span className="prv-stat-chip-num">0</span>
-                <span className="prv-stat-chip-label">Third-party access</span>
-              </div>
-              <div className="prv-stat-chip">
-                <span className="prv-stat-chip-num">100%</span>
-                <span className="prv-stat-chip-label">Yours</span>
-              </div>
-            </div>
-          </div>
-          <DataEncryptVisual />
-        </div>
-      </section>
-
-      {/* ── Block 2: No selling ──────────────── */}
-      <section className="prv-block prv-block--2" data-reveal>
-        <div className="prv-block-inner prv-block-inner--center">
-          <div className="prv-eyebrow">
-            <span className="prv-dot prv-dot--rose"></span>
-            02 — Data Sales
-          </div>
-          <h2 className="prv-headline prv-headline--huge">
-            We don&apos;t sell<br />your data.<br />
-            <span className="prv-period">Period.</span>
-          </h2>
-          <div className="prv-strike-list">
-            <div className="prv-strike-row">
-              <span className="prv-strike-x">✕</span>
-              <span className="prv-strike-text">Data brokers</span>
-            </div>
-            <div className="prv-strike-row">
-              <span className="prv-strike-x">✕</span>
-              <span className="prv-strike-text">Third-party marketers</span>
-            </div>
-            <div className="prv-strike-row">
-              <span className="prv-strike-x">✕</span>
-              <span className="prv-strike-text">Anyone. Ever.</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Block 3: No ads ──────────────── */}
-      <section className="prv-block prv-block--3" data-reveal="right">
-        <div className="prv-block-inner prv-block-inner--split">
-          <div>
-            <div className="prv-eyebrow">
-              <span className="prv-dot prv-dot--amber"></span>
-              03 — Advertising
-            </div>
-            <h2 className="prv-headline">
-              We hate ads<br />
-              just as much<br />
-              <em>as you do.</em>
-            </h2>
-            <p className="prv-body">
-              No ads. No tracking pixels. No retargeting. No creepy &ldquo;hey, we know what you searched&rdquo; energy. We don&apos;t feed that system — not now, not ever.
-            </p>
-          </div>
-          <div className="prv-ad-stack" aria-hidden="true">
-            <div className="prv-ad-tomb">
-              <span>AD NETWORK</span>
-              <em className="prv-ad-x">✕</em>
-            </div>
-            <div className="prv-ad-tomb">
-              <span>TRACKING PIXELS</span>
-              <em className="prv-ad-x">✕</em>
-            </div>
-            <div className="prv-ad-tomb">
-              <span>RETARGETING</span>
-              <em className="prv-ad-x">✕</em>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Block 4: Encryption ──────────────── */}
-      <section className="prv-block prv-block--4" data-reveal>
-        <div className="prv-block-inner prv-block-inner--center">
-          <div className="prv-eyebrow">
-            <span className="prv-dot prv-dot--rose"></span>
-            04 — Encryption
-          </div>
-          <h2 className="prv-headline">
-            End-to-end encrypted.<br />
-            <em>Industry-leading.</em>
-          </h2>
-          <div className="prv-encrypt-badge">
-            <div className="prv-encrypt-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <div className="prv-encrypt-text">
-              <span className="prv-encrypt-label">Encryption Standard</span>
-              <span className="prv-encrypt-value">SHA-256</span>
-            </div>
-          </div>
-          <p className="prv-body prv-body--centered">
-            Same encryption used by banks, governments, and the biggest tech companies on the planet. Your data is locked. For real.
-          </p>
-          <div className="prv-hash-scroll" aria-hidden="true">
-            <div className="prv-hash-track">
-              {"a3f9b2e1c7d8f04512b67a3c9e01f5d2a3f9b2e1c7d8f04512b67a3c9e01f5d2 · sha256 · a3f9b2e1c7d8f04512b67a3c9e01f5d2a3f9b2e1c7d8f04512b67a3c9e01f5d2"}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Closing ──────────────────────────── */}
-      <section className="prv-block prv-block--close" data-reveal>
-        <div className="prv-block-inner prv-block-inner--center">
-          <div className="prv-eyebrow">
-            <span className="prv-dot prv-dot--rose"></span>
-            The bottom line
-          </div>
-          <h2 className="prv-headline">
-            Nothing behind<br />your back.<br />
-            <em>Ever.</em>
-          </h2>
-          <p className="prv-body prv-body--centered">
-            Questions? Hit us up. We&apos;re real people and we actually respond.
-          </p>
-          <a href="mailto:privacy@framewatch.org" className="prv-cta-btn">
-            Reach out
-          </a>
-        </div>
-      </section>
-
-      <footer className="site-footer">
-        <div className="footer-glass-row">
-          <small>© 2026 FrameWatch. All rights reserved.</small>
-          <span className="footer-sep" aria-hidden="true"></span>
-          <small>Made in Canada 🇨🇦</small>
-        </div>
-      </footer>
-    </main>
-  );
-}
-
 function App() {
   useReveal();
 
-  // Hash-based routing: /#privacy ↔ /#home
-  const getPage = () =>
-    window.location.hash === "#privacy" ? "privacy" : "home";
-
-  const [currentPage, setCurrentPage] = useState(getPage);
   const [waitlistOpen, setWaitlistOpen] = useState(false);
 
-  // Keep state in sync with browser back/forward
   useEffect(() => {
-    const onPop = () => setCurrentPage(getPage());
-    window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
-  }, []);
-
-  const navigate = useCallback((page) => {
-    const hash = page === "privacy" ? "#privacy" : "#home";
-    window.history.pushState(null, "", hash);
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "instant" });
+    if (window.location.hash === "#privacy") {
+      window.history.replaceState(null, "", "#home");
+    }
   }, []);
 
   const isWindows = useMemo(() => {
@@ -962,21 +739,13 @@ function App() {
           href="#home"
           className="brand"
           aria-label="FrameWatch Home"
-          onClick={(e) => { if (currentPage !== "home") { e.preventDefault(); navigate("home"); } }}
         >
           <img src="/logo.png" alt="FrameWatch" className="brand-logo-img" />
         </a>
         <nav>
           <span className="nav-blob" aria-hidden="true"></span>
-          <button
-            className="nav-page-btn"
-            onClick={() => navigate(currentPage === "privacy" ? "home" : "privacy")}
-            type="button"
-          >
-            {currentPage === "privacy" ? "Home" : "Privacy"}
-          </button>
-          {currentPage === "home" && <a href="#about">About</a>}
-          {currentPage === "home" && <a href="#cta">Start</a>}
+          <a href="#about">About</a>
+          <a href="#cta">Start</a>
         </nav>
         <button
           className="btn-waitlist"
@@ -987,9 +756,6 @@ function App() {
         </button>
       </header>
 
-      {currentPage === "privacy" ? (
-        <PrivacyPage />
-      ) : (
       <main>
         <section id="home" className="hero">
           <MatrixGrid />
@@ -1266,7 +1032,7 @@ function App() {
           </div>
         </footer>
       </main>
-      )}
+
       <WaitlistModal
         open={waitlistOpen}
         onClose={() => setWaitlistOpen(false)}
