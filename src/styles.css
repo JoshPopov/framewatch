@@ -1402,6 +1402,7 @@ h1 span { color: #f43f5e; }
   position: relative;
   display: inline-block;
   overflow: hidden;
+  padding-right: 0.12em;
 }
 .bold-statement.visible .bold-stat-num-wrap::after {
   content: '';
@@ -2959,55 +2960,6 @@ h1 span { color: #f43f5e; }
 /* =====================================================
    PRIVACY PAGE — DARK EDITION
    ===================================================== */
-
-/* Nav button — matches nav a exactly */
-.nav-page-btn {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.5);
-  padding: 0.36rem 0.7rem;
-  border-radius: 999px;
-  white-space: nowrap;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s var(--ease), background 0.3s var(--ease);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-}
-.nav-page-btn:hover {
-  color: rgba(0, 0, 0, 0.88);
-  background: rgba(0, 0, 0, 0.05);
-}
-.nav-page-btn:active {
-  background: rgba(0, 0, 0, 0.08);
-  transition-duration: 0.08s;
-}
-
-/* Force nav into dark mode on privacy page */
-.privacy-page-active .glass-nav {
-  background: rgba(15, 23, 42, 0.65) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35) !important;
-}
-.privacy-page-active .glass-nav nav a,
-.privacy-page-active .glass-nav .nav-page-btn {
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-.privacy-page-active .glass-nav nav a:hover,
-.privacy-page-active .glass-nav .nav-page-btn:hover {
-  color: rgba(255, 255, 255, 0.9) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-}
-.privacy-page-active .glass-nav .btn-waitlist {
-  background: #f8fafc !important;
-  color: #0f172a !important;
-}
-.privacy-page-active .glass-nav .brand-logo-img {
-  filter: invert(1) brightness(2) !important;
-}
 
 /* Page transition */
 .privacy-transition-enter {
